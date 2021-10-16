@@ -15,12 +15,21 @@ ext{
     javaMainClass = "com.klasevich.itrex.lab.Runner"
 }
 
+application{
+    mainClassName = javaMainClass
+}
+
 dependencies {
-    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.7.0'
-    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.7.0'
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.1'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.8.1'
 
     implementation group: 'org.flywaydb', name: 'flyway-core', version: '8.0.1'
     implementation group: 'com.h2database', name: 'h2', version: '1.4.200'
+
+    compileOnly group: 'org.projectlombok', name: 'lombok', version: '1.18.22'
+    annotationProcessor group: 'org.projectlombok', name: 'lombok', version: '1.18.22'
+    implementation group: 'org.slf4j', name: 'slf4j-api', version: '2.0.0-alpha5'
+
 }
 
 test {

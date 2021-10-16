@@ -6,3 +6,6 @@
 /settings.gradle
 /user-service/build/
 /payment-service/build/
+/authentification-service/build/
+/config-service/build/
+/gateway-service/build/

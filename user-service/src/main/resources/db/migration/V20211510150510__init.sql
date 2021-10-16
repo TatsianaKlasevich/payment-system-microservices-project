@@ -10,7 +10,8 @@ CREATE TABLE IF NOT EXISTS users
     identity_passport_number VARCHAR(25),
     phone_number             VARCHAR(13),
     PRIMARY KEY (id),
-    CONSTRAINT UNIQUE_EMAIL UNIQUE (email)
+    CONSTRAINT UNIQUE_EMAIL UNIQUE (email),
+    CONSTRAINT UNIQUE_IDENTITY_PASSPORT_NUMBER UNIQUE (identity_passport_number)
 );
 
 CREATE TABLE IF NOT EXISTS roles
@@ -28,3 +29,4 @@ CREATE TABLE IF NOT EXISTS users_roles
     FOREIGN KEY (user_id) REFERENCES users (id),
     FOREIGN KEY (role_id) REFERENCES roles (id)
 );
+
