@@ -28,8 +28,6 @@ dependencies {
 
     compileOnly group: 'org.projectlombok', name: 'lombok', version: '1.18.22'
     annotationProcessor group: 'org.projectlombok', name: 'lombok', version: '1.18.22'
-    implementation group: 'org.slf4j', name: 'slf4j-api', version: '2.0.0-alpha5'
-
 }
 
 test {
