@@ -2,6 +2,7 @@ plugins {
     id 'java'
     id 'application'
     id 'org.flywaydb.flyway' version '7.4.0'
+    id "io.freefair.lombok" version "6.1.0"
 }
 
 group 'com.klasevich'
@@ -26,8 +27,10 @@ dependencies {
     implementation group: 'org.flywaydb', name: 'flyway-core', version: '8.0.1'
     implementation group: 'com.h2database', name: 'h2', version: '1.4.200'
 
-    compileOnly group: 'org.projectlombok', name: 'lombok', version: '1.18.22'
-    annotationProcessor group: 'org.projectlombok', name: 'lombok', version: '1.18.22'
+    implementation 'org.hibernate:hibernate-core:5.6.0.Final'
+
+    implementation 'org.apache.logging.log4j:log4j-core:2.14.1'
+    implementation 'org.apache.logging.log4j:log4j-api:2.14.1'
 }
 
 test {

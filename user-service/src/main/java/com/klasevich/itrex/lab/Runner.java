@@ -1,34 +1,47 @@
 package com.klasevich.itrex.lab;
 
 import com.klasevich.itrex.lab.entity.User;
+import com.klasevich.itrex.lab.entity.UserRole;
 import com.klasevich.itrex.lab.repository.UserRepository;
-import com.klasevich.itrex.lab.repository.impl.JDBCUserRepositoryImpl;
+import com.klasevich.itrex.lab.repository.UserRoleRepository;
+import com.klasevich.itrex.lab.repository.impl.HibernateUserRepositoryImpl;
+import com.klasevich.itrex.lab.repository.impl.HibernateUserRoleRepositoryImpl;
 import com.klasevich.itrex.lab.service.FlywayService;
-import org.h2.jdbcx.JdbcConnectionPool;
+
+import com.klasevich.itrex.lab.util.HibernateUtil;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.hibernate.Session;
+import org.hibernate.Transaction;
 
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
-
-import static com.klasevich.itrex.lab.properties.Properties.*;
 
 public class Runner {
+    private static final Logger logger = LogManager.getLogger();
 
     public static void main(String[] args) throws SQLException {
-        System.out.println("===================START APP======================");
-        System.out.println("================START MIGRATION===================");
+        logger.info("===================START APP======================");
+        logger.info("================START MIGRATION===================");
         FlywayService flywayService = new FlywayService();
         flywayService.migrate();
 
-        System.out.println("===============CREATE CONNECTION POOL===============");
-        JdbcConnectionPool jdbcConnectionPool = JdbcConnectionPool.create(H2_URL, H2_USER, H2_PASSWORD);
+        logger.info("================CREATE SESSION===================");
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        UserRepository userRepository = new HibernateUserRepositoryImpl(session);
+        UserRoleRepository userRoleRepository = new HibernateUserRoleRepositoryImpl(session);
 
-        System.out.println("===============CREATE UserRepository===============");
-        UserRepository userRepository = new JDBCUserRepositoryImpl(jdbcConnectionPool);
-        List<User> users = userRepository.findAll();
-        System.out.println("show all users " + users);
+        List<User> users = userRepository.selectAll();
+        logger.info("show all users - {}", users);
+        List<UserRole> userRoles = userRoleRepository.selectAll();
+        logger.info("show all user roles - {}", userRoles);
+
+        User userFoundById = (User) userRepository.findById(2);
+        logger.info("show user by id=1 - {}", userFoundById);
+        UserRole userRoleFoundById = (UserRole) userRoleRepository.findById(1);
+        logger.info("show user role by id=1 - {}", userRoleFoundById);
 
         User addedUser = new User();
         addedUser.setEmail("gleb@gmail.com");
@@ -42,8 +55,8 @@ public class Runner {
         userRepository.add(addedUser);
         System.out.println("add user " + addedUser);
 
-        users = userRepository.findAll();
-        System.out.println("Show all users after adding " + users);
+        users = userRepository.selectAll();
+        logger.info("Show all users after adding - {}", users);
 
         List<User> newUsers = new ArrayList<>();
         User user1 = new User();
@@ -68,40 +81,63 @@ public class Runner {
         user2.setPhoneNumber("+375447088994");
         newUsers.add(user2);
 
-        userRepository.addAll(newUsers);
-        System.out.println("add some users " + newUsers);
+        Session session2 = HibernateUtil.getSessionFactory().openSession();
+        UserRepository userRepository2 = new HibernateUserRepositoryImpl(session2);
+        Transaction transaction = null;
+        try {
+            transaction = session2.beginTransaction();
 
-        users = userRepository.findAll();
-        System.out.println("Show all users after adding some users" + users);
+            userRepository2.addAll(newUsers);
+            logger.info("add some users {}", newUsers);
 
-        Optional<User> userFoundById = userRepository.findById(3);
-        if (userFoundById.isPresent()) {
-            User user = userFoundById.get();
-            System.out.println("User by id = 3 is " + user);
-        } else {
-            System.out.println("User by id = 3 haven't been found");
+            transaction.commit();
+        } catch (Exception e) {
+            if (transaction != null) {
+                transaction.rollback();
+            }
+            logger.error(e);
         }
 
+        users = userRepository.selectAll();
+        logger.info("Show all users after adding some users {}", users);
+
         // user for updating
+        User userFoundByIdToUpdate = (User) userRepository.findById(3);
+        logger.info("show user by id=3 to update - {}", userFoundByIdToUpdate);
+
         addedUser.setPhoneNumber("+375443088994");
         userRepository.update(addedUser);
 
-        Optional<User> userFoundByIdAfterUpdating = userRepository.findById(3);
-        if (userFoundByIdAfterUpdating.isPresent()) {
-            User user = userFoundByIdAfterUpdating.get();
-            System.out.println("User by id = 3 after updating is " + user);
-        } else {
-            System.out.println("User by id = 3 haven't been found");
+        User userFoundByIdAfterUpdating = userRepository.findById(3);
+        logger.info("show user by id=3 after updating - {}", userFoundByIdAfterUpdating);
+
+        Session session3 = HibernateUtil.getSessionFactory().openSession();
+        UserRepository userRepository3 = new HibernateUserRepositoryImpl(session2);
+        Transaction transaction2 = null;
+        try {
+            transaction2 = session2.beginTransaction();
+
+            userRepository3.delete(5);
+            System.out.println("User with id=5 have been deleted");
+
+            transaction2.commit();
+        } catch (Exception e) {
+            if (transaction != null) {
+                transaction.rollback();
+            }
+            logger.error(e);
         }
 
-        userRepository.delete(5);
-        System.out.println("User with id=5 have been deleted");
+        users = userRepository.selectAll();
+        logger.info("Show all users after deleting - {}", users);
 
-        users = userRepository.findAll();
-        System.out.println("Show all users after deleting - " + users);
 
-        System.out.println("===============CLOSE ALL UNUSED CONNECTIONS===============");
-        jdbcConnectionPool.dispose();
-        System.out.println("===============SHUT DOWN APP===============");
+        logger.info("===============CLOSE SESSION===============");
+        session.close();
+        session2.close();
+        session3.close();
+        logger.info("===============SHUT DOWN APP===============");
     }
 }
+
+

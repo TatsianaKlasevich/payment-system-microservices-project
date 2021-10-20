@@ -4,10 +4,9 @@ import com.klasevich.itrex.lab.entity.User;
 
 import java.sql.SQLException;
 import java.util.List;
-import java.util.Optional;
 
 public interface UserRepository {
-    List<User> findAll();
+    List<User> selectAll();
 
     void add(User user);
 
@@ -17,5 +16,5 @@ public interface UserRepository {
 
     void update(User user);
 
-    Optional<User> findById(int id);
+    User findById(int id);
 }

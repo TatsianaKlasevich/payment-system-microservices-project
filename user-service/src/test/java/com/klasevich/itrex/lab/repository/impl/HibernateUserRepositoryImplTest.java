@@ -9,17 +9,20 @@ import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static com.klasevich.itrex.lab.util.HibernateUtil.getSessionFactory;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
-class JDBCUserRepositoryImplTest extends BaseRepositoryTest {
 
-    private UserRepository userRepository;
+public class HibernateUserRepositoryImplTest extends BaseRepositoryTest {
 
-    public JDBCUserRepositoryImplTest() {
+    private final UserRepository userRepository;
+
+
+    public HibernateUserRepositoryImplTest() {
         super();
-        userRepository = new JDBCUserRepositoryImpl(getConnectionPool());
+        userRepository = new HibernateUserRepositoryImpl(getSessionFactory().openSession());
+
     }
 
     @Test
@@ -28,7 +31,7 @@ class JDBCUserRepositoryImplTest extends BaseRepositoryTest {
         int expected = 2;
 
         // when
-        List<User> result = userRepository.findAll();
+        List<User> result = userRepository.selectAll();
         int actual = result.size();
 
         //then
@@ -41,11 +44,11 @@ class JDBCUserRepositoryImplTest extends BaseRepositoryTest {
         User expected = new User(2, "segrei@gmail.com", "e12345", "Tanya", "Konstantinovich",
                 "Petrov", LocalDate.of(1989, 9, 11),
                 "1214NK784545L", "+375443650684");
+
         int id = 2;
 
         // when
-        Optional<User> optionalUser = userRepository.findById(id);
-        User actual = optionalUser.get();
+        User actual = (User) userRepository.findById(id);
 
         //then
         assertEquals(actual, expected);
@@ -76,24 +79,11 @@ class JDBCUserRepositoryImplTest extends BaseRepositoryTest {
 
         // when
         userRepository.delete(id);
-        List<User> users = userRepository.findAll();
+        List<User> users = userRepository.selectAll();
         int actual = users.size();
 
         //then
         assertEquals(actual, expected);
-    }
-
-    @Test
-    void deleteUserAndCheckIdOfUserShouldBeDeleted() {
-        //given
-        int id = 1;
-
-        // when
-        userRepository.delete(id);
-        Optional<User> user = userRepository.findById(id);
-
-        //then
-        assertTrue(user.isEmpty());
     }
 
     @Test
@@ -126,7 +116,7 @@ class JDBCUserRepositoryImplTest extends BaseRepositoryTest {
 
         // when
         userRepository.addAll(users);
-        List<User> newUsers = userRepository.findAll();
+        List<User> newUsers = userRepository.selectAll();
         int actual = newUsers.size();
 
         //then

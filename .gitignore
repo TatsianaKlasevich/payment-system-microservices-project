@@ -9,3 +9,8 @@
 /authentification-service/build/
 /config-service/build/
 /gateway-service/build/
+/build/
+/build/libs/
+/build/tmp/
+/user-service/logs/
+/user-service/src/main/resources/log4j2.xml
