@@ -1,0 +1,19 @@
+#spring:
+#  jpa:
+#    database: H2
+#    properties.hibernate.temp.use_jdbc_metadata_defaults: false
+#    hibernate:
+#      ddl-auto: create
+#    properties:
+#  datasource:
+#    platform: h2
+#    url: jdbc:h2:mem:payment_database;
+#      username: sa
+#      password:
+#      driver-class-name: org.h2.Driver
+##    todo change database
+
+server:
+  servlet:
+    context-path: /payments
+  port: 8082

@@ -1,0 +1,33 @@
+#spring:
+#  jpa:
+#    database: H2
+#    properties.hibernate.temp.use_jdbc_metadata_defaults: false
+#    hibernate:
+#      ddl-auto: create
+#    properties:
+#  datasource:
+#    platform: h2
+#   url: jdbc:h2:mem:user_database;
+#    username: sa
+#    password:
+#    driver-class-name: org.h2.Driver
+
+#    spring:
+#  jpa:
+#    database: POSTGRESQL
+#    properties.hibernate.temp.use_jdbc_metadata_defaults: false
+#    hibernate:
+#      ddl-auto: create
+#    properties:
+#  datasource:
+#    platform: postgres
+#    url: jdbc:postgresql://localhost:5432/account_service_database
+#    username: postgres
+#    password: root
+#    driver-class-name: org.postgresql.Driver
+#    todo change database
+
+server:
+  servlet:
+    context-path: /users
+  port: 8081

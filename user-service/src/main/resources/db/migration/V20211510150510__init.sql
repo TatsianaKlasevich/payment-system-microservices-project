@@ -1,6 +1,9 @@
+DROP SCHEMA IF EXISTS user_database CASCADE ;
+CREATE SCHEMA IF NOT EXISTS user_database;
+
 CREATE TABLE IF NOT EXISTS users
 (
-    id                       INT         NOT NULL AUTO_INCREMENT,
+    id                       int auto_increment primary key,
     email                    VARCHAR(25) NOT NULL,
     password                 VARCHAR(35) NOT NULL,
     name                     VARCHAR(25),
@@ -9,7 +12,7 @@ CREATE TABLE IF NOT EXISTS users
     date_of_birth            DATE,
     identity_passport_number VARCHAR(25),
     phone_number             VARCHAR(13),
-    PRIMARY KEY (id),
+--     PRIMARY KEY (id),
     CONSTRAINT UNIQUE_EMAIL UNIQUE (email),
     CONSTRAINT UNIQUE_IDENTITY_PASSPORT_NUMBER UNIQUE (identity_passport_number)
 );

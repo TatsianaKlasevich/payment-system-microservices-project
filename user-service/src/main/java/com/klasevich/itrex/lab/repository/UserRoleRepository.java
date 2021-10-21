@@ -1,13 +1,10 @@
 package com.klasevich.itrex.lab.repository;
 
+import com.klasevich.itrex.lab.entity.User;
 import com.klasevich.itrex.lab.entity.UserRole;
+import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
 
-public interface UserRoleRepository {
-    List<UserRole> selectAll();
-
-    void update(UserRole userRole);
-
-    UserRole findById(int id);
+public interface UserRoleRepository extends JpaRepository<UserRole,Integer> {
 }
