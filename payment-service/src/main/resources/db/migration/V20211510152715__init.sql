@@ -15,7 +15,7 @@ CREATE TABLE IF NOT EXISTS cards
 --         FOREIGN KEY (user_id) REFERENCES users (id)
 );
 
-CREATE TABLE IF NOT EXISTS transactions
+CREATE TABLE IF NOT EXISTS payments
 (
     id                 INT         NOT NULL AUTO_INCREMENT,
     sender             INT,

@@ -1,0 +1,63 @@
+plugins {
+    id 'java'
+    id 'application'
+    id 'org.flywaydb.flyway' version '6.5.3'
+    id 'org.springframework.boot' version '2.3.2.RELEASE'
+    id 'io.spring.dependency-management' version '1.0.8.RELEASE'
+    id "io.freefair.lombok" version "6.1.0"
+}
+
+group 'com.klasevich'
+version '1.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+}
+
+jar {
+    manifest {
+        attributes(
+                'Main-Class': 'com.klasevich.itrex.lab.NotificationApplication'
+        )
+    }
+}
+
+ext {
+    set('springCloudVersion', "Hoxton.SR1")
+}
+
+ext{
+    javaMainClass = "com.klasevich.itrex.lab.Runner"
+}
+
+application{
+    mainClassName = javaMainClass
+}
+
+dependencyManagement {
+    imports {
+        mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
+    }
+}
+
+dependencies {
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.7.1'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.7.1'
+
+    implementation group: 'org.flywaydb', name: 'flyway-core', version: '6.5.3'
+    implementation group: 'com.h2database', name: 'h2', version: '1.4.200'
+
+    implementation "org.springframework.boot:spring-boot-starter-mail:2.3.2.RELEASE"
+    implementation "org.springframework.boot:spring-boot-starter-web:2.3.2.RELEASE"
+    implementation "org.springframework.boot:spring-boot-starter-amqp:2.3.2.RELEASE"
+    implementation "org.springframework.boot:spring-boot-starter-actuator:2.3.2.RELEASE"
+
+    implementation 'org.springframework.cloud:spring-cloud-starter-config'
+    implementation 'org.springframework.cloud:spring-cloud-starter-netflix-eureka-client'
+    implementation 'org.springframework.cloud:spring-cloud-starter-sleuth'   //todo logging?
+    implementation 'org.springframework.cloud:spring-cloud-starter-netflix-hystrix'
+}
+
+test {
+    useJUnitPlatform()
+}
