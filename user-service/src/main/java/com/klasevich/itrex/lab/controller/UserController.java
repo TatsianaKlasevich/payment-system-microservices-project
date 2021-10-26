@@ -16,7 +16,7 @@ public class UserController {
         this.userService = userService;
     }
 
-    @GetMapping("/userId")
+    @GetMapping("/{id}")
     public UserResponseDTO getAccount(@PathVariable Integer id){
         return new UserResponseDTO(userService.getUserById(id));
     }
@@ -29,7 +29,7 @@ public class UserController {
                 userRequestDTO.getCards());
     }
 
-    @PutMapping("/{userId")
+    @PutMapping("/{id}")
     public UserResponseDTO updateUser(@PathVariable Integer id,
             @RequestBody UserRequestDTO userRequestDTO){
         return new UserResponseDTO(id, userRequestDTO.getEmail(),userRequestDTO.getPassword(),userRequestDTO.getName(),
@@ -38,7 +38,7 @@ public class UserController {
                 userRequestDTO.getCards());
     }
 
-    @DeleteMapping("/{id")
+    @DeleteMapping("/{id}")
     public UserResponseDTO deleteUser(@PathVariable Integer id){
         return new UserResponseDTO(userService.deleteUser(id));
     }
