@@ -16,30 +16,30 @@ public class UserController {
         this.userService = userService;
     }
 
-    @GetMapping("/{id}")
-    public UserResponseDTO getAccount(@PathVariable Integer id){
-        return new UserResponseDTO(userService.getUserById(id));
+    @GetMapping("/{userId}")
+    public UserResponseDTO getUser(@PathVariable Integer userId) {
+        return new UserResponseDTO(userService.getUserById(userId));
     }
 
     @PostMapping("/")
-    public Integer createUser(@RequestBody UserRequestDTO userRequestDTO){
-        return userService.createUser(userRequestDTO.getEmail(),userRequestDTO.getPassword(),userRequestDTO.getName(),
-                userRequestDTO.getSecondName(),userRequestDTO.getSurname(),userRequestDTO.getDateOfBirth(),
-                userRequestDTO.getIdentityPassportNumber(),userRequestDTO.getPhoneNumber(), userRequestDTO.getRoles(),
+    public Integer createUser(@RequestBody UserRequestDTO userRequestDTO) {
+        return userService.createPerson(userRequestDTO.getEmail(), userRequestDTO.getPassword(), userRequestDTO.getName(),
+                userRequestDTO.getSecondName(), userRequestDTO.getSurname(), userRequestDTO.getDateOfBirth(),
+                userRequestDTO.getIdentityPassportNumber(), userRequestDTO.getPhoneNumber(), userRequestDTO.getRoles(),
                 userRequestDTO.getCards());
     }
 
-    @PutMapping("/{id}")
-    public UserResponseDTO updateUser(@PathVariable Integer id,
-            @RequestBody UserRequestDTO userRequestDTO){
-        return new UserResponseDTO(id, userRequestDTO.getEmail(),userRequestDTO.getPassword(),userRequestDTO.getName(),
-                userRequestDTO.getSecondName(),userRequestDTO.getSurname(),userRequestDTO.getDateOfBirth(),
-                userRequestDTO.getIdentityPassportNumber(),userRequestDTO.getPhoneNumber(), userRequestDTO.getRoles(),
+    @PutMapping("/{userId}")
+    public UserResponseDTO updateUser(@PathVariable Integer userId,
+                                      @RequestBody UserRequestDTO userRequestDTO) {
+        return new UserResponseDTO(userId, userRequestDTO.getEmail(), userRequestDTO.getPassword(), userRequestDTO.getName(),
+                userRequestDTO.getSecondName(), userRequestDTO.getSurname(), userRequestDTO.getDateOfBirth(),
+                userRequestDTO.getIdentityPassportNumber(), userRequestDTO.getPhoneNumber(), userRequestDTO.getRoles(),
                 userRequestDTO.getCards());
     }
 
-    @DeleteMapping("/{id}")
-    public UserResponseDTO deleteUser(@PathVariable Integer id){
-        return new UserResponseDTO(userService.deleteUser(id));
+    @DeleteMapping("/{userId}")
+    public UserResponseDTO deleteUser(@PathVariable Integer userId) {
+        return new UserResponseDTO(userService.deleteUser(userId));
     }
 }

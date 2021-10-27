@@ -12,11 +12,13 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @Getter
 public class CardResponseDTO {
-    private Integer id;
+    private Integer cardId;
 
     private BigDecimal balance;
 
     private Currency currency;
+
+    private boolean isDefault;
 
     private Long cardNumber;
 
@@ -26,16 +28,17 @@ public class CardResponseDTO {
 
     private Integer cvvCode;
 
-    private Integer userId;
+    private int personId;
 
     public CardResponseDTO(Card card) {
-        id = card.getId();
+        cardId = card.getCardId();
         balance = card.getBalance();
         currency = card.getCurrency();
+        isDefault = card.isDefault();
         cardNumber = card.getCardNumber();
         cardStatus = card.getCardStatus();
         expirationDate = card.getExpirationDate();
         cvvCode = card.getCvvCode();
-        userId = card.getUserId();
+        personId = card.getUserId();
     }
 }

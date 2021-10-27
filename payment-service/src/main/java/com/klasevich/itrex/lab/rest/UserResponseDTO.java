@@ -1,7 +1,7 @@
-package com.klasevich.itrex.lab.controller.dto;
+package com.klasevich.itrex.lab.rest;
 
 import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
@@ -9,8 +9,9 @@ import java.util.List;
 
 @NoArgsConstructor
 @AllArgsConstructor
-@Data
-public class UserRequestDTO {
+@Getter
+public class UserResponseDTO {
+    private int userId;
     private String email;
     private String password;
     private String name;
@@ -22,3 +23,4 @@ public class UserRequestDTO {
     private List<Integer> roles;
     private List<Integer> cards;
 }
+

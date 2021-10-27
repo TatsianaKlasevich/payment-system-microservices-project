@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.List;
 
 @Service
 public class CardService {
@@ -21,27 +22,32 @@ public class CardService {
         this.cardRepository = cardRepository;
     }
 
-    public Card getCardById(Integer id) {
-        return cardRepository.findById(id).orElseThrow(() -> new CardNotFoundException("Unable to find " +
-                "card with id: " + id));
+    public Card getCardById(Integer cardId) {
+        return cardRepository.findById(cardId).orElseThrow(() -> new CardNotFoundException("Unable to find " +
+                "card with cardId: " + cardId));
     }
 
-    public Integer createCard(BigDecimal balance, Currency currency, Long cardNumber,
+    public Integer createCard(BigDecimal balance, Currency currency, Long cardNumber, boolean isDefault,
                               CardStatus cardStatus, LocalDate expirationDate, Integer cvvCode, Integer accountId) {
-        Card card = new Card(balance, currency, cardNumber, cardStatus, expirationDate, cvvCode, accountId);
-        return cardRepository.save(card).getId();
+        Card card = new Card(balance, currency, cardNumber, isDefault, cardStatus, expirationDate, cvvCode, accountId);
+        return cardRepository.save(card).getCardId();
     }
 
-    public Card updateCard(Integer id, BigDecimal balance, Currency currency, Long cardNumber,
+    public Card updateCard(Integer cardId, BigDecimal balance, Currency currency, Long cardNumber, boolean isDefault,
                            CardStatus cardStatus, LocalDate expirationDate, Integer cvvCode, Integer accountId) {
 
-        Card card = new Card(id, balance, currency, cardNumber, cardStatus, expirationDate, cvvCode, accountId);
+        Card card = new Card(cardId, balance, currency, cardNumber, isDefault, cardStatus, expirationDate,
+                cvvCode, accountId);
         return cardRepository.save(card);
     }
 
-    public Card deleteCard(Integer id) {
-        Card deletedCard = getCardById(id);
-        cardRepository.deleteById(id);
+    public Card deleteCard(Integer cardId) {
+        Card deletedCard = getCardById(cardId);
+        cardRepository.deleteById(cardId);
         return deletedCard;
+    }
+
+    public List<Card> getCardsByUserId(int userId) {
+        return cardRepository.getCardsByUserId(userId);
     }
 }

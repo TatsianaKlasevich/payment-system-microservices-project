@@ -2,19 +2,21 @@ package com.klasevich.itrex.lab.controller.dto;
 
 import com.klasevich.itrex.lab.entity.CardStatus;
 import com.klasevich.itrex.lab.entity.Currency;
-import lombok.Getter;
+import lombok.Data;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
-@Getter
+@Data
 public class CardRequestDTO {
 
-    private Integer id;
+    private Integer cardId;
 
     private BigDecimal balance;
 
     private Currency currency;
+
+    private boolean isDefault;
 
     private Long cardNumber;
 
@@ -24,5 +26,5 @@ public class CardRequestDTO {
 
     private Integer cvvCode;
 
-    private Integer userId;
+    private int personId;
 }

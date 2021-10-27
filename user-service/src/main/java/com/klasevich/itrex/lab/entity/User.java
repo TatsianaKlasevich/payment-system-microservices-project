@@ -16,7 +16,8 @@ import java.util.List;
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    @Column(name = "id")
+    private int userId;
 
     private String email;
 
@@ -24,18 +25,18 @@ public class User {
 
     private String name;
 
-    @Column(name="second_name")
+    @Column(name = "second_name")
     private String secondName;
 
     private String surname;
 
-    @Column(name="date_of_birth")
+    @Column(name = "date_of_birth")
     private LocalDate dateOfBirth;
 
-    @Column(name="identity_passport_number")
+    @Column(name = "identity_passport_number")
     private String identityPassportNumber;
 
-    @Column(name="phone_number")
+    @Column(name = "phone_number")
     private String phoneNumber;
 
     @ElementCollection

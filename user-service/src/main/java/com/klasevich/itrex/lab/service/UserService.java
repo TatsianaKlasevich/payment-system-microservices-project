@@ -19,34 +19,33 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
-    public User getUserById(Integer id) {
-        return userRepository.findById(id).orElseThrow(() -> new UserNotFoundException("Unable to find account " +
-                "with id: " + id));
+    public User getUserById(Integer userId) {
+        return userRepository.findById(userId).orElseThrow(() -> new UserNotFoundException("Unable to find user " +
+                "with id: " + userId));
     }
 
-    public Integer createUser (String email, String password, String name, String secondName, String surname,
-                               LocalDate dateOfBirth, String identityPassportNumber, String phoneNumber,
-                               List<Integer> roles, List<Integer> cards){
+    public Integer createPerson(String email, String password, String name, String secondName, String surname,
+                                LocalDate dateOfBirth, String identityPassportNumber, String phoneNumber,
+                                List<Integer> roles, List<Integer> cards) {
 
         User user = new User(email, password, name, secondName, surname, dateOfBirth, identityPassportNumber,
                 phoneNumber, roles, cards);
-        return userRepository.save(user).getId();
+        return userRepository.save(user).getUserId();
     }
 
-    public User updateUser(Integer id, String email, String password, String name, String secondName, String surname,
+    public User updateUser(Integer userId, String email, String password, String name, String secondName, String surname,
                            LocalDate dateOfBirth, String identityPassportNumber, String phoneNumber,
-                           List<Integer> roles, List<Integer> cards){
-        User user = new User(id, email, password, name, secondName, surname, dateOfBirth, identityPassportNumber,
+                           List<Integer> roles, List<Integer> cards) {
+        User user = new User(userId, email, password, name, secondName, surname, dateOfBirth, identityPassportNumber,
                 phoneNumber, roles, cards);
         return userRepository.save(user);
     }
 
-    public User deleteUser(Integer id){
-        User deletedUser = getUserById(id);
-        userRepository.deleteById(id);
+    public User deleteUser(Integer userId) {
+        User deletedUser = getUserById(userId);
+        userRepository.deleteById(userId);
         return deletedUser;
     }
-
 
 
 }

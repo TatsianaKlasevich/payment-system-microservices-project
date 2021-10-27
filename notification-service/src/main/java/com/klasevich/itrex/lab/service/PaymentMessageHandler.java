@@ -15,7 +15,7 @@ public class PaymentMessageHandler {
     private final JavaMailSender javaMailSender;
 
     @Autowired
-    public PaymentMessageHandler(JavaMailSender javaMailSender){
+    public PaymentMessageHandler(JavaMailSender javaMailSender) {
         this.javaMailSender = javaMailSender;
     }
 
@@ -37,8 +37,7 @@ public class PaymentMessageHandler {
 
         try {
             javaMailSender.send(mailMessage);
-        }
-        catch (Exception exception){
+        } catch (Exception exception) {
             System.out.println(exception); //todo
         }
     }

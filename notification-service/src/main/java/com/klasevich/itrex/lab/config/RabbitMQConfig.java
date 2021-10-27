@@ -17,17 +17,17 @@ public class RabbitMQConfig {
     private AmqpAdmin amqpAdmin;
 
     @Bean
-    public TopicExchange paymentExchange(){
+    public TopicExchange paymentExchange() {
         return new TopicExchange(TOPIC_EXCHANGE_PAYMENT);
     }
 
     @Bean
-    public Queue queuePayment(){
+    public Queue queuePayment() {
         return new Queue(QUEUE_PAYMENT);
     }
 
     @Bean
-    public Binding paymentBinding(){
+    public Binding paymentBinding() {
         return BindingBuilder
                 .bind(queuePayment())
                 .to(paymentExchange())
