@@ -3,15 +3,15 @@ CREATE SCHEMA IF NOT EXISTS payment_database;
 
 CREATE TABLE IF NOT EXISTS cards
 (
-    id              INT         NOT NULL AUTO_INCREMENT,
+    id              INT NOT NULL AUTO_INCREMENT,
     balance         DECIMAL,
-    is_default      BOOLEAN     NOT NULL,
-    currency        VARCHAR(3)  NOT NULL,
-    card_number     BIGINT      NOT NULL,
-    card_status     VARCHAR(25) NOT NULL,
-    expiration_date DATE        NOT NULL,
-    cvv_code        INT         NOT NULL,
-    person_id       INT         NOT NULL,
+    is_default      BOOLEAN,
+    currency        VARCHAR(3),
+    card_number     BIGINT,
+    card_status     VARCHAR(25),
+    expiration_date DATE,
+    cvv_code        INT,
+    user_id         INT,
     PRIMARY KEY (id)
 --         FOREIGN KEY (user_id) REFERENCES users (id)
 );

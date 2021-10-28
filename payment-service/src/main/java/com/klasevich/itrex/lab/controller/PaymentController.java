@@ -17,7 +17,7 @@ public class PaymentController {
         this.paymentService = paymentService;
     }
 
-    @PostMapping("/payments")
+    @PostMapping("/deposit")
     public PaymentResponseDTO deposit(@RequestBody PaymentRequestDTO requestDTO) {
         return paymentService.deposit(requestDTO.getUserId(), requestDTO.getCardId(), requestDTO.getAmount());
 
