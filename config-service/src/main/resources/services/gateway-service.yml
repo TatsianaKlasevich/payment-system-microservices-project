@@ -22,7 +22,7 @@ zuul:
       serviceId: user-service
       stripPrefix: false
 
-    bill-service:
+    payment-service:
       path: /payments/**
       serviceId: payment-service
       stripPrefix: false

@@ -11,5 +11,6 @@ import java.math.BigDecimal;
 @AllArgsConstructor
 public class PaymentResponseDTO {
     private BigDecimal amount;
-    private String email;
+    private String mail;
 }
+

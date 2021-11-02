@@ -9,4 +9,4 @@ spring:
     password: guest
     listener:
       direct:
-        default-requeue-rejected: true
+        default-requeue-rejected: false

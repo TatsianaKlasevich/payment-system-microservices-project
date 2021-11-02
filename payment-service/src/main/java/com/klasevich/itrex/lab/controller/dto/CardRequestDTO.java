@@ -1,7 +1,7 @@
 package com.klasevich.itrex.lab.controller.dto;
 
-import com.klasevich.itrex.lab.entity.CardStatus;
-import com.klasevich.itrex.lab.entity.Currency;
+import com.klasevich.itrex.lab.persistance.entity.CardStatus;
+import com.klasevich.itrex.lab.persistance.entity.Currency;
 import lombok.Data;
 
 import java.math.BigDecimal;
@@ -10,13 +10,13 @@ import java.time.LocalDate;
 @Data
 public class CardRequestDTO {
 
-    private Integer cardId;
+    private Long cardId;
 
     private BigDecimal balance;
 
     private Currency currency;
 
-    private boolean isDefault;
+    private Boolean isDefault;
 
     private Long cardNumber;
 
@@ -24,7 +24,7 @@ public class CardRequestDTO {
 
     private LocalDate expirationDate;
 
-    private Integer cvvCode;
+    private Long cvvCode;
 
-    private int personId;
+    private Long personId;
 }

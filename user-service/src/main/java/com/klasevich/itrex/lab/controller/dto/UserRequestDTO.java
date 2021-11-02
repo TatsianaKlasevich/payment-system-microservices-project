@@ -19,6 +19,6 @@ public class UserRequestDTO {
     private LocalDate dateOfBirth;
     private String identityPassportNumber;
     private String phoneNumber;
-    private List<Integer> roles;
-    private List<Integer> cards;
+    private List<Long> roles;
+    private List<Long> cards;
 }

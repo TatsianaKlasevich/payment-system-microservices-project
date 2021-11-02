@@ -24,10 +24,9 @@ jar {
 
 ext {
     set('springCloudVersion', "Hoxton.SR1")
-}
-
-ext {
     javaMainClass = "com.klasevich.itrex.lab.Runner"
+    mapstructVersion = '1.4.1.Final'
+    mapstructSpringExtensionsVersion = '0.1.0'
 }
 
 application {
@@ -58,6 +57,11 @@ dependencies {
     implementation 'org.springframework.cloud:spring-cloud-starter-netflix-eureka-client'
     implementation 'org.springframework.cloud:spring-cloud-starter-sleuth'   //todo logging?
     implementation 'org.springframework.cloud:spring-cloud-starter-netflix-hystrix'
+
+    implementation "org.mapstruct:mapstruct:${mapstructVersion}"
+    annotationProcessor "org.mapstruct:mapstruct-processor:${mapstructVersion}"
+    implementation "org.mapstruct.extensions.spring:mapstruct-spring-annotations:${mapstructSpringExtensionsVersion}"
+    annotationProcessor "org.mapstruct.extensions.spring:mapstruct-spring-extensions:${mapstructSpringExtensionsVersion}"
 }
 
 test {

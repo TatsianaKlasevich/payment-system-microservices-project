@@ -1,6 +1,6 @@
 package com.klasevich.itrex.lab.controller.dto;
 
-import com.klasevich.itrex.lab.entity.User;
+import com.klasevich.itrex.lab.persistance.entity.User;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -12,7 +12,7 @@ import java.util.List;
 @AllArgsConstructor
 @Getter
 public class UserResponseDTO {
-    private int userId;
+    private Long userId;
     private String email;
     private String password;
     private String name;
@@ -21,8 +21,8 @@ public class UserResponseDTO {
     private LocalDate dateOfBirth;
     private String identityPassportNumber;
     private String phoneNumber;
-    private List<Integer> roles;
-    private List<Integer> cards;
+    private List<Long> roles;
+    private List<Long> cards;
 
     public UserResponseDTO(User user) {
         userId = user.getUserId();

@@ -3,22 +3,25 @@ CREATE SCHEMA IF NOT EXISTS payment_database;
 
 CREATE TABLE IF NOT EXISTS cards
 (
-    id              INT NOT NULL AUTO_INCREMENT,
+    id              BIGINT NOT NULL AUTO_INCREMENT,
     balance         DECIMAL,
     is_default      BOOLEAN,
+    email           VARCHAR(40),
     currency        VARCHAR(3),
     card_number     BIGINT,
     card_status     VARCHAR(25),
     expiration_date DATE,
     cvv_code        INT,
-    user_id         INT,
+    user_id         BIGINT,
+    creatAt         TIMESTAMP,
+    updateAt        TIMESTAMP,
     PRIMARY KEY (id)
 --         FOREIGN KEY (user_id) REFERENCES users (id)
 );
 
 CREATE TABLE IF NOT EXISTS payments
 (
-    id                 INT AUTO_INCREMENT,
+    id                 BIGINT AUTO_INCREMENT NOT NULL,
     sender             INT,
     recipient          INT,
     amount             DECIMAL,
@@ -27,7 +30,9 @@ CREATE TABLE IF NOT EXISTS payments
     purpose_of_payment VARCHAR(125),
     transaction_date   TIMESTAMP,
     bank_code          VARCHAR(28),
-    card_id            INT,
+    card_id            BIGINT,
+    creatAt         TIMESTAMP,
+    updateAt        TIMESTAMP,
     PRIMARY KEY (id),
     FOREIGN KEY (card_id) REFERENCES cards (id)
 );

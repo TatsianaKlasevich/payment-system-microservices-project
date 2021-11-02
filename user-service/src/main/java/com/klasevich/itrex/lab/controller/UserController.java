@@ -2,44 +2,37 @@ package com.klasevich.itrex.lab.controller;
 
 import com.klasevich.itrex.lab.controller.dto.UserRequestDTO;
 import com.klasevich.itrex.lab.controller.dto.UserResponseDTO;
+import com.klasevich.itrex.lab.mappers.UserRequestDTOToUserMapper;
+import com.klasevich.itrex.lab.persistance.entity.User;
 import com.klasevich.itrex.lab.service.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
-@RestController
+@RequiredArgsConstructor
+@RestController("/")
 public class UserController {
 
     private final UserService userService;
 
-    @Autowired
-    public UserController(UserService userService) {
-        this.userService = userService;
-    }
 
-    @GetMapping("/{userId}")
-    public UserResponseDTO getUser(@PathVariable Integer userId) {
+    @GetMapping("{userId}")
+    public UserResponseDTO getUser(@PathVariable Long userId) {
         return new UserResponseDTO(userService.getUserById(userId));
     }
 
-    @PostMapping("/")
-    public Integer createUser(@RequestBody UserRequestDTO userRequestDTO) {
-        return userService.createPerson(userRequestDTO.getEmail(), userRequestDTO.getPassword(), userRequestDTO.getName(),
-                userRequestDTO.getSecondName(), userRequestDTO.getSurname(), userRequestDTO.getDateOfBirth(),
-                userRequestDTO.getIdentityPassportNumber(), userRequestDTO.getPhoneNumber(), userRequestDTO.getRoles(),
-                userRequestDTO.getCards());
+    @PostMapping()
+    public Long createUser(@RequestBody UserRequestDTO userRequestDTO) {
+        return userService.createUser(userRequestDTO);
     }
 
-    @PutMapping("/{userId}")
-    public UserResponseDTO updateUser(@PathVariable Integer userId,
+    @PutMapping("{userId}")
+    public UserResponseDTO updateUser(@PathVariable Long userId,
                                       @RequestBody UserRequestDTO userRequestDTO) {
-        return new UserResponseDTO(userId, userRequestDTO.getEmail(), userRequestDTO.getPassword(), userRequestDTO.getName(),
-                userRequestDTO.getSecondName(), userRequestDTO.getSurname(), userRequestDTO.getDateOfBirth(),
-                userRequestDTO.getIdentityPassportNumber(), userRequestDTO.getPhoneNumber(), userRequestDTO.getRoles(),
-                userRequestDTO.getCards());
+        return new UserResponseDTO(userService.updateUser(userId, userRequestDTO));
     }
 
-    @DeleteMapping("/{userId}")
-    public UserResponseDTO deleteUser(@PathVariable Integer userId) {
+    @DeleteMapping("{userId}")
+    public UserResponseDTO deleteUser(@PathVariable Long userId) {
         return new UserResponseDTO(userService.deleteUser(userId));
     }
 }
