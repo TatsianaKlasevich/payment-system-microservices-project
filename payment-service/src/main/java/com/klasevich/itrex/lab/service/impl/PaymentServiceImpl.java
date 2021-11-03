@@ -3,19 +3,21 @@ package com.klasevich.itrex.lab.service.impl;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.klasevich.itrex.lab.controller.dto.PaymentResponseDTO;
-import com.klasevich.itrex.lab.persistance.entity.Card;
-import com.klasevich.itrex.lab.persistance.entity.Payment;
 import com.klasevich.itrex.lab.exception.PaymentServiceException;
-import com.klasevich.itrex.lab.persistance.repository.PaymentRepository;
 import com.klasevich.itrex.lab.feign.UserResponseDTO;
 import com.klasevich.itrex.lab.feign.UserServiceClient;
+import com.klasevich.itrex.lab.persistance.entity.Card;
+import com.klasevich.itrex.lab.persistance.entity.Payment;
+import com.klasevich.itrex.lab.persistance.repository.PaymentRepository;
 import com.klasevich.itrex.lab.service.CardService;
 import com.klasevich.itrex.lab.service.PaymentService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 
+@RequiredArgsConstructor
 @Service
 public class PaymentServiceImpl implements PaymentService {
     private static final String TOPIC_EXCHANGE_PAYMENT = "js.payment.notify.exchange";
@@ -25,14 +27,6 @@ public class PaymentServiceImpl implements PaymentService {
     private final UserServiceClient userServiceClient;
     private final CardService cardService;
     private final RabbitTemplate rabbitTemplate;
-
-    public PaymentServiceImpl(PaymentRepository paymentRepository, UserServiceClient userServiceClient,
-                          CardService cardService, RabbitTemplate rabbitTemplate) {
-        this.paymentRepository = paymentRepository;
-        this.userServiceClient = userServiceClient;
-        this.cardService = cardService;
-        this.rabbitTemplate = rabbitTemplate;
-    }
 
     public PaymentResponseDTO deposit(Long userId, Long cardId, BigDecimal amount) {
         if (userId == null && cardId == null) {

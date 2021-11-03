@@ -1,19 +1,14 @@
 package com.klasevich.itrex.lab.service.impl;
 
 import com.klasevich.itrex.lab.controller.dto.CardRequestDTO;
+import com.klasevich.itrex.lab.exception.CardNotFoundException;
 import com.klasevich.itrex.lab.mappers.CardRequestDTOToCardMapper;
 import com.klasevich.itrex.lab.persistance.entity.Card;
-import com.klasevich.itrex.lab.persistance.entity.CardStatus;
-import com.klasevich.itrex.lab.persistance.entity.Currency;
-import com.klasevich.itrex.lab.exception.CardNotFoundException;
 import com.klasevich.itrex.lab.persistance.repository.CardRepository;
 import com.klasevich.itrex.lab.service.CardService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.math.BigDecimal;
-import java.time.LocalDate;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -29,7 +24,7 @@ public class CardServiceImpl implements CardService {
     }
 
     public Long createCard(CardRequestDTO cardRequestDTO) {
-        Card card =cardRequestDTOToCardMapper.convert(cardRequestDTO);
+        Card card = cardRequestDTOToCardMapper.convert(cardRequestDTO);
         return cardRepository.save(card).getUserId();
     }
 
@@ -39,7 +34,7 @@ public class CardServiceImpl implements CardService {
         return cardRepository.save(card);
     }
 
-    public void updateCard(Card card){
+    public void updateCard(Card card) {
         cardRepository.save(card);
     }
 

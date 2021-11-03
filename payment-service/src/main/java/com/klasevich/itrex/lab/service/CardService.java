@@ -2,12 +2,8 @@ package com.klasevich.itrex.lab.service;
 
 import com.klasevich.itrex.lab.controller.dto.CardRequestDTO;
 import com.klasevich.itrex.lab.persistance.entity.Card;
-import com.klasevich.itrex.lab.persistance.entity.CardStatus;
-import com.klasevich.itrex.lab.persistance.entity.Currency;
 import org.springframework.stereotype.Service;
 
-import java.math.BigDecimal;
-import java.time.LocalDate;
 import java.util.List;
 
 @Service

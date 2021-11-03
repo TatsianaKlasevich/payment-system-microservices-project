@@ -8,7 +8,6 @@ import org.springframework.core.convert.converter.Converter;
 @Mapper(componentModel = "spring")
 public interface UserRequestDTOToUserMapper extends Converter<UserRequestDTO, User> {
 
-//    @Mapping(target = "userId", ignore = true) todo
     @Override
     User convert(UserRequestDTO source);
 }
