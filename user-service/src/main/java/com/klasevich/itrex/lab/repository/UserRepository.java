@@ -1,8 +1,8 @@
 package com.klasevich.itrex.lab.repository;
 
 import com.klasevich.itrex.lab.entity.User;
+import com.klasevich.itrex.lab.exception.RepositoryException;
 
-import java.sql.SQLException;
 import java.util.List;
 
 public interface UserRepository {
@@ -10,9 +10,9 @@ public interface UserRepository {
 
     void add(User user);
 
-    void addAll(List<User> users) throws SQLException;
+    void addAll(List<User> users) throws RepositoryException;
 
-    void delete(int id);
+    int delete(int id) throws RepositoryException;
 
     void update(User user);
 

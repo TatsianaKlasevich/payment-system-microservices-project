@@ -14,3 +14,5 @@
 /build/tmp/
 /user-service/logs/
 /user-service/src/main/resources/log4j2.xml
+/user-service/src/test/generated_tests/
+/user-service/src/main/generated/

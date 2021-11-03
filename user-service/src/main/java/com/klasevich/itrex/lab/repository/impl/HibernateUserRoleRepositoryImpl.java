@@ -3,9 +3,11 @@ package com.klasevich.itrex.lab.repository.impl;
 import com.klasevich.itrex.lab.entity.UserRole;
 import com.klasevich.itrex.lab.repository.UserRoleRepository;
 import org.hibernate.Session;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
+@Repository
 public class HibernateUserRoleRepositoryImpl implements UserRoleRepository {
     private final Session session;
 

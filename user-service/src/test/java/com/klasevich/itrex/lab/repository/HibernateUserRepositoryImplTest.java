@@ -1,28 +1,36 @@
-package com.klasevich.itrex.lab.repository.impl;
+package com.klasevich.itrex.lab.repository;
 
+import com.klasevich.itrex.lab.config.ApplicationContextConfiguration;
 import com.klasevich.itrex.lab.entity.User;
-import com.klasevich.itrex.lab.repository.BaseRepositoryTest;
-import com.klasevich.itrex.lab.repository.UserRepository;
+import com.klasevich.itrex.lab.exception.RepositoryException;
+import com.klasevich.itrex.lab.service.FlywayService;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.klasevich.itrex.lab.util.HibernateUtil.getSessionFactory;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-
-public class HibernateUserRepositoryImplTest extends BaseRepositoryTest {
-
+class HibernateUserRepositoryImplTest {
+    private final FlywayService flywayService;
+    private final ApplicationContext applicationContext;
     private final UserRepository userRepository;
 
 
     public HibernateUserRepositoryImplTest() {
-        super();
-        userRepository = new HibernateUserRepositoryImpl(getSessionFactory().openSession());
+        applicationContext = new AnnotationConfigApplicationContext(ApplicationContextConfiguration.class);
+        flywayService = applicationContext.getBean(FlywayService.class);
+        userRepository = applicationContext.getBean(UserRepository.class);
+    }
 
+    @AfterEach
+    public void cleanDB() {
+        flywayService.clean();
     }
 
     @Test
@@ -48,7 +56,7 @@ public class HibernateUserRepositoryImplTest extends BaseRepositoryTest {
         int id = 2;
 
         // when
-        User actual = (User) userRepository.findById(id);
+        User actual = userRepository.findById(id);
 
         //then
         assertEquals(actual, expected);
@@ -72,10 +80,10 @@ public class HibernateUserRepositoryImplTest extends BaseRepositoryTest {
     }
 
     @Test
-    void deleteUserAndCheckNumberOfUserShouldBeTheSame() {
+    void deleteUserAndCheckNumberOfUserShouldBeTheSame() throws RepositoryException {
         //given
         int id = 1;
-        int expected = 1;
+        int expected = userRepository.selectAll().size() - 1;
 
         // when
         userRepository.delete(id);
@@ -87,7 +95,7 @@ public class HibernateUserRepositoryImplTest extends BaseRepositoryTest {
     }
 
     @Test
-    void addAllUsersNumberShouldBeRight() throws SQLException {
+    void addAllUsersNumberShouldBeRight() throws SQLException, RepositoryException {
         //given
         List<User> users = new ArrayList<>();
         User user1 = new User();
