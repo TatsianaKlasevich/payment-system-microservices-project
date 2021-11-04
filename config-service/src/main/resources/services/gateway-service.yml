@@ -27,10 +27,10 @@ zuul:
       serviceId: payment-service
       stripPrefix: false
 
-#    deposit-service:
-#      path: /auth/**
-#      serviceId: authentification-service
-#      stripPrefix: false
+    auth-service:
+      path: /auth/**
+      serviceId: auth-service
+      stripPrefix: false
 #    todo add authentification
 server:
   port: 8989
