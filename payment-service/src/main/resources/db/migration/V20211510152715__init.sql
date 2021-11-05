@@ -12,8 +12,8 @@ CREATE TABLE IF NOT EXISTS cards
     expiration_date DATE,
     cvv_code        INT,
     user_id         BIGINT,
-    creatAt         TIMESTAMP,
-    updateAt        TIMESTAMP,
+    create_at       TIMESTAMP,
+    updated_at        TIMESTAMP,
     PRIMARY KEY (id)
 --         FOREIGN KEY (user_id) REFERENCES users (id)
 );
@@ -31,8 +31,8 @@ CREATE TABLE IF NOT EXISTS payments
     transaction_date   TIMESTAMP,
     bank_code          VARCHAR(28),
     card_id            BIGINT,
-    creatAt            TIMESTAMP,
-    updateAt           TIMESTAMP,
+    create_at            TIMESTAMP,
+    updated_at           TIMESTAMP,
     PRIMARY KEY (id),
     FOREIGN KEY (card_id) REFERENCES cards (id)
 );
