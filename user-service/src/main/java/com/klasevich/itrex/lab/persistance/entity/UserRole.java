@@ -1,6 +1,9 @@
-package com.klasevich.itrex.lab.entity;
+package com.klasevich.itrex.lab.persistance.entity;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.springframework.stereotype.Component;
 
 import javax.persistence.*;

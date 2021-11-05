@@ -1,6 +1,6 @@
 CREATE TABLE IF NOT EXISTS users
 (
-    id                       INT         NOT NULL AUTO_INCREMENT,
+    id                       BIGINT      NOT NULL AUTO_INCREMENT,
     email                    VARCHAR(25) NOT NULL,
     password                 VARCHAR(35) NOT NULL,
     name                     VARCHAR(25),
@@ -16,15 +16,15 @@ CREATE TABLE IF NOT EXISTS users
 
 CREATE TABLE IF NOT EXISTS roles
 (
-    id   INT         NOT NULL AUTO_INCREMENT,
+    id   BIGINT      NOT NULL AUTO_INCREMENT,
     role VARCHAR(20) NOT NULL,
     PRIMARY KEY (id)
 );
 
 CREATE TABLE IF NOT EXISTS users_roles
 (
-    user_id INT NOT NULL,
-    role_id INT NOT NULL,
+    user_id BIGINT NOT NULL,
+    role_id BIGINT NOT NULL,
     PRIMARY KEY (user_id, role_id),
     FOREIGN KEY (user_id) REFERENCES users (id),
     FOREIGN KEY (role_id) REFERENCES roles (id)

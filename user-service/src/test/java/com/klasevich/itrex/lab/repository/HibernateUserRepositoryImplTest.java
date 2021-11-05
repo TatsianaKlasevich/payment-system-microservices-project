@@ -1,15 +1,14 @@
 package com.klasevich.itrex.lab.repository;
 
 import com.klasevich.itrex.lab.config.ApplicationContextConfiguration;
-import com.klasevich.itrex.lab.entity.User;
-import com.klasevich.itrex.lab.exception.RepositoryException;
+import com.klasevich.itrex.lab.persistance.entity.User;
+import com.klasevich.itrex.lab.persistance.repository.UserRepository;
 import com.klasevich.itrex.lab.service.FlywayService;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
-import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -39,7 +38,7 @@ class HibernateUserRepositoryImplTest {
         int expected = 2;
 
         // when
-        List<User> result = userRepository.selectAll();
+        List<User> result = userRepository.findAll();
         int actual = result.size();
 
         //then
@@ -49,11 +48,11 @@ class HibernateUserRepositoryImplTest {
     @Test
     void findByIdUserShouldBeTheSame() {
         //given
-        User expected = new User(2, "segrei@gmail.com", "e12345", "Tanya", "Konstantinovich",
+        User expected = new User(2l, "segrei@gmail.com", "e12345", "Tanya", "Konstantinovich",
                 "Petrov", LocalDate.of(1989, 9, 11),
                 "1214NK784545L", "+375443650684");
 
-        int id = 2;
+        Long id = 2l;
 
         // when
         User actual = userRepository.findById(id);
@@ -65,7 +64,7 @@ class HibernateUserRepositoryImplTest {
     @Test
     void updateUserAndCheckChangesShouldBeMade() {
         //given
-        User user = new User(2, "segrei@gmail.com", "e12345", "Tanya", "Konstantinovich",
+        User user = new User(2l, "segrei@gmail.com", "e12345", "Tanya", "Konstantinovich",
                 "Petrov", LocalDate.of(1989, 9, 11),
                 "1214NK784545L", "+375443650684");
         user.setSurname("Gribalev");
@@ -80,14 +79,14 @@ class HibernateUserRepositoryImplTest {
     }
 
     @Test
-    void deleteUserAndCheckNumberOfUserShouldBeTheSame() throws RepositoryException {
+    void deleteUserAndCheckNumberOfUserShouldBeTheSame() {
         //given
-        int id = 1;
-        int expected = userRepository.selectAll().size() - 1;
+        Long id = 1l;
+        Long expected = userRepository.findAll().size() - 1l;
 
         // when
-        userRepository.delete(id);
-        List<User> users = userRepository.selectAll();
+        userRepository.deleteById(id);
+        List<User> users = userRepository.findAll();
         int actual = users.size();
 
         //then
@@ -95,7 +94,7 @@ class HibernateUserRepositoryImplTest {
     }
 
     @Test
-    void addAllUsersNumberShouldBeRight() throws SQLException, RepositoryException {
+    void addAllUsersNumberShouldBeRight() {
         //given
         List<User> users = new ArrayList<>();
         User user1 = new User();
@@ -123,8 +122,8 @@ class HibernateUserRepositoryImplTest {
         int expected = 4;
 
         // when
-        userRepository.addAll(users);
-        List<User> newUsers = userRepository.selectAll();
+        userRepository.saveAll(users);
+        List<User> newUsers = userRepository.findAll();
         int actual = newUsers.size();
 
         //then

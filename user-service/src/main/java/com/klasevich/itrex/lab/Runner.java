@@ -1,11 +1,10 @@
 package com.klasevich.itrex.lab;
 
 import com.klasevich.itrex.lab.config.ApplicationContextConfiguration;
-import com.klasevich.itrex.lab.entity.User;
-import com.klasevich.itrex.lab.entity.UserRole;
-import com.klasevich.itrex.lab.exception.RepositoryException;
-import com.klasevich.itrex.lab.repository.UserRepository;
-import com.klasevich.itrex.lab.repository.UserRoleRepository;
+import com.klasevich.itrex.lab.persistance.entity.User;
+import com.klasevich.itrex.lab.persistance.entity.UserRole;
+import com.klasevich.itrex.lab.persistance.repository.UserRepository;
+import com.klasevich.itrex.lab.persistance.repository.UserRoleRepository;
 import com.klasevich.itrex.lab.service.FlywayService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -19,7 +18,7 @@ import java.util.List;
 public class Runner {
     private static final Logger logger = LogManager.getLogger();
 
-    public static void main(String[] args) throws RepositoryException {
+    public static void main(String[] args) {
         logger.info("===================START APP======================");
         logger.info("================START MIGRATION===================");
 
@@ -33,16 +32,16 @@ public class Runner {
         logger.info("===============SHUT DOWN APP===============");
     }
 
-    public static void workWithHibernate(UserRepository userRepository, UserRoleRepository userRoleRepository) throws RepositoryException {
+    public static void workWithHibernate(UserRepository userRepository, UserRoleRepository userRoleRepository) {
 
-        List<User> users = userRepository.selectAll();
+        List<User> users = userRepository.findAll();
         logger.info("show all users - {}", users);
         List<UserRole> userRoles = userRoleRepository.selectAll();
         logger.info("show all user roles - {}", userRoles);
 
-        User userFoundById = userRepository.findById(2);
+        User userFoundById = userRepository.findById(2l);
         logger.info("show user by id=2 - {}", userFoundById);
-        UserRole userRoleFoundById = userRoleRepository.findById(1);
+        UserRole userRoleFoundById = userRoleRepository.findById(1l);
         logger.info("show user role by id=1 - {}", userRoleFoundById);
 
         User addedUser = new User();
@@ -54,10 +53,10 @@ public class Runner {
         addedUser.setDateOfBirth(LocalDate.of(1976, 03, 14));
         addedUser.setIdentityPassportNumber("121433NK324545L");
         addedUser.setPhoneNumber("+375337088994");
-        userRepository.add(addedUser);
+        userRepository.save(addedUser);
         logger.info("add user - {}", addedUser);
 
-        users = userRepository.selectAll();
+        users = userRepository.findAll();
         logger.info("Show all users after adding - {}", users);
 
         List<User> newUsers = new ArrayList<>();
@@ -83,22 +82,22 @@ public class Runner {
         user2.setPhoneNumber("+375447088994");
         newUsers.add(user2);
 
-        userRepository.addAll(newUsers);
+        userRepository.saveAll(newUsers);
         logger.info("add some users {}", newUsers);
-        users = userRepository.selectAll();
+        users = userRepository.findAll();
         logger.info("Show all users after adding some users {}", users);
 
         // user for updating
-        User userFoundByIdToUpdate = userRepository.findById(3);
+        User userFoundByIdToUpdate = userRepository.findById(3l);
         logger.info("show user by id=3 to update - {}", userFoundByIdToUpdate);
         addedUser.setPhoneNumber("+375443088994");
         userRepository.update(addedUser);
-        User userFoundByIdAfterUpdating = userRepository.findById(3);
+        User userFoundByIdAfterUpdating = userRepository.findById(3l);
         logger.info("show user by id=3 after updating - {}", userFoundByIdAfterUpdating);
 
-        int id = userRepository.delete(5);
+        userRepository.deleteById(5l);
         logger.info("User with id=5 have been deleted");
-        users = userRepository.selectAll();
+        users = userRepository.findAll();
         logger.info("Show all users after deleting - {}", users);
     }
 }

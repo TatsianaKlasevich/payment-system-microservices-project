@@ -1,4 +1,4 @@
-package com.klasevich.itrex.lab.entity;
+package com.klasevich.itrex.lab.persistance.entity;
 
 import lombok.*;
 import org.springframework.stereotype.Component;
@@ -18,7 +18,7 @@ import java.util.List;
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private Long id;
 
     private String email;
 
@@ -49,7 +49,7 @@ public class User {
     )
     private List<UserRole> roles;
 
-    public User(Integer id, String email, String password, String name, String secondName,
+    public User(Long id, String email, String password, String name, String secondName,
                 String surname, LocalDate dateOfBirth, String identityPassportNumber, String phoneNumber) {
         this.id = id;
         this.email = email;

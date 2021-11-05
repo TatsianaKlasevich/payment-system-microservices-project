@@ -1,7 +1,7 @@
-package com.klasevich.itrex.lab.repository.impl;
+package com.klasevich.itrex.lab.persistance.repository.impl;
 
-import com.klasevich.itrex.lab.entity.UserRole;
-import com.klasevich.itrex.lab.repository.UserRoleRepository;
+import com.klasevich.itrex.lab.persistance.entity.UserRole;
+import com.klasevich.itrex.lab.persistance.repository.UserRoleRepository;
 import org.hibernate.Session;
 import org.springframework.stereotype.Repository;
 
@@ -27,7 +27,7 @@ public class HibernateUserRoleRepositoryImpl implements UserRoleRepository {
     }
 
     @Override
-    public UserRole findById(int id) {
+    public UserRole findById(Long id) {
         return session.get(UserRole.class, id);
     }
 }
