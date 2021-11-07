@@ -6,7 +6,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDate;
-import java.util.List;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -21,6 +20,4 @@ public class UserRequestDTO {
     private LocalDate dateOfBirth;
     private String identityPassportNumber;
     private String phoneNumber;
-    private List<Long> roles;
-    private List<Long> cards;
 }

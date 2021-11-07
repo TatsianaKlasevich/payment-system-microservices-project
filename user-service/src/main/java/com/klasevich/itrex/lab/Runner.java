@@ -5,7 +5,6 @@ import com.klasevich.itrex.lab.persistance.entity.User;
 import com.klasevich.itrex.lab.persistance.entity.UserRole;
 import com.klasevich.itrex.lab.persistance.repository.UserRepository;
 import com.klasevich.itrex.lab.persistance.repository.UserRoleRepository;
-import com.klasevich.itrex.lab.service.FlywayService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.context.ApplicationContext;
@@ -23,7 +22,6 @@ public class Runner {
         logger.info("================START MIGRATION===================");
 
         ApplicationContext applicationContext = new AnnotationConfigApplicationContext(ApplicationContextConfiguration.class);
-        applicationContext.getBean(FlywayService.class);
         UserRepository userRepository = applicationContext.getBean(UserRepository.class);
         UserRoleRepository userRoleRepository = applicationContext.getBean(UserRoleRepository.class);
 
@@ -41,8 +39,6 @@ public class Runner {
 
         User userFoundById = userRepository.findById(2l);
         logger.info("show user by id=2 - {}", userFoundById);
-        UserRole userRoleFoundById = userRoleRepository.findById(1l);
-        logger.info("show user role by id=1 - {}", userRoleFoundById);
 
         User addedUser = new User();
         addedUser.setEmail("gleb@gmail.com");

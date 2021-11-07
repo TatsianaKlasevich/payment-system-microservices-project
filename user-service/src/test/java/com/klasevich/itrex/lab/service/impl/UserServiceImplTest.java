@@ -1,9 +1,12 @@
-package com.klasevich.itrex.lab.repository;
+package com.klasevich.itrex.lab.service.impl;
 
 import com.klasevich.itrex.lab.BaseRepositoryTest;
 import com.klasevich.itrex.lab.config.ApplicationContextConfiguration;
+import com.klasevich.itrex.lab.persistance.dto.UserResponseDTO;
 import com.klasevich.itrex.lab.persistance.entity.User;
-import com.klasevich.itrex.lab.persistance.repository.UserRepository;
+import com.klasevich.itrex.lab.service.UserService;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.junit.jupiter.api.Test;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
@@ -14,15 +17,16 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-class HibernateUserRepositoryImplTest extends BaseRepositoryTest {
+class UserServiceImplTest extends BaseRepositoryTest {
+    private static final Logger logger = LogManager.getLogger();
 
     private final ApplicationContext applicationContext;
-    private final UserRepository userRepository;
+    private final UserService userService;
 
 
-    public HibernateUserRepositoryImplTest() {
+    public UserServiceImplTest() {
         applicationContext = new AnnotationConfigApplicationContext(ApplicationContextConfiguration.class);
-        userRepository = applicationContext.getBean(UserRepository.class);
+        userService = applicationContext.getBean(UserService.class);
     }
 
     @Test
@@ -31,7 +35,7 @@ class HibernateUserRepositoryImplTest extends BaseRepositoryTest {
         int expected = 2;
 
         // when
-        List<User> result = userRepository.findAll();
+        List<UserResponseDTO> result = userService.findAllUsers();
         int actual = result.size();
 
         //then
@@ -48,24 +52,7 @@ class HibernateUserRepositoryImplTest extends BaseRepositoryTest {
         Long id = 2l;
 
         // when
-        User actual = userRepository.findById(id);
-
-        //then
-        assertEquals(actual, expected);
-    }
-
-    @Test
-    void updateUserAndCheckChangesShouldBeMade() {
-        //given
-        User user = new User(2l, "segrei@gmail.com", "e12345", "Tanya", "Konstantinovich",
-                "Petrov", LocalDate.of(1989, 9, 11),
-                "1214NK784545L", "+375443650684");
-        user.setSurname("Gribalev");
-        String expected = "Gribalev";
-
-        // when
-        userRepository.update(user);
-        String actual = user.getSurname();
+        User actual = userService.getUserById(id);
 
         //then
         assertEquals(actual, expected);
@@ -75,11 +62,11 @@ class HibernateUserRepositoryImplTest extends BaseRepositoryTest {
     void deleteUserAndCheckNumberOfUserShouldBeTheSame() {
         //given
         Long id = 1l;
-        Long expected = userRepository.findAll().size() - 1l;
+        Long expected = userService.findAllUsers().size() - 1l;
 
         // when
-        userRepository.deleteById(id);
-        List<User> users = userRepository.findAll();
+        userService.deleteUser(id);
+        List<UserResponseDTO> users = userService.findAllUsers();
         int actual = users.size();
 
         //then
@@ -115,8 +102,8 @@ class HibernateUserRepositoryImplTest extends BaseRepositoryTest {
         int expected = 4;
 
         // when
-        userRepository.saveAll(users);
-        List<User> newUsers = userRepository.findAll();
+        userService.saveAll(users);
+        List<UserResponseDTO> newUsers = userService.findAllUsers();
         int actual = newUsers.size();
 
         //then

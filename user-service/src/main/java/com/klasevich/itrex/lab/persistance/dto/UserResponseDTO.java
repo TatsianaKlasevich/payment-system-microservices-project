@@ -25,7 +25,6 @@ public class UserResponseDTO {
     private String identityPassportNumber;
     private String phoneNumber;
     private List<Long> roles;
-    private List<Long> cards;
 
     public UserResponseDTO(User user) {
     }
