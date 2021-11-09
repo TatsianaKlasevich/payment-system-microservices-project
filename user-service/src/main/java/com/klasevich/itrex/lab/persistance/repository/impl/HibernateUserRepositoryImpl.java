@@ -2,25 +2,20 @@ package com.klasevich.itrex.lab.persistance.repository.impl;
 
 import com.klasevich.itrex.lab.persistance.entity.User;
 import com.klasevich.itrex.lab.persistance.repository.UserRepository;
+import lombok.RequiredArgsConstructor;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.query.Query;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
-
+@RequiredArgsConstructor
 @Repository
 public class HibernateUserRepositoryImpl implements UserRepository {
     private static final String FIND_ALL_USERS_QUERY = "from User";
     private static final String DELETE_QUERY = "delete from User where id=: id";
-    private SessionFactory sessionFactory;
-
-    @Autowired
-    public HibernateUserRepositoryImpl(SessionFactory sessionFactory) {
-        this.sessionFactory = sessionFactory;
-    }
+    private final SessionFactory sessionFactory;
 
     @Override
     public List<User> findAll() {
@@ -31,7 +26,7 @@ public class HibernateUserRepositoryImpl implements UserRepository {
     @Override
     public void save(User user) {
         Session session = sessionFactory.getCurrentSession();
-        session.save(user);
+        session.saveOrUpdate(user);
     }
 
     @Override
@@ -48,12 +43,6 @@ public class HibernateUserRepositoryImpl implements UserRepository {
         Query<User> query = session.createQuery(DELETE_QUERY);
         query.setParameter("id", id);
         query.executeUpdate();
-    }
-
-    @Override
-    public void update(User user) {
-        Session session = sessionFactory.getCurrentSession();
-        session.update(user);
     }
 
     @Override

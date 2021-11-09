@@ -37,18 +37,19 @@ public class Runner {
         List<UserRole> userRoles = userRoleRepository.selectAll();
         logger.info("show all user roles - {}", userRoles);
 
-        User userFoundById = userRepository.findById(2l);
+        User userFoundById = userRepository.findById(2L);
         logger.info("show user by id=2 - {}", userFoundById);
 
-        User addedUser = new User();
-        addedUser.setEmail("gleb@gmail.com");
-        addedUser.setPassword("12345s");
-        addedUser.setName("Gleb");
-        addedUser.setSecondName("Olegovich");
-        addedUser.setSurname("Pivovarov");
-        addedUser.setDateOfBirth(LocalDate.of(1976, 03, 14));
-        addedUser.setIdentityPassportNumber("121433NK324545L");
-        addedUser.setPhoneNumber("+375337088994");
+        User addedUser = User.builder()
+                .email("gleb@gmail.com")
+                .password("12345s")
+                .name("Gleb")
+                .secondName("Olegovich")
+                .surname("Pivovarov")
+                .dateOfBirth(LocalDate.of(1976, 03, 14))
+                .identityPassportNumber("121433NK324545L")
+                .phoneNumber("+375337088994")
+                .build();
         userRepository.save(addedUser);
         logger.info("add user - {}", addedUser);
 
@@ -56,26 +57,29 @@ public class Runner {
         logger.info("Show all users after adding - {}", users);
 
         List<User> newUsers = new ArrayList<>();
-        User user1 = new User();
-        user1.setEmail("andrey@gmail.com");
-        user1.setPassword("12345s");
-        user1.setName("Andrey");
-        user1.setSecondName("Semenovich");
-        user1.setSurname("Kryuk");
-        user1.setDateOfBirth(LocalDate.of(1966, 03, 20));
-        user1.setIdentityPassportNumber("121233NK324545L");
-        user1.setPhoneNumber("+375447088994");
-        newUsers.add(user1);
+        User user1 = User.builder()
+                .email("andrey@gmail.com")
+                .password("12345s")
+                .name("Andrey")
+                .secondName("Semenovich")
+                .surname("Kryuk")
+                .dateOfBirth(LocalDate.of(1966, 03, 20))
+                .identityPassportNumber("121233NK324545L")
+                .phoneNumber("+375447088994")
+                .build();
+        users.add(user1);
 
-        User user2 = new User();
-        user2.setEmail("kirill@gmail.com");
-        user2.setPassword("12345s");
-        user2.setName("Kirill");
-        user2.setSecondName("Vasiljevich");
-        user2.setSurname("Bondarev");
-        user2.setDateOfBirth(LocalDate.of(1979, 03, 20));
-        user2.setIdentityPassportNumber("121433NK32424545L");
-        user2.setPhoneNumber("+375447088994");
+        User user2 = User.builder()
+                .email("kirill@gmail.com")
+                .password("12345s")
+                .name("Kirill")
+                .secondName("Vasiljevich")
+                .surname("Bondarev")
+                .dateOfBirth(LocalDate.of(1979, 03, 20))
+                .identityPassportNumber("121433NK32424545L")
+                .phoneNumber("+375447088994")
+                .build();
+        users.add(user2);
         newUsers.add(user2);
 
         userRepository.saveAll(newUsers);
@@ -87,7 +91,7 @@ public class Runner {
         User userFoundByIdToUpdate = userRepository.findById(3l);
         logger.info("show user by id=3 to update - {}", userFoundByIdToUpdate);
         addedUser.setPhoneNumber("+375443088994");
-        userRepository.update(addedUser);
+        userRepository.save(addedUser);
         User userFoundByIdAfterUpdating = userRepository.findById(3l);
         logger.info("show user by id=3 after updating - {}", userFoundByIdAfterUpdating);
 

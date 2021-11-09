@@ -1,13 +1,11 @@
 package com.klasevich.itrex.lab.persistance.entity;
 
 import lombok.*;
-import org.springframework.stereotype.Component;
 
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.List;
 
-@Component
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
@@ -49,19 +47,6 @@ public class User {
     )
     private List<UserRole> roles;
 
-    public User(Long id, String email, String password, String name, String secondName,
-                String surname, LocalDate dateOfBirth, String identityPassportNumber, String phoneNumber) {
-        this.id = id;
-        this.email = email;
-        this.password = password;
-        this.name = name;
-        this.secondName = secondName;
-        this.surname = surname;
-        this.dateOfBirth = dateOfBirth;
-        this.identityPassportNumber = identityPassportNumber;
-        this.phoneNumber = phoneNumber;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -76,7 +61,8 @@ public class User {
         if (secondName != null ? !secondName.equals(user.secondName) : user.secondName != null) return false;
         if (surname != null ? !surname.equals(user.surname) : user.surname != null) return false;
         if (dateOfBirth != null ? !dateOfBirth.equals(user.dateOfBirth) : user.dateOfBirth != null) return false;
-        if (identityPassportNumber != null ? !identityPassportNumber.equals(user.identityPassportNumber) : user.identityPassportNumber != null)
+        if (identityPassportNumber != null ? !identityPassportNumber.equals(user.identityPassportNumber)
+                : user.identityPassportNumber != null)
             return false;
         return phoneNumber != null ? phoneNumber.equals(user.phoneNumber) : user.phoneNumber == null;
     }
@@ -111,3 +97,4 @@ public class User {
         return sb.toString();
     }
 }
+

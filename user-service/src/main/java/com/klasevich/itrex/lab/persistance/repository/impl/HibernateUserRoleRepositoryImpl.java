@@ -2,23 +2,17 @@ package com.klasevich.itrex.lab.persistance.repository.impl;
 
 import com.klasevich.itrex.lab.persistance.entity.UserRole;
 import com.klasevich.itrex.lab.persistance.repository.UserRoleRepository;
+import lombok.RequiredArgsConstructor;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import javax.transaction.Transactional;
 import java.util.List;
 
-@Transactional
+@RequiredArgsConstructor
 @Repository
 public class HibernateUserRoleRepositoryImpl implements UserRoleRepository {
     private SessionFactory sessionFactory;
-
-    @Autowired
-    public HibernateUserRoleRepositoryImpl(SessionFactory sessionFactory) {
-        this.sessionFactory = sessionFactory;
-    }
 
     @Override
     public List<UserRole> selectAll() {

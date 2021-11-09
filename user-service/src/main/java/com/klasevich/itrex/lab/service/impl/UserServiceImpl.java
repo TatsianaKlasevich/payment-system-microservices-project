@@ -6,7 +6,7 @@ import com.klasevich.itrex.lab.persistance.dto.UserResponseDTO;
 import com.klasevich.itrex.lab.persistance.entity.User;
 import com.klasevich.itrex.lab.persistance.repository.UserRepository;
 import com.klasevich.itrex.lab.service.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -16,16 +16,10 @@ import java.util.stream.Collectors;
 
 @Service
 @Transactional
+@RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
-
     private final UserRepository userRepository;
     private final UserRequestDTOToUserMapper userRequestDTOToUserMapper;
-
-    @Autowired
-    public UserServiceImpl(UserRepository userRepository, UserRequestDTOToUserMapper userRequestDTOToUserMapper) {
-        this.userRepository = userRepository;
-        this.userRequestDTOToUserMapper = userRequestDTOToUserMapper;
-    }
 
     @Override
     public User getUserById(Long userId) {

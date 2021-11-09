@@ -41,9 +41,17 @@ class HibernateUserRepositoryImplTest extends BaseRepositoryTest {
     @Test
     void findByIdUserShouldBeTheSame() {
         //given
-        User expected = new User(2l, "segrei@gmail.com", "e12345", "Tanya", "Konstantinovich",
-                "Petrov", LocalDate.of(1989, 9, 11),
-                "1214NK784545L", "+375443650684");
+        User expected = User.builder()
+                .id(2L)
+                .email("segrei@gmail.com")
+                .password("e12345")
+                .name("Tanya")
+                .secondName("Konstantinovich")
+                .surname("Petrov")
+                .dateOfBirth(LocalDate.of(1989, 9, 11))
+                .identityPassportNumber("1214NK784545L")
+                .phoneNumber("+375443650684")
+                .build();
 
         Long id = 2l;
 
@@ -57,14 +65,22 @@ class HibernateUserRepositoryImplTest extends BaseRepositoryTest {
     @Test
     void updateUserAndCheckChangesShouldBeMade() {
         //given
-        User user = new User(2l, "segrei@gmail.com", "e12345", "Tanya", "Konstantinovich",
-                "Petrov", LocalDate.of(1989, 9, 11),
-                "1214NK784545L", "+375443650684");
+        User user = User.builder()
+                .id(2L)
+                .email("segrei@gmail.com")
+                .password("e12345")
+                .name("Tanya")
+                .secondName("Konstantinovich")
+                .surname("Petrov")
+                .dateOfBirth(LocalDate.of(1989, 9, 11))
+                .identityPassportNumber("1214NK784545L")
+                .phoneNumber("+375443650684")
+                .build();
         user.setSurname("Gribalev");
         String expected = "Gribalev";
 
         // when
-        userRepository.update(user);
+        userRepository.save(user);
         String actual = user.getSurname();
 
         //then
@@ -90,28 +106,28 @@ class HibernateUserRepositoryImplTest extends BaseRepositoryTest {
     void addAllUsersNumberShouldBeRight() {
         //given
         List<User> users = new ArrayList<>();
-        User user1 = new User();
-        user1.setEmail("andrey@gmail.com");
-        user1.setPassword("12345s");
-        user1.setName("Andrey");
-        user1.setSecondName("Semenovich");
-        user1.setSurname("Kryuk");
-        user1.setDateOfBirth(LocalDate.of(1966, 03, 20));
-        user1.setIdentityPassportNumber("121233NK324545L");
-        user1.setPhoneNumber("+375447088994");
+        User user1 = User.builder()
+                .email("andrey@gmail.com")
+                .password("12345s")
+                .name("Andrey")
+                .secondName("Semenovich")
+                .surname("Kryuk")
+                .dateOfBirth(LocalDate.of(1966, 03, 20))
+                .identityPassportNumber("121233NK324545L")
+                .phoneNumber("+375447088994")
+                .build();
         users.add(user1);
 
-        User user2 = new User();
-        user2.setEmail("kirill@gmail.com");
-        user2.setPassword("12345s");
-        user2.setName("Kirill");
-        user2.setSecondName("Vasiljevich");
-        user2.setSurname("Bondarev");
-        user2.setDateOfBirth(LocalDate.of(1979, 03, 20));
-        user2.setIdentityPassportNumber("121433NK32424545L");
-        user2.setPhoneNumber("+375447088994");
-        users.add(user2);
-
+        User user2 = User.builder()
+                .email("kirill@gmail.com")
+                .password("12345s")
+                .name("Kirill")
+                .secondName("Vasiljevich")
+                .surname("Bondarev")
+                .dateOfBirth(LocalDate.of(1979, 03, 20))
+                .identityPassportNumber("121433NK32424545L")
+                .phoneNumber("+375447088994")
+                .build();
         int expected = 4;
 
         // when

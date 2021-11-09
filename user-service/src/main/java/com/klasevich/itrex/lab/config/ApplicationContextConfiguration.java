@@ -28,7 +28,6 @@ public class ApplicationContextConfiguration {
     private static final String SHOW_SQL = "hibernate.show.sql";
     private static final String FORMAT_SQL = "hibernate.format.sql";
 
-
     @Autowired
     private Environment env;
 
