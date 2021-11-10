@@ -3,7 +3,6 @@ plugins {
     id 'org.flywaydb.flyway' version '7.4.0'
     id 'org.springframework.boot' version '2.3.2.RELEASE'
     id 'io.spring.dependency-management' version '1.0.8.RELEASE'
-    id "io.freefair.lombok" version "6.1.0"
 }
 
 group 'com.klasevich'
@@ -39,6 +38,11 @@ dependencies {
 
     implementation 'org.flywaydb:flyway-core'
     implementation 'com.h2database:h2'
+
+    compileOnly 'org.projectlombok:lombok'
+    annotationProcessor 'org.projectlombok:lombok'
+    testCompileOnly 'org.projectlombok:lombok'
+    testAnnotationProcessor 'org.projectlombok:lombok'
 
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.springframework.boot:spring-boot-starter-actuator'

@@ -14,3 +14,8 @@
 /build/tmp/
 /user-service/logs/
 /user-service/src/main/resources/log4j2.xml
+/auth-service/src/main/resources/log4j2.xml
+/auth-service/build/
+/auth-service/build/libs/
+/auth-service/build/resources/
+/build/

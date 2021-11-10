@@ -14,27 +14,25 @@ public class AuthUserDetail extends User implements UserDetails {
         super(user);
     }
 
-    public AuthUserDetail() {
-    }
-
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        List<GrantedAuthority> grantedAuthority = new ArrayList<>();
 
-        super.getRoles().forEach(role -> {
-            grantedAuthority.add(new SimpleGrantedAuthority(role.getName()));
+        List<GrantedAuthority> grantedAuthorities = new ArrayList<>();
+
+        getRoles().forEach(role -> {
+            grantedAuthorities.add(new SimpleGrantedAuthority(role.getName()));
             role.getPermissions().forEach(permission -> {
-                grantedAuthority.add(new SimpleGrantedAuthority(permission.getName()));
+                grantedAuthorities.add(new SimpleGrantedAuthority(permission.getName()));
             });
+
         });
-        return grantedAuthority;
+        return grantedAuthorities;
     }
 
     @Override
     public String getPassword() {
         return super.getPassword();
-        ;
     }
 
     @Override

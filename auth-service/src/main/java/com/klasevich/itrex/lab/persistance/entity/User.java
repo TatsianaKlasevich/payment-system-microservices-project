@@ -5,14 +5,15 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.List;
 
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
 @Entity
-@Table(name = "user")
-public class User {
+@Table(name = "users")
+public class User implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -29,13 +30,13 @@ public class User {
     @Column(name = "enabled")
     private boolean enabled;
 
-    @Column(name = "accountNonExpired")
+    @Column(name = "account_non_expired")
     private boolean accountNonExpired;
 
-    @Column(name = "credentialsNonExpired")
+    @Column(name = "credentials_non_expired")
     private boolean credentialsNonExpired;
 
-    @Column(name = "accountNonLocked")
+    @Column(name = "account_non_locked")
     private boolean accountNonLocked;
 
 
@@ -47,18 +48,6 @@ public class User {
                     @JoinColumn(name = "role_id",
                             referencedColumnName = "id")})
     private List<Role> roles;
-
-    public User(String username, String password, String email, boolean enabled,
-                boolean accountNonExpired, boolean credentialsNonExpired, boolean accountNonLocked, List<Role> roles) {
-        this.username = username;
-        this.password = password;
-        this.email = email;
-        this.enabled = enabled;
-        this.accountNonExpired = accountNonExpired;
-        this.credentialsNonExpired = credentialsNonExpired;
-        this.accountNonLocked = accountNonLocked;
-        this.roles = roles;
-    }
 
     public User(User user) {
     }
