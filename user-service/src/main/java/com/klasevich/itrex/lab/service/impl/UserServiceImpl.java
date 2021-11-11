@@ -13,19 +13,19 @@ import javax.transaction.Transactional;
 import java.util.List;
 import java.util.stream.Collectors;
 
-
-@Service
-@Transactional
 @RequiredArgsConstructor
+@Service
 public class UserServiceImpl implements UserService {
-    private final UserRepository userRepository;
-    private final UserRequestDTOToUserMapper userRequestDTOToUserMapper;
+
+    private UserRepository userRepository;
+    private UserRequestDTOToUserMapper userRequestDTOToUserMapper;
 
     @Override
     public User getUserById(Long userId) {
         return userRepository.findById(userId);
     }
 
+    @Transactional
     @Override
     public Long createUser(UserRequestDTO userRequestDTO) {
         User user = userRequestDTOToUserMapper.convert(userRequestDTO);
@@ -33,6 +33,7 @@ public class UserServiceImpl implements UserService {
         return user.getId();
     }
 
+    @Transactional
     @Override
     public void updateUser(Long userId, UserRequestDTO userRequestDTO) {
         User user = userRequestDTOToUserMapper.convert(userRequestDTO);
@@ -40,11 +41,13 @@ public class UserServiceImpl implements UserService {
         userRepository.save(user);
     }
 
+    @Transactional
     @Override
     public void deleteUser(Long userId) {
         userRepository.deleteById(userId);
     }
 
+    @Transactional
     @Override
     public void saveAll(List<User> users) {
         userRepository.saveAll(users);

@@ -8,6 +8,7 @@ import org.hibernate.SessionFactory;
 import org.hibernate.query.Query;
 import org.springframework.stereotype.Repository;
 
+import javax.transaction.Transactional;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -23,12 +24,14 @@ public class HibernateUserRepositoryImpl implements UserRepository {
         return session.createQuery(FIND_ALL_USERS_QUERY, User.class).list();
     }
 
+    @Transactional
     @Override
     public void save(User user) {
         Session session = sessionFactory.getCurrentSession();
         session.saveOrUpdate(user);
     }
 
+    @Transactional
     @Override
     public void saveAll(List<User> users) {
         Session session = sessionFactory.getCurrentSession();
@@ -37,6 +40,7 @@ public class HibernateUserRepositoryImpl implements UserRepository {
         }
     }
 
+    @Transactional
     @Override
     public void deleteById(Long id) {
         Session session = sessionFactory.getCurrentSession();

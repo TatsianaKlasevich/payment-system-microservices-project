@@ -1,14 +1,13 @@
 package com.klasevich.itrex.lab.service.impl;
 
-import com.klasevich.itrex.lab.BaseRepositoryTest;
-import com.klasevich.itrex.lab.config.ApplicationContextConfiguration;
 import com.klasevich.itrex.lab.persistance.dto.UserRequestDTO;
 import com.klasevich.itrex.lab.persistance.dto.UserResponseDTO;
 import com.klasevich.itrex.lab.persistance.entity.User;
 import com.klasevich.itrex.lab.service.UserService;
 import org.junit.jupiter.api.Test;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -16,14 +15,15 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-class UserServiceImplTest extends BaseRepositoryTest {
 
-    private final ApplicationContext applicationContext;
+@ExtendWith(SpringExtension.class)
+@ContextConfiguration(classes = TestConfiguration.class)
+class UserServiceImplTest {
+
     private final UserService userService;
 
-    public UserServiceImplTest() {
-        applicationContext = new AnnotationConfigApplicationContext(ApplicationContextConfiguration.class);
-        userService = applicationContext.getBean(UserService.class);
+    UserServiceImplTest(UserService userService) {
+        this.userService = userService;
     }
 
     @Test
