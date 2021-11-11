@@ -26,7 +26,7 @@ public class AuthorizationServerConfiguration implements AuthorizationServerConf
 
 
     @Bean
-    TokenStore jdbcTokenStore() {
+    public TokenStore jdbcTokenStore() {
         return new JdbcTokenStore(dataSource);
     }
 
