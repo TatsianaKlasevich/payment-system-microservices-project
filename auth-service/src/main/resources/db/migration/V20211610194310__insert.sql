@@ -34,7 +34,7 @@ VALUES (3, 2); /* update operator */
 
 insert into users (id, username, password, email, enabled, account_non_expired, credentials_non_expired,
                    account_non_locked)
-VALUES ('1', 'krish', '{bcrypt}$2a$12$sbdGqpAwJKG2B4R0GbLHxOS.rIIr5aYGPKJAahdzaZEo4lsCTW8Rq', 'k@krishantha.com', '1',
+VALUES ('1', 'krish', '{bcrypt}$2a$10$ODGwrk2ufy5d7T6afmACwOA/6j6rvXiP5amAMt1YjOQSdEw44QdqG', 'k@krishantha.com', '1',
         '1', '1', '1');
 insert into users (id, username, password, email, enabled, account_non_expired, credentials_non_expired,
                    account_non_locked)

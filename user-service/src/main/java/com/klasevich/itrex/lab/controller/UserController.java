@@ -19,12 +19,12 @@ public class UserController {
     private final UserService userService;
 
     @GetMapping("{userId}")
-    @ApiOperation("Get user")
+    @ApiOperation(" user")
     public UserResponseDTO getUser(@PathVariable Long userId) {
         return new UserResponseDTO(userService.getUserById(userId));
     }
 
-    @GetMapping("v1/")
+    @GetMapping()
     @ApiOperation("Get all users")
     public List<UserResponseDTO> findAllUsers() {
         return userService.findAllUsers();
