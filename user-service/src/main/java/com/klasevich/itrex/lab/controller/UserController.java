@@ -6,6 +6,7 @@ import com.klasevich.itrex.lab.service.UserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -20,12 +21,14 @@ public class UserController {
 
     @GetMapping("{userId}")
     @ApiOperation(" user")
+    @PreAuthorize("hasRole('BANK_EMPLOYEE')")
     public UserResponseDTO getUser(@PathVariable Long userId) {
         return new UserResponseDTO(userService.getUserById(userId));
     }
 
     @GetMapping()
     @ApiOperation("Get all users")
+    @PreAuthorize("hasAuthority('read_user')")
     public List<UserResponseDTO> findAllUsers() {
         return userService.findAllUsers();
     }
@@ -33,6 +36,7 @@ public class UserController {
 
     @PostMapping()
     @ApiOperation("Create user")
+    @PreAuthorize("hasAuthority('create_user')")
     public Long createUser(@RequestBody UserRequestDTO userRequestDTO) {
         return userService.createUser(userRequestDTO);
     }

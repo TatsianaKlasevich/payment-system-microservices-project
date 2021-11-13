@@ -1,21 +1,7 @@
 server:
   port: 8282
 
-#spring:
-#  security:
-#    user:
-#      name: user
-#      password: admin
-#      roles: CLIENT, BANK_EMPLOYEE
-#security:
-#  ouath2:
-#    client:
-#client-id: mobile
-#client-secret: pin
-#access-token-validity-seconds: 3600
-#authorized-grant-types: refresh_token, authorization_code, password, client_credentials
-#scope: READ, WRITE
-#authorization:
-#  check-token-access: permitAll
-#todo
+
+
+
 

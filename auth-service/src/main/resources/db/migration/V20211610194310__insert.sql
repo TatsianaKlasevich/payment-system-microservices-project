@@ -4,44 +4,50 @@ VALUES ('mobile', '{bcrypt}$2a$10$gPhlXZfms0EpNHX0.HHptOhoFD1AoxSr/yUIdTqA8vtjeP
         'READ,WRITE', '3600', '10000', 'inventory,payment', 'authorization_code,password,refresh_token,implicit', '{}');
 
 INSERT INTO permissions (NAME)
-VALUES ('create_profile');
+VALUES ('create_user');
 INSERT INTO permissions (NAME)
-VALUES ('read_profile');
+VALUES ('read_user');
 INSERT INTO permissions (NAME)
-VALUES ('update_profile');
+VALUES ('update_user');
 INSERT INTO permissions (NAME)
-VALUES ('delete_profile');
+VALUES ('delete_user');
+INSERT INTO permissions (NAME)
+VALUES ('read_all_users');
 
 
 INSERT INTO roles (NAME)
-VALUES ('ROLE_admin');
+VALUES ('BANK_EMPLOYEE');
 INSERT INTO roles (NAME)
-VALUES ('ROLE_operator');
+VALUES ('CLIENT');
 
 INSERT INTO PERMISSIONS_ROLES (PERMISSION_ID, ROLE_ID)
-VALUES (1, 1); /*create-> admin */
+VALUES (1, 1); /*create bank_employee */
 INSERT INTO PERMISSIONS_ROLES (PERMISSION_ID, ROLE_ID)
-VALUES (2, 1); /* read admin */
+VALUES (2, 1); /* read bank_employee */
 INSERT INTO PERMISSIONS_ROLES (PERMISSION_ID, ROLE_ID)
-VALUES (3, 1); /* update admin */
+VALUES (3, 1); /* update bank_employee */
 INSERT INTO PERMISSIONS_ROLES (PERMISSION_ID, ROLE_ID)
-VALUES (4, 1); /* delete admin */
+VALUES (4, 1); /* delete bank_employee */
 INSERT INTO PERMISSIONS_ROLES (PERMISSION_ID, ROLE_ID)
-VALUES (2, 2); /* read operator */
+VALUES (5, 1); /* read all bank_employee */
 INSERT INTO PERMISSIONS_ROLES (PERMISSION_ID, ROLE_ID)
-VALUES (3, 2); /* update operator */
+VALUES (1, 2); /* create client */
+INSERT INTO PERMISSIONS_ROLES (PERMISSION_ID, ROLE_ID)
+VALUES (2, 2); /* read client */
+INSERT INTO PERMISSIONS_ROLES (PERMISSION_ID, ROLE_ID)
+VALUES (3, 2); /* update client */
 
-
-insert into users (id, username, password, email, enabled, account_non_expired, credentials_non_expired,
+insert into users (username, password, email, enabled, account_non_expired, credentials_non_expired,
                    account_non_locked)
-VALUES ('1', 'krish', '{bcrypt}$2a$10$ODGwrk2ufy5d7T6afmACwOA/6j6rvXiP5amAMt1YjOQSdEw44QdqG', 'k@krishantha.com', '1',
+VALUES ('tanya', '{bcrypt}$2a$10$ODGwrk2ufy5d7T6afmACwOA/6j6rvXiP5amAMt1YjOQSdEw44QdqG', 'tanyanek@gmail.com', '1',
         '1', '1', '1');
-insert into users (id, username, password, email, enabled, account_non_expired, credentials_non_expired,
+insert into users (username, password, email, enabled, account_non_expired, credentials_non_expired,
                    account_non_locked)
-VALUES ('2', 'suranga', '{bcrypt}$2a$10$wQ8vZl3Zm3.zDSIcZEYym.bGq3fPMJXH9k.Vhudcfr6O6KQwDPSt6', 'k@krishantha.com', '1',
+VALUES ('oleg', '{bcrypt}$2a$10$ODGwrk2ufy5d7T6afmACwOA/6j6rvXiP5amAMt1YjOQSdEw44QdqG', 'oleg@gmail.com', '1',
         '1', '1', '1');
+-- password - kpass
 
 INSERT INTO ROLES_USERS (ROLE_ID, USER_ID)
-VALUES (1, 1); /* krish-admin */
+VALUES (1, 1); /* tanya-bank_employee */
 INSERT INTO ROLES_USERS (ROLE_ID, USER_ID)
-VALUES (2, 2) /* suranga-operator */ ;
+VALUES (2, 2) /* oleg-client */ ;
