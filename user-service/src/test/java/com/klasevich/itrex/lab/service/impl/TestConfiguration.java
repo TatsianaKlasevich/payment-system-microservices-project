@@ -10,6 +10,6 @@ import java.sql.SQLException;
 public class TestConfiguration {
     @Bean(initMethod = "start", destroyMethod = "stop")
     public Server h2Server() throws SQLException {
-        return Server.createTcpServer("-tcp", "-tcpAllowOthers", "-tcpPort", "9090");
+        return Server.createTcpServer("-tcp", "-tcpAllowOthers", "-tcpPort", "9096");
     }
 }

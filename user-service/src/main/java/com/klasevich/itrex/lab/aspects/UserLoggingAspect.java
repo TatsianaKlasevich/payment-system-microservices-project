@@ -16,13 +16,13 @@ public class UserLoggingAspect {
 
     @AfterReturning("execution(* com.klasevich.itrex.lab.service.impl.UserServiceImpl.get*(*))")
     public void afterReturningGetMethodAdvice(JoinPoint joinPoint) {
-        log.info("Method {} has been invoked successfully", joinPoint.getSignature().getName());
+        log.info(">>>>>>>>>>>>>>> Method {} has been invoked successfully", joinPoint.getSignature().getName());
     }
 
     @AfterThrowing(pointcut = "execution(* com.klasevich.itrex.lab.service.impl.UserServiceImpl.*(*))"
             , throwing = "exception")
     public void afterThrowingUserServiceLoggingAdvice(JoinPoint joinPoint, Throwable exception) {
-        log.error("method {} has caught exception {}", joinPoint.getSignature().getName(), exception);
-        log.error(Arrays.toString(exception.getStackTrace()));
+        log.error(">>>>>>>>>>>>>>> method {} has caught exception {}", joinPoint.getSignature().getName(), exception);
+        log.error(">>>>>>>> print stack trace {}", Arrays.toString(exception.getStackTrace()));
     }
 }

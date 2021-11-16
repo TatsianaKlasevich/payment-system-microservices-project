@@ -24,6 +24,8 @@ ext {
     set('springCloudVersion', "Hoxton.SR1")
     mapstructVersion = '1.4.1.Final'
     mapstructSpringExtensionsVersion = '0.1.0'
+    availableProfiles = ["dev", "stable"]
+    activeProfile = "dev"
 }
 
 dependencyManagement {
@@ -31,7 +33,6 @@ dependencyManagement {
         mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
     }
 }
-
 
 dependencies {
     implementation 'org.flywaydb:flyway-core'
@@ -72,4 +73,14 @@ dependencies {
 
 test {
     useJUnitPlatform()
+}
+
+build {
+    if (project.hasProperty("profile") && availableProfiles.contains(project.profile)) {
+        activeProfile = project.profile
+    } else {
+        logger.warn("Profile not set or unknown. Use default profile: " + activeProfile)
+    }
+
+    buildDir = "build/${activeProfile}"
 }
