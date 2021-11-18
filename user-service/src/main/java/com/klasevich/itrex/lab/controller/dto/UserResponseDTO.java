@@ -14,7 +14,6 @@ import java.util.List;
 public class UserResponseDTO {
     private Long userId;
     private String email;
-    private String password;
     private String name;
     private String secondName;
     private String surname;
@@ -27,14 +26,12 @@ public class UserResponseDTO {
     public UserResponseDTO(User user) {
         userId = user.getUserId();
         email = user.getEmail();
-        password = user.getPassword();
         name = user.getName();
         secondName = user.getSecondName();
         surname = user.getSurname();
         dateOfBirth = user.getDateOfBirth();
         identityPassportNumber = user.getIdentityPassportNumber();
         phoneNumber = user.getPhoneNumber();
-        roles = user.getRoles();
         cards = user.getCards();
     }
 }

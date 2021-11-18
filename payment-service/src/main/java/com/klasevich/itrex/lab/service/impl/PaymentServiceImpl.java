@@ -71,7 +71,7 @@ public class PaymentServiceImpl implements PaymentService {
 
     private Card getDefaultCard(Long userId) {
         return cardService.getCardsByUserId(userId).stream()
-                .filter(Card::isDefault)
+                .filter(Card::getIsDefault)
                 .findAny()
                 .orElseThrow(() -> new PaymentServiceException("Unable to find default card for person: " + userId));
     }

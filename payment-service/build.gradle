@@ -33,9 +33,6 @@ dependencyManagement {
 }
 
 dependencies {
-    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.7.1'
-    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.7.1'
-
     implementation 'org.flywaydb:flyway-core'
     implementation 'com.h2database:h2'
 
@@ -48,7 +45,7 @@ dependencies {
     implementation "org.springframework.boot:spring-boot-starter-amqp"
     implementation "org.springframework.boot:spring-boot-starter-actuator"
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
-    implementation 'org.springframework.boot:spring-boot-devtools'
+//    implementation 'org.springframework.boot:spring-boot-devtools'
 
     implementation 'org.springframework.cloud:spring-cloud-starter-config'
     implementation 'org.springframework.cloud:spring-cloud-starter-openfeign'
@@ -62,6 +59,19 @@ dependencies {
     annotationProcessor "org.mapstruct.extensions.spring:mapstruct-spring-extensions:${mapstructSpringExtensionsVersion}"
 
     implementation 'io.springfox:springfox-boot-starter:3.0.0'
+
+
+    testImplementation "org.springframework.boot:spring-boot-starter-test"
+    testImplementation 'com.h2database:h2'
+    testImplementation "org.mockito:mockito-core"
+    testImplementation "org.assertj:assertj-core"
+    testImplementation "org.testng:testng:6.9.10"
+    testImplementation 'org.jmockit:jmockit:1.49'
+    testImplementation "junit:junit:4.13"
+    testImplementation "org.junit.jupiter:junit-jupiter"
+    testImplementation 'org.junit.jupiter:junit-jupiter-api'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine'
+    testRuntimeOnly "org.junit.vintage:junit-vintage-engine"
 }
 
 test {

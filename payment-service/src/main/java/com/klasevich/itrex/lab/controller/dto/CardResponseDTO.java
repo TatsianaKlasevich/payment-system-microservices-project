@@ -5,12 +5,16 @@ import com.klasevich.itrex.lab.persistance.entity.CardStatus;
 import com.klasevich.itrex.lab.persistance.entity.Currency;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
 @AllArgsConstructor
+@NoArgsConstructor
 @Getter
+@Setter
 public class CardResponseDTO {
     private Long cardId;
 
@@ -28,17 +32,17 @@ public class CardResponseDTO {
 
     private Long cvvCode;
 
-    private Long personId;
+    private Long userId;
 
     public CardResponseDTO(Card card) {
         cardId = card.getCardId();
         balance = card.getBalance();
         currency = card.getCurrency();
-        isDefault = card.isDefault();
+        isDefault = card.getIsDefault();
         cardNumber = card.getCardNumber();
         cardStatus = card.getCardStatus();
         expirationDate = card.getExpirationDate();
         cvvCode = card.getCvvCode();
-        personId = card.getUserId();
+        userId = card.getUserId();
     }
 }

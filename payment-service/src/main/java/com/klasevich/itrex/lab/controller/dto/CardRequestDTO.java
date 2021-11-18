@@ -26,5 +26,5 @@ public class CardRequestDTO {
 
     private Long cvvCode;
 
-    private Long personId;
+    private Long userId;
 }

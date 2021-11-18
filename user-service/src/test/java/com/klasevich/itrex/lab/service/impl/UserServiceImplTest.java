@@ -22,11 +22,10 @@ class UserServiceImplTest {
     private UserService userService;
 
     @Test
-    void getUserByIdEmailShouldBeTheSame() {
+    void getUserByIdEmail_ShouldBeTheSame() {
         // given
         UserRequestDTO user = UserRequestDTO.builder()
                 .email("sergi@gmail.com")
-                .password("e12345")
                 .name("Tanya")
                 .secondName("Konstantinovich")
                 .surname("Petrov")

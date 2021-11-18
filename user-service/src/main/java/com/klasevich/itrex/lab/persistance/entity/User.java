@@ -22,8 +22,6 @@ public class User extends BaseEntity {
 
     private String email;
 
-    private String password;
-
     private String name;
 
     @Column(name = "second_name")
@@ -39,9 +37,6 @@ public class User extends BaseEntity {
 
     @Column(name = "phone_number")
     private String phoneNumber;
-
-    @ElementCollection
-    private List<Long> roles;
 
     @ElementCollection
     private List<Long> cards;

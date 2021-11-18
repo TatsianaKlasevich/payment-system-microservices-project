@@ -31,7 +31,7 @@ public class Card extends BaseEntity {
     private Long cardNumber;
 
     @Column(name = "is_default")
-    private boolean isDefault;
+    private Boolean isDefault;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "card_status")
@@ -46,7 +46,7 @@ public class Card extends BaseEntity {
     @Column(name = "user_id")
     private Long userId;
 
-    public Card(BigDecimal balance, Currency currency, Long cardNumber, boolean isDefault,
+    public Card(BigDecimal balance, Currency currency, Long cardNumber, Boolean isDefault,
                 CardStatus cardStatus, LocalDate expirationDate, Long cvvCode, Long userId) {
         this.balance = balance;
         this.currency = currency;
