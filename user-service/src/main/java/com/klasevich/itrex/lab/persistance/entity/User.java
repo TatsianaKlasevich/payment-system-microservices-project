@@ -6,9 +6,8 @@ import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.List;
 
-@Getter
-@Setter
 @EqualsAndHashCode(callSuper = false)
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder

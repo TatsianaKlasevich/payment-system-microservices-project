@@ -1,10 +1,11 @@
 package com.klasevich.itrex.lab.service.impl;
 
-import com.klasevich.itrex.lab.controller.dto.PaymentResponseDTO;
+import com.klasevich.itrex.lab.controller.dto.DepositResponseDTO;
 import com.klasevich.itrex.lab.exception.PaymentServiceException;
 import com.klasevich.itrex.lab.feign.UserResponseDTO;
 import com.klasevich.itrex.lab.feign.UserServiceClient;
 import com.klasevich.itrex.lab.persistance.entity.Card;
+import com.klasevich.itrex.lab.persistance.entity.Payment;
 import com.klasevich.itrex.lab.persistance.repository.PaymentRepository;
 import com.klasevich.itrex.lab.service.CardService;
 import org.junit.jupiter.api.Assertions;
@@ -51,9 +52,10 @@ class PaymentServiceImplTest {
         UserResponseDTO userResponseDTO = createUserResponseDTO();
         Mockito.when(cardService.getCardById(ArgumentMatchers.anyLong())).thenReturn(card);
         Mockito.when(userServiceClient.getUserById(ArgumentMatchers.anyLong())).thenReturn(userResponseDTO);
+        Payment payment = Payment.builder().userId(null).cardId(1L).amount(BigDecimal.valueOf(1000)).build();
 
         //when
-        PaymentResponseDTO deposit = paymentService.deposit(null, 1L, BigDecimal.valueOf(1000));
+        DepositResponseDTO deposit = paymentService.deposit(payment);
         String expected = deposit.getMail();
 
         //then
@@ -64,11 +66,12 @@ class PaymentServiceImplTest {
     void checkPaymentServiceException() {
         //given
         String message = "User or card doesn't exist";
+        Payment payment = Payment.builder().userId(null).cardId(1L).amount(BigDecimal.valueOf(1000)).build();
 
         // when
         PaymentServiceException exception = assertThrows(PaymentServiceException.class,
                 () -> {
-                    paymentService.deposit(null, null, BigDecimal.valueOf(1000));
+                    paymentService.deposit(payment);
                 });
 
         // then

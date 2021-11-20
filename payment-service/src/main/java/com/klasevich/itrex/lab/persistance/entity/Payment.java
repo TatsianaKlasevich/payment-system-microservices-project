@@ -1,13 +1,11 @@
 package com.klasevich.itrex.lab.persistance.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
 
+@EqualsAndHashCode(callSuper = false)
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -16,13 +14,15 @@ import java.math.BigDecimal;
 @Table(name = "payments")
 public class Payment extends BaseEntity {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long paymentId;
 
-    private int sender;
+    @Column(name = "user_id")
+    private Long userId;
 
-    private Long recipient;//todo cardId
+    @Column(name = "card_id")
+    private Long cardId;
 
     private String email;
 
@@ -30,22 +30,14 @@ public class Payment extends BaseEntity {
 
     @Enumerated(EnumType.STRING)
     @Column(name = "payment_status")
-    private PaymentStatus paymentStatus;
+    private PaymentStatus paymentStatus;//todo
 
-    private int unp;
+    private int unp;//todo
 
     @Column(name = "purpose_of_payment")
-    private String purposeOfPayment;
+    private String purposeOfPayment;//todo
 
-//    @Column(name = "payment_date")
-//    private Timestamp paymentDate; //OffSetDateTime
 
     @Column(name = "bank_code")
-    private String bankCode;
-
-    public Payment(Long recipient, String email, BigDecimal amount) {
-        this.recipient = recipient;
-        this.email = email;
-        this.amount = amount;
-    }
+    private String bankCode;//todo
 }

@@ -2,7 +2,7 @@ package com.klasevich.itrex.lab.service.impl;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.klasevich.itrex.lab.controller.dto.PaymentResponseDTO;
+import com.klasevich.itrex.lab.controller.dto.DepositResponseDTO;
 import com.klasevich.itrex.lab.exception.PaymentServiceException;
 import com.klasevich.itrex.lab.feign.UserResponseDTO;
 import com.klasevich.itrex.lab.feign.UserServiceClient;
@@ -28,45 +28,49 @@ public class PaymentServiceImpl implements PaymentService {
     private final CardService cardService;
     private final RabbitTemplate rabbitTemplate;
 
-    public PaymentResponseDTO deposit(Long userId, Long cardId, BigDecimal amount) {
-        if (userId == null && cardId == null) {
+    public DepositResponseDTO deposit(Payment payment) {
+        if (payment.getUserId() == null && payment.getCardId() == null) {
             throw new PaymentServiceException("User or card doesn't exist");
         }
 
-        if (cardId != null) {
-            Card card = cardService.getCardById(cardId);
-            BigDecimal newBalance = card.getBalance().add(amount);
+        if (payment.getCardId() != null) {
+            Card card = cardService.getCardById(payment.getCardId());
+            BigDecimal newBalance = card.getBalance().add(payment.getAmount());
             cardService.updateCard(card);
 
             UserResponseDTO userResponseDTO = userServiceClient.getUserById(card.getUserId());
-            paymentRepository.save(new Payment(cardId, userResponseDTO.getEmail(), newBalance));
+            payment.setEmail(userResponseDTO.getEmail());
+            payment.setAmount(newBalance);
+            paymentRepository.save(payment);
 
             return createResponse(newBalance, userResponseDTO);
         }
 
-        Card defaultCard = getDefaultCard(userId);
-        BigDecimal newBalance = defaultCard.getBalance().add(amount);
+        Card defaultCard = getDefaultCard(payment.getUserId());
+        BigDecimal newBalance = defaultCard.getBalance().add(payment.getAmount());
         cardService.updateCard(defaultCard);
 
         UserResponseDTO userResponseDTO = userServiceClient.getUserById(defaultCard.getUserId());
-        paymentRepository.save(new Payment(defaultCard.getCardId(), userResponseDTO.getEmail(), newBalance));
+        payment.setEmail(userResponseDTO.getEmail());
+        payment.setAmount(newBalance);
+        paymentRepository.save(payment);
 
         return createResponse(newBalance, userResponseDTO);
     }
 
-    private PaymentResponseDTO createResponse(BigDecimal newBalance, UserResponseDTO userResponseDTO) {
-        PaymentResponseDTO paymentResponseDTO = new PaymentResponseDTO(newBalance, userResponseDTO.getEmail());
+    private DepositResponseDTO createResponse(BigDecimal newBalance, UserResponseDTO userResponseDTO) {
+        DepositResponseDTO depositResponseDTO = new DepositResponseDTO(newBalance, userResponseDTO.getEmail());
 
         ObjectMapper objectMapper = new ObjectMapper();
         try {
             rabbitTemplate
                     .convertAndSend(TOPIC_EXCHANGE_PAYMENT, ROUTING_KEY_PAYMENT,
-                            objectMapper.writeValueAsString(paymentResponseDTO));
+                            objectMapper.writeValueAsString(depositResponseDTO));
         } catch (JsonProcessingException e) {
             e.printStackTrace();
             throw new PaymentServiceException("Can't send message to RabbitMQ");
         }
-        return paymentResponseDTO;
+        return depositResponseDTO;
     }
 
     private Card getDefaultCard(Long userId) {

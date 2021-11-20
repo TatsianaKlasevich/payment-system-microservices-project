@@ -1,10 +1,9 @@
 package com.klasevich.itrex.lab.service;
 
-import com.klasevich.itrex.lab.controller.dto.PaymentResponseDTO;
-
-import java.math.BigDecimal;
+import com.klasevich.itrex.lab.controller.dto.DepositResponseDTO;
+import com.klasevich.itrex.lab.persistance.entity.Payment;
 
 public interface PaymentService {
 
-    PaymentResponseDTO deposit(Long userId, Long cardId, BigDecimal amount);
+    DepositResponseDTO deposit(Payment payment);
 }

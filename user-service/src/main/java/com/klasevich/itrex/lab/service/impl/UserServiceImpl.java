@@ -1,9 +1,7 @@
 package com.klasevich.itrex.lab.service.impl;
 
-import com.klasevich.itrex.lab.controller.dto.UserRequestDTO;
 import com.klasevich.itrex.lab.controller.dto.UserResponseDTO;
 import com.klasevich.itrex.lab.exception.UserNotFoundException;
-import com.klasevich.itrex.lab.mappers.UserRequestDTOToUserMapper;
 import com.klasevich.itrex.lab.persistance.entity.User;
 import com.klasevich.itrex.lab.persistance.repository.UserRepository;
 import com.klasevich.itrex.lab.service.UserService;
@@ -18,7 +16,6 @@ import java.util.stream.Collectors;
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
-    private final UserRequestDTOToUserMapper userRequestDTOToUserMapper;
 
 
     public User getUserById(Long userId) {
@@ -26,14 +23,11 @@ public class UserServiceImpl implements UserService {
                 "with id: " + userId));
     }
 
-    public Long createUser(UserRequestDTO userRequestDTO) {
-        User user = userRequestDTOToUserMapper.convert(userRequestDTO);
+    public Long createUser(User user) {
         return userRepository.save(user).getUserId();
     }
 
-    public User updateUser(Long userId, UserRequestDTO userRequestDTO) {
-        User user = userRequestDTOToUserMapper.convert(userRequestDTO);
-        user.setUserId(userId);
+    public User updateUser(User user) {
         return userRepository.save(user);
     }
 

@@ -1,6 +1,5 @@
 package com.klasevich.itrex.lab.service.impl;
 
-import com.klasevich.itrex.lab.controller.dto.UserRequestDTO;
 import com.klasevich.itrex.lab.exception.UserNotFoundException;
 import com.klasevich.itrex.lab.persistance.entity.User;
 import com.klasevich.itrex.lab.service.UserService;
@@ -24,7 +23,7 @@ class UserServiceImplTest {
     @Test
     void getUserByIdEmail_ShouldBeTheSame() {
         // given
-        UserRequestDTO user = UserRequestDTO.builder()
+        User user = User.builder()
                 .email("sergi@gmail.com")
                 .name("Tanya")
                 .secondName("Konstantinovich")

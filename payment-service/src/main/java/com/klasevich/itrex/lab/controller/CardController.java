@@ -2,6 +2,8 @@ package com.klasevich.itrex.lab.controller;
 
 import com.klasevich.itrex.lab.controller.dto.CardRequestDTO;
 import com.klasevich.itrex.lab.controller.dto.CardResponseDTO;
+import com.klasevich.itrex.lab.mappers.CardRequestDTOToCardMapper;
+import com.klasevich.itrex.lab.persistance.entity.Card;
 import com.klasevich.itrex.lab.service.CardService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -17,6 +19,7 @@ import java.util.stream.Collectors;
 @Api("Card controller")
 public class CardController {
     private final CardService cardService;
+    private final CardRequestDTOToCardMapper cardRequestDTOToCardMapper;
 
     @GetMapping("/{cardId}")
     @ApiOperation("get card")
@@ -27,14 +30,17 @@ public class CardController {
     @PostMapping("/")
     @ApiOperation("create card")
     public Long createCard(@RequestBody CardRequestDTO cardRequestDTO) {
-        return cardService.createCard(cardRequestDTO);
+        Card card = cardRequestDTOToCardMapper.convert(cardRequestDTO);
+        return cardService.createCard(card);
     }
 
     @PutMapping("/{cardId}")
     @ApiOperation("update card")
     public CardResponseDTO updateCard(@PathVariable Long cardId,
                                       @RequestBody CardRequestDTO cardRequestDTO) {
-        return new CardResponseDTO(cardService.updateCard(cardId, cardRequestDTO));
+        Card card = cardRequestDTOToCardMapper.convert(cardRequestDTO);
+        card.setUserId(cardId);
+        return new CardResponseDTO(cardService.updateCard(card));
     }
 
     @DeleteMapping("/{cardId}")

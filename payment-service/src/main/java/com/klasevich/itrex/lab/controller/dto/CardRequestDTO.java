@@ -1,30 +1,43 @@
 package com.klasevich.itrex.lab.controller.dto;
 
 import com.klasevich.itrex.lab.persistance.entity.CardStatus;
-import com.klasevich.itrex.lab.persistance.entity.Currency;
-import lombok.Data;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
+import javax.validation.constraints.*;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
-@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Getter
+@Setter
 public class CardRequestDTO {
 
-    private Long cardId;
-
+    @PositiveOrZero(message = "Balance should be positive number or 0")
+    @Pattern(regexp = "\\d,\\d{2}", message = "Balance should look like 0,00")
     private BigDecimal balance;
 
-    private Currency currency;
-
+    @AssertTrue
     private Boolean isDefault;
 
+    @NotEmpty(message = "Card number should not be empty")
+    @Size(min = 16, max = 16, message = "Card number should have 16 characters")
     private Long cardNumber;
 
+    @NotEmpty(message = "Card number should not be empty")
+    @Size(min = 3, max = 15, message = "Card status should be between 3 and 15 characters")
     private CardStatus cardStatus;
 
+    @NotEmpty(message = "Date of birth should not be empty")
+    @Future(message = "Date of birth should be after current")
     private LocalDate expirationDate;
 
-    private Long cvvCode;
-
+    @NotEmpty(message = "User id should not be empty")
+    @Positive(message = "User id should be positive number")
     private Long userId;
 }
+
+

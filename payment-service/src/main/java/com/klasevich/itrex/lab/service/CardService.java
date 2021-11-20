@@ -1,6 +1,5 @@
 package com.klasevich.itrex.lab.service;
 
-import com.klasevich.itrex.lab.controller.dto.CardRequestDTO;
 import com.klasevich.itrex.lab.persistance.entity.Card;
 import org.springframework.stereotype.Service;
 
@@ -15,9 +14,8 @@ public interface CardService {
 
     List<Card> getCardsByUserId(Long userId);
 
-    Long createCard(CardRequestDTO cardRequestDTO);
+    Long createCard(Card card);
 
-    Card updateCard(Long cardId, CardRequestDTO cardRequestDTO);
+    Card updateCard(Card card);
 
-    void updateCard(Card card);
 }

@@ -1,7 +1,9 @@
 package com.klasevich.itrex.lab.controller;
 
-import com.klasevich.itrex.lab.controller.dto.PaymentRequestDTO;
-import com.klasevich.itrex.lab.controller.dto.PaymentResponseDTO;
+import com.klasevich.itrex.lab.controller.dto.DepositRequestDTO;
+import com.klasevich.itrex.lab.controller.dto.DepositResponseDTO;
+import com.klasevich.itrex.lab.mappers.DepositRequestDTOToPaymentMapper;
+import com.klasevich.itrex.lab.persistance.entity.Payment;
 import com.klasevich.itrex.lab.service.PaymentService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -17,10 +19,12 @@ import org.springframework.web.bind.annotation.RestController;
 @Api("Payment controller")
 public class PaymentController {
     private final PaymentService paymentService;
+    private final DepositRequestDTOToPaymentMapper depositRequestDTOToPaymentMapper;
 
     @PostMapping("/deposit")
     @ApiOperation("make deposit")
-    public PaymentResponseDTO deposit(@RequestBody PaymentRequestDTO requestDTO) {
-        return paymentService.deposit(requestDTO.getUserId(), requestDTO.getCardId(), requestDTO.getAmount());
+    public DepositResponseDTO deposit(@RequestBody DepositRequestDTO depositRequestDTO) {
+        Payment payment = depositRequestDTOToPaymentMapper.convert(depositRequestDTO);
+        return paymentService.deposit(payment);
     }
 }

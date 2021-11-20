@@ -1,14 +1,12 @@
 package com.klasevich.itrex.lab.persistance.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
+@EqualsAndHashCode(callSuper = false)
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -24,9 +22,6 @@ public class Card extends BaseEntity {
 
     private BigDecimal balance;
 
-    @Enumerated(EnumType.STRING)
-    private Currency currency;
-
     @Column(name = "card_number")
     private Long cardNumber;
 
@@ -40,21 +35,6 @@ public class Card extends BaseEntity {
     @Column(name = "expiration_date")
     private LocalDate expirationDate;
 
-    @Column(name = "cvv_code")
-    private Long cvvCode;
-
     @Column(name = "user_id")
     private Long userId;
-
-    public Card(BigDecimal balance, Currency currency, Long cardNumber, Boolean isDefault,
-                CardStatus cardStatus, LocalDate expirationDate, Long cvvCode, Long userId) {
-        this.balance = balance;
-        this.currency = currency;
-        this.cardNumber = cardNumber;
-        this.isDefault = isDefault;
-        this.cardStatus = cardStatus;
-        this.expirationDate = expirationDate;
-        this.cvvCode = cvvCode;
-        this.userId = userId;
-    }
 }

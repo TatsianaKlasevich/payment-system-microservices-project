@@ -7,17 +7,17 @@ CREATE TABLE IF NOT EXISTS users
 (
     id                       BIGINT AUTO_INCREMENT NOT NULL,
     email                    VARCHAR(25)           NOT NULL,
-    name                     VARCHAR(25),
-    second_name              VARCHAR(25),
-    surname                  VARCHAR(25),
-    date_of_birth            DATE,
-    identity_passport_number VARCHAR(25),
-    phone_number             VARCHAR(13),
+    name                     VARCHAR(30)           NOT NULL,
+    second_name              VARCHAR(30)           NOT NULL,
+    surname                  VARCHAR(30)           NOT NULL,
+    date_of_birth            DATE                  NOT NULL,
+    identity_passport_number VARCHAR(14)           NOT NULL,
+    phone_number             VARCHAR(13)           NOT NULL,
     create_at                TIMESTAMP,
     updated_at               TIMESTAMP,
     PRIMARY KEY (id),
     CONSTRAINT UNIQUE_EMAIL UNIQUE (email),
-    CONSTRAINT UNIQUE_IDENTITY_PASSPORT_NUMBER UNIQUE (identity_passport_number)
+    CONSTRAINT UNIQUE_PASSPORT_NUMBER UNIQUE (identity_passport_number)
 );
 
 

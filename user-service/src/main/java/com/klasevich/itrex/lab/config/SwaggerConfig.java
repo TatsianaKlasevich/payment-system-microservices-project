@@ -13,7 +13,8 @@ import springfox.documentation.spring.web.plugins.Docket;
 public class SwaggerConfig {
     private static final String CLIENT_ID = "mobile";
     private static final String CLIENT_SECRET = "pin";
-    private static final String AUTH_SERVER = "http://localhost:8081/users";
+    private static final String AUTH_SERVER = "http://localhost:8081/users/v1/oauth/token";
+    private static final String SWAGGER_API_NAME = "Payment system API";
 
     @Bean
     public Docket api() {
@@ -24,8 +25,8 @@ public class SwaggerConfig {
                 .build();
 //                .securitySchemes(List.of(securityScheme()))
 //                .securityContexts(List.of(securityContext()));
-    }
-
+//    }
+//
 //    @Bean
 //    public SecurityConfiguration security() {
 //        return SecurityConfigurationBuilder.builder()
@@ -37,32 +38,26 @@ public class SwaggerConfig {
 //    }
 //
 //    private SecurityScheme securityScheme() {
-//        GrantType grantType = new AuthorizationCodeGrantBuilder()
-//                .tokenEndpoint(new TokenEndpoint(AUTH_SERVER + "/token", "oauthtoken"))
-//                .tokenRequestEndpoint(
-//                        new TokenRequestEndpoint(AUTH_SERVER + "/authorize", CLIENT_ID, CLIENT_SECRET))
+//        return new OAuthBuilder()
+//                .grantTypes(Collections.singletonList(
+//                        new ResourceOwnerPasswordCredentialsGrant(AUTH_SERVER)))
+//                .name(SWAGGER_API_NAME)
 //                .build();
-//
-//        SecurityScheme oauth = new OAuthBuilder().name("spring_oauth")
-//                .grantTypes(List.of(grantType))
-//                .scopes(Arrays.asList(scopes()))
-//                .build();
-//        return oauth;
-//    }
-//
-//    private AuthorizationScope[] scopes() {
-//        AuthorizationScope[] scopes = {
-//                new AuthorizationScope("read", "for read operations"),
-//                new AuthorizationScope("write", "for write operations")};
-//        return scopes;
 //    }
 //
 //    private SecurityContext securityContext() {
 //        return SecurityContext.builder()
-//                .securityReferences(
-//                        Arrays.asList(new SecurityReference("spring_oauth", scopes())))
-//                .forPaths(PathSelectors.regex("/users.*"))
+//                .forPaths(PathSelectors.any())
+//                .securityReferences(Collections.singletonList(SecurityReference.builder()
+//                        .scopes(new AuthorizationScope[0])
+//                        .reference(SWAGGER_API_NAME)
+//                        .build()))
 //                .build();
 //    }
+
+    }
 }
+
+
+
 
