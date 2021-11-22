@@ -28,6 +28,7 @@ public class PaymentServiceImpl implements PaymentService {
     private final CardService cardService;
     private final RabbitTemplate rabbitTemplate;
 
+    @Override
     public DepositResponseDTO deposit(Payment payment) {
         if (payment.getUserId() == null && payment.getCardId() == null) {
             throw new PaymentServiceException("User or card doesn't exist");

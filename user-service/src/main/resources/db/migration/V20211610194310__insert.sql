@@ -8,7 +8,7 @@ VALUES ('klasevich.t@gmail.com', 'Tanya', 'Vladimirovna',
         '2364NK324545L2', '+375339046767'),
        ('vlad@gmail.com', 'Vladislav', 'Borisovich',
         'Eremenko', '1979-06-19', '8923NK324545L2', '+375445546767'),
-       ('stas@gmail.com', 'Vladislav', 'Andreevich',
+       ('stas@gmail.com', 'Stanislav', 'Andreevich',
         'Korg', '1966-02-17', '7854NK324545L2', '+375447895767'),
        ('sergey@gmail.com', 'Sergey', 'Konstantinovich',
         'Petrov', '1989-09-11', '1214NK784545L8', '+375443650684');

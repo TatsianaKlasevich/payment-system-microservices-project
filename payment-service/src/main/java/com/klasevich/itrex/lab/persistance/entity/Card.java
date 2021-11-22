@@ -23,7 +23,7 @@ public class Card extends BaseEntity {
     private BigDecimal balance;
 
     @Column(name = "card_number")
-    private Long cardNumber;
+    private String cardNumber;
 
     @Column(name = "is_default")
     private Boolean isDefault;

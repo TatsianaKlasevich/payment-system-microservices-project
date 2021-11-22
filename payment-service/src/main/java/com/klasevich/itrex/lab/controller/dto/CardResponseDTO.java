@@ -21,7 +21,7 @@ public class CardResponseDTO {
 
     private Boolean isDefault;
 
-    private Long cardNumber;
+    private String cardNumber;
 
     private CardStatus cardStatus;
 

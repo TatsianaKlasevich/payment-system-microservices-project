@@ -8,6 +8,7 @@ import com.klasevich.itrex.lab.service.CardService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -22,20 +23,23 @@ public class CardController {
     private final CardRequestDTOToCardMapper cardRequestDTOToCardMapper;
 
     @GetMapping("/{cardId}")
-    @ApiOperation("get card")
+    @ApiOperation("Get card by id")
+    @PreAuthorize("hasAuthority('read_card')")
     public CardResponseDTO getCard(@PathVariable Long cardId) {
         return new CardResponseDTO(cardService.getCardById(cardId));
     }
 
     @PostMapping("/")
-    @ApiOperation("create card")
+    @ApiOperation("Create card")
+    @PreAuthorize("hasAuthority('create_card')")
     public Long createCard(@RequestBody CardRequestDTO cardRequestDTO) {
         Card card = cardRequestDTOToCardMapper.convert(cardRequestDTO);
         return cardService.createCard(card);
     }
 
     @PutMapping("/{cardId}")
-    @ApiOperation("update card")
+    @ApiOperation("Update card")
+    @PreAuthorize("hasAuthority('update_card')")
     public CardResponseDTO updateCard(@PathVariable Long cardId,
                                       @RequestBody CardRequestDTO cardRequestDTO) {
         Card card = cardRequestDTOToCardMapper.convert(cardRequestDTO);
@@ -44,16 +48,25 @@ public class CardController {
     }
 
     @DeleteMapping("/{cardId}")
-    @ApiOperation("delete card")
+    @ApiOperation("Delete card")
+    @PreAuthorize("hasAuthority('delete')")
     public CardResponseDTO deleteCard(@PathVariable Long cardId) {
         return new CardResponseDTO(cardService.deleteCard(cardId));
     }
 
     @GetMapping("/user/{userId}")
-    @ApiOperation("get all cards of some user")
+    @ApiOperation("Get all cards of some user")
+    @PreAuthorize("hasAuthority('read_card')")
     public List<CardResponseDTO> getCardsByUserId(@PathVariable Long userId) {
         return cardService.getCardsByUserId(userId).stream()
                 .map(CardResponseDTO::new)
                 .collect(Collectors.toList());
+    }
+
+    @GetMapping("/")
+    @ApiOperation("Get all cards")
+    @PreAuthorize("hasRole('BANK_EMPLOYEE')")
+    public List<CardResponseDTO> findAllCards() {
+        return cardService.findAllCards();
     }
 }

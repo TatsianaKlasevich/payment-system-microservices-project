@@ -24,19 +24,18 @@ public class UserController {
     private final UserRequestDTOToUserMapper userRequestDTOToUserMapper;
 
     @GetMapping("{userId}")
-    @ApiOperation(" user")
-    @PreAuthorize("hasRole('BANK_EMPLOYEE')")
+    @ApiOperation("Get user by id")
+    @PreAuthorize("hasAuthority('read_user')")
     public UserResponseDTO getUser(@PathVariable Long userId) {
         return new UserResponseDTO(userService.getUserById(userId));
     }
 
     @GetMapping()
     @ApiOperation("Get all users")
-    @PreAuthorize("hasAuthority('read_user')")
+    @PreAuthorize("hasRole('BANK_EMPLOYEE')")
     public List<UserResponseDTO> findAllUsers() {
         return userService.findAllUsers();
     }
-
 
     @PostMapping()
     @ApiOperation("Create user")
@@ -48,6 +47,7 @@ public class UserController {
 
     @PutMapping("{userId}")
     @ApiOperation("Update user")
+    @PreAuthorize("hasAuthority('update_user')")
     public UserResponseDTO updateUser(@PathVariable Long userId,
                                       @RequestBody @Valid UserRequestDTO userRequestDTO) {
         User user = userRequestDTOToUserMapper.convert(userRequestDTO);
@@ -57,6 +57,7 @@ public class UserController {
 
     @DeleteMapping("{userId}")
     @ApiOperation("Delete user")
+    @PreAuthorize("hasAuthority('delete_user')")
     public UserResponseDTO deleteUser(@PathVariable Long userId) {
         return new UserResponseDTO(userService.deleteUser(userId));
     }

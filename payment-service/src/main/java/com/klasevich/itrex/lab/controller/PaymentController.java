@@ -8,6 +8,7 @@ import com.klasevich.itrex.lab.service.PaymentService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,7 +23,8 @@ public class PaymentController {
     private final DepositRequestDTOToPaymentMapper depositRequestDTOToPaymentMapper;
 
     @PostMapping("/deposit")
-    @ApiOperation("make deposit")
+    @ApiOperation("Make deposit")
+    @PreAuthorize("hasAnyAuthority('read_card', 'create_card', 'read_user')")
     public DepositResponseDTO deposit(@RequestBody DepositRequestDTO depositRequestDTO) {
         Payment payment = depositRequestDTOToPaymentMapper.convert(depositRequestDTO);
         return paymentService.deposit(payment);

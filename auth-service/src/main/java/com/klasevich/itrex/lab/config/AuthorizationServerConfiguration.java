@@ -1,6 +1,6 @@
 package com.klasevich.itrex.lab.config;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -14,16 +14,13 @@ import org.springframework.security.oauth2.provider.token.store.JdbcTokenStore;
 
 import javax.sql.DataSource;
 
+@RequiredArgsConstructor
 @EnableWebSecurity(debug = true)
 public class AuthorizationServerConfiguration implements AuthorizationServerConfigurer {
 
-    @Autowired
-    private PasswordEncoder passwordEncoder;
-    @Autowired
-    private DataSource dataSource;
-    @Autowired
-    private AuthenticationManager authenticationManager;
-
+    private final PasswordEncoder passwordEncoder;
+    private final DataSource dataSource;
+    private final AuthenticationManager authenticationManager;
 
     @Bean
     public TokenStore jdbcTokenStore() {
@@ -33,13 +30,11 @@ public class AuthorizationServerConfiguration implements AuthorizationServerConf
     @Override
     public void configure(AuthorizationServerSecurityConfigurer security) throws Exception {
         security.checkTokenAccess("isAuthenticated()").tokenKeyAccess("permitAll()");
-
     }
 
     @Override
     public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
         clients.jdbc(dataSource).passwordEncoder(passwordEncoder);
-
     }
 
     @Override

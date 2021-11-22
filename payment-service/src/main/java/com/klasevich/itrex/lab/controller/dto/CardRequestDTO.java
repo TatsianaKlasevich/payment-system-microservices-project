@@ -24,8 +24,8 @@ public class CardRequestDTO {
     private Boolean isDefault;
 
     @NotEmpty(message = "Card number should not be empty")
-    @Size(min = 16, max = 16, message = "Card number should have 16 characters")
-    private Long cardNumber;
+    @Pattern(regexp = "\\d{16}", message = "Card number should be valid")
+    private String cardNumber;
 
     @NotEmpty(message = "Card number should not be empty")
     @Size(min = 3, max = 15, message = "Card status should be between 3 and 15 characters")

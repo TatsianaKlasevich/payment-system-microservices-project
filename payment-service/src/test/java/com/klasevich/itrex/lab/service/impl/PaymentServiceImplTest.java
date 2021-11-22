@@ -5,6 +5,7 @@ import com.klasevich.itrex.lab.exception.PaymentServiceException;
 import com.klasevich.itrex.lab.feign.UserResponseDTO;
 import com.klasevich.itrex.lab.feign.UserServiceClient;
 import com.klasevich.itrex.lab.persistance.entity.Card;
+import com.klasevich.itrex.lab.persistance.entity.CardStatus;
 import com.klasevich.itrex.lab.persistance.entity.Payment;
 import com.klasevich.itrex.lab.persistance.repository.PaymentRepository;
 import com.klasevich.itrex.lab.service.CardService;
@@ -66,7 +67,7 @@ class PaymentServiceImplTest {
     void checkPaymentServiceException() {
         //given
         String message = "User or card doesn't exist";
-        Payment payment = Payment.builder().userId(null).cardId(1L).amount(BigDecimal.valueOf(1000)).build();
+        Payment payment = Payment.builder().userId(null).cardId(null).amount(BigDecimal.valueOf(1000)).build();
 
         // when
         PaymentServiceException exception = assertThrows(PaymentServiceException.class,
@@ -87,7 +88,7 @@ class PaymentServiceImplTest {
         userResponseDTO.setSecondName("Vladimirovna");
         userResponseDTO.setSurname("Klasevich");
         userResponseDTO.setDateOfBirth(LocalDate.of(1980, 10, 22));
-        userResponseDTO.setIdentityPassportNumber("13NKL03498");
+        userResponseDTO.setIdentityPassportNumber("13NKL03498EK4678");
         userResponseDTO.setPhoneNumber("+375448904949");
         return userResponseDTO;
     }
@@ -96,7 +97,9 @@ class PaymentServiceImplTest {
         Card card = new Card();
         card.setUserId(1L);
         card.setBalance(BigDecimal.valueOf(1000));
-        card.setCardId(1L);
+        card.setCardNumber("1934674323464675");
+        card.setCardStatus(CardStatus.ENABLED);
+        card.setExpirationDate(LocalDate.of(2025, 10, 01));
         card.setIsDefault(true);
         return card;
     }

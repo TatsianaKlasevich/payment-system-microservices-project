@@ -17,20 +17,23 @@ public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
 
-
+    @Override
     public User getUserById(Long userId) {
         return userRepository.findById(userId).orElseThrow(() -> new UserNotFoundException("Unable to find user " +
                 "with id: " + userId));
     }
 
+    @Override
     public Long createUser(User user) {
         return userRepository.save(user).getUserId();
     }
 
+    @Override
     public User updateUser(User user) {
         return userRepository.save(user);
     }
 
+    @Override
     public User deleteUser(Long userId) {
         User deletedUser = getUserById(userId);
         userRepository.deleteById(userId);

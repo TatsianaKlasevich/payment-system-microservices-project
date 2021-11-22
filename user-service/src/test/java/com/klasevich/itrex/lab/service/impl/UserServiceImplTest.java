@@ -25,11 +25,11 @@ class UserServiceImplTest {
         // given
         User user = User.builder()
                 .email("sergi@gmail.com")
-                .name("Tanya")
+                .name("Serg")
                 .secondName("Konstantinovich")
                 .surname("Petrov")
                 .dateOfBirth(LocalDate.of(1989, 9, 11))
-                .identityPassportNumber("123214NK784545L")
+                .identityPassportNumber("123214NK78454L")
                 .phoneNumber("+375443650684")
                 .build();
         Long id = userService.createUser(user);
