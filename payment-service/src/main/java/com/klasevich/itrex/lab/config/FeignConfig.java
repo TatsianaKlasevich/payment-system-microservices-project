@@ -14,7 +14,7 @@ import java.util.Arrays;
 
 public class FeignConfig {
 
-    @Value("${security.oauth2.resource.token-info-uri}")
+    @Value("${security.oauth2.client.access-token-uri}")
     private String accessTokenUri;
     @Value("${security.oauth2.client.client-id}")
     private String clientId;
@@ -42,6 +42,20 @@ public class FeignConfig {
         resourceDetails.setClientSecret(clientSecret);
         resourceDetails.setGrantType("password");
         resourceDetails.setScope(Arrays.asList(scope));
+        resourceDetails.setTokenName("bearer");
         return resourceDetails;
     }
+
+//    @Bean
+//    public RequestInterceptor requestInterceptor() {
+//
+//        return requestTemplate -> {
+//            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+//
+//            if (authentication != null && authentication.getDetails() instanceof OAuth2AuthenticationDetails) {
+//                OAuth2AuthenticationDetails details = (OAuth2AuthenticationDetails) authentication.getDetails();
+//                requestTemplate.header(HttpHeaders.AUTHORIZATION, String.format("Bearer %s", details.getTokenValue()));
+//            }
+//        };
+//    }
 }
