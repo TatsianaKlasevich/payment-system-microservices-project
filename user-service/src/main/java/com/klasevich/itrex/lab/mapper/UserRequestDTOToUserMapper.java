@@ -1,4 +1,4 @@
-package com.klasevich.itrex.lab.mappers;
+package com.klasevich.itrex.lab.mapper;
 
 import com.klasevich.itrex.lab.controller.dto.UserRequestDTO;
 import com.klasevich.itrex.lab.persistance.entity.User;

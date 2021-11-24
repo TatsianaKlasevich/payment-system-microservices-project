@@ -11,29 +11,29 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
 @Service
-public class PaymentMessageHandler {
+public class DepositMessageHandler {
     private final JavaMailSender javaMailSender;
 
     @Autowired
-    public PaymentMessageHandler(JavaMailSender javaMailSender) {
+    public DepositMessageHandler(JavaMailSender javaMailSender) {
         this.javaMailSender = javaMailSender;
     }
 
-    @RabbitListener(queues = RabbitMQConfig.QUEUE_PAYMENT) //from where come messages
+    @RabbitListener(queues = RabbitMQConfig.QUEUE_DEPOSIT) //from where come messages
     public void receive(Message message) throws JsonProcessingException {
         System.out.println("message " + message); //todo
         byte[] body = message.getBody();
         String jsonBody = new String(body);
         ObjectMapper objectMapper = new ObjectMapper();
-        PaymentResponseDTO paymentResponseDTO = objectMapper.readValue(jsonBody, PaymentResponseDTO.class);
-        System.out.println("paymentResponseDTO " + paymentResponseDTO); //todo
+        DepositResponseDTO depositResponseDTO = objectMapper.readValue(jsonBody, DepositResponseDTO.class);
+        System.out.println("depositResponseDTO " + depositResponseDTO); //todo
 
         SimpleMailMessage mailMessage = new SimpleMailMessage();
-        mailMessage.setTo(paymentResponseDTO.getMail());
+        mailMessage.setTo(depositResponseDTO.getMail());
         mailMessage.setFrom("mail@gmail.com");
 
-        mailMessage.setSubject("Payment");
-        mailMessage.setText("Payment was successful, sum: " + paymentResponseDTO.getAmount()); //todo change text
+        mailMessage.setSubject("Deposit");
+        mailMessage.setText("Deposit was successful, sum: " + depositResponseDTO.getAmount()); //todo change text
 
         try {
             javaMailSender.send(mailMessage);

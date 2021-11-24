@@ -6,3 +6,7 @@ VALUES (200, 1, '2345678934562345', 'ENABLED', '2024-09-01', 1),
        (500, 1, '8903568934562345', 'ENABLED', '2026-04-01', 3),
        (250, 1, '8903358180347045', 'ENABLED', '2024-01-01', 4);
 
+INSERT INTO PAYMENTS(id, amount, email, payment_type, card_id)
+VALUES (1, 400, 'klasevich.t@gmail.com', 'DEPOSIT', 1),
+       (2, 600, 'klasevich.t@gmail.com', 'DEPOSIT', 1);
+

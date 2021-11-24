@@ -53,7 +53,7 @@ class PaymentServiceImplTest {
         UserResponseDTO userResponseDTO = createUserResponseDTO();
         Mockito.when(cardService.getCardById(ArgumentMatchers.anyLong())).thenReturn(card);
         Mockito.when(userServiceClient.getUserById(ArgumentMatchers.anyLong())).thenReturn(userResponseDTO);
-        Payment payment = Payment.builder().userId(null).cardId(1L).amount(BigDecimal.valueOf(1000)).build();
+        Payment payment = Payment.builder().userId(null).amount(BigDecimal.valueOf(1000)).build(); //todo
 
         //when
         DepositResponseDTO deposit = paymentService.deposit(payment);
@@ -67,7 +67,7 @@ class PaymentServiceImplTest {
     void checkPaymentServiceException() {
         //given
         String message = "User or card doesn't exist";
-        Payment payment = Payment.builder().userId(null).cardId(null).amount(BigDecimal.valueOf(1000)).build();
+        Payment payment = Payment.builder().userId(null).card(null).amount(BigDecimal.valueOf(1000)).build();
 
         // when
         PaymentServiceException exception = assertThrows(PaymentServiceException.class,

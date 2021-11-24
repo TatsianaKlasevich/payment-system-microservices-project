@@ -45,17 +45,4 @@ public class FeignConfig {
         resourceDetails.setTokenName("bearer");
         return resourceDetails;
     }
-
-//    @Bean
-//    public RequestInterceptor requestInterceptor() {
-//
-//        return requestTemplate -> {
-//            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-//
-//            if (authentication != null && authentication.getDetails() instanceof OAuth2AuthenticationDetails) {
-//                OAuth2AuthenticationDetails details = (OAuth2AuthenticationDetails) authentication.getDetails();
-//                requestTemplate.header(HttpHeaders.AUTHORIZATION, String.format("Bearer %s", details.getTokenValue()));
-//            }
-//        };
-//    }
 }

@@ -9,5 +9,12 @@ import java.math.BigDecimal;
 @Setter
 public class PaymentResponseDTO {
     private BigDecimal amount;
+
     private String mail;
+
+    private Long unp;
+
+    private String purposeOfPayment;
+
+    private String bankCode;
 }

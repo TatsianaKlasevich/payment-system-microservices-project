@@ -21,9 +21,6 @@ public class Payment extends BaseEntity {
     @Column(name = "user_id")
     private Long userId;
 
-    @Column(name = "card_id")
-    private Long cardId;
-
     private String email;
 
     private BigDecimal amount;
@@ -32,12 +29,19 @@ public class Payment extends BaseEntity {
     @Column(name = "payment_status")
     private PaymentStatus paymentStatus;//todo
 
-    private int unp;//todo
+    private Long unp;//todo
 
     @Column(name = "purpose_of_payment")
     private String purposeOfPayment;//todo
 
+    @Enumerated(EnumType.STRING)
+    @Column(name = "payment_type")
+    private PaymentType paymentType;
 
     @Column(name = "bank_code")
     private String bankCode;//todo
+
+    @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+    @JoinColumn(name = "cardId")
+    private Card card;
 }

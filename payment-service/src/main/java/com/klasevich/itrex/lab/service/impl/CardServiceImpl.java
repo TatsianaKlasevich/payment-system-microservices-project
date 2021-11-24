@@ -1,6 +1,5 @@
 package com.klasevich.itrex.lab.service.impl;
 
-import com.klasevich.itrex.lab.controller.dto.CardResponseDTO;
 import com.klasevich.itrex.lab.exception.CardNotFoundException;
 import com.klasevich.itrex.lab.persistance.entity.Card;
 import com.klasevich.itrex.lab.persistance.repository.CardRepository;
@@ -9,7 +8,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
@@ -47,10 +45,7 @@ public class CardServiceImpl implements CardService {
     }
 
     @Override
-    public List<CardResponseDTO> findAllCards() {
-        List<Card> all = cardRepository.findAll();
-        return all.stream()
-                .map(CardResponseDTO::new)
-                .collect(Collectors.toList());
+    public List<Card> findAllCards() {
+        return cardRepository.findAll();
     }
 }

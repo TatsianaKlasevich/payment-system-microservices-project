@@ -5,6 +5,7 @@ import lombok.*;
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.Set;
 
 @EqualsAndHashCode(callSuper = false)
 @Data
@@ -37,4 +38,8 @@ public class Card extends BaseEntity {
 
     @Column(name = "user_id")
     private Long userId;
+
+    @OneToMany(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH},
+            mappedBy = "card")
+    private Set<Payment> payments;
 }

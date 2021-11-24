@@ -2,7 +2,7 @@ package com.klasevich.itrex.lab.controller;
 
 import com.klasevich.itrex.lab.controller.dto.UserRequestDTO;
 import com.klasevich.itrex.lab.controller.dto.UserResponseDTO;
-import com.klasevich.itrex.lab.mappers.UserRequestDTOToUserMapper;
+import com.klasevich.itrex.lab.mapper.UserRequestDTOToUserMapper;
 import com.klasevich.itrex.lab.persistance.entity.User;
 import com.klasevich.itrex.lab.service.UserService;
 import io.swagger.annotations.Api;
