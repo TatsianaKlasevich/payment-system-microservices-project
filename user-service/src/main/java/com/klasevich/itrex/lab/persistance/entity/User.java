@@ -4,7 +4,6 @@ import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDate;
-import java.util.List;
 
 @EqualsAndHashCode(callSuper = false)
 @Data
@@ -19,13 +18,16 @@ public class User extends BaseEntity {
     @Column(name = "id")
     private Long userId;
 
+    @Column(name = "email")
     private String email;
 
+    @Column(name = "name")
     private String name;
 
     @Column(name = "second_name")
     private String secondName;
 
+    @Column(name = "surname")
     private String surname;
 
     @Column(name = "date_of_birth")
@@ -36,9 +38,4 @@ public class User extends BaseEntity {
 
     @Column(name = "phone_number")
     private String phoneNumber;
-
-    @ElementCollection
-    private List<Long> cards;
-
-
 }

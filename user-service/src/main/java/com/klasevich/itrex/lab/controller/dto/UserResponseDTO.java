@@ -32,7 +32,6 @@ public class UserResponseDTO {
         dateOfBirth = user.getDateOfBirth();
         identityPassportNumber = user.getIdentityPassportNumber();
         phoneNumber = user.getPhoneNumber();
-        cards = user.getCards();
     }
 }
 

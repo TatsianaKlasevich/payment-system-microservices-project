@@ -21,6 +21,7 @@ public class Card extends BaseEntity {
     @Column(name = "id")
     private Long cardId;
 
+    @Column(name = "balance")
     private BigDecimal balance;
 
     @Column(name = "card_number")
@@ -41,5 +42,5 @@ public class Card extends BaseEntity {
 
     @OneToMany(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH},
             mappedBy = "card")
-    private Set<Payment> payments;
+    private Set<Transaction> transactions;
 }

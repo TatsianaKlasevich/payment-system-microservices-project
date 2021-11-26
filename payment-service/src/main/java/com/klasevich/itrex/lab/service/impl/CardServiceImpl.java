@@ -5,6 +5,8 @@ import com.klasevich.itrex.lab.persistance.entity.Card;
 import com.klasevich.itrex.lab.persistance.repository.CardRepository;
 import com.klasevich.itrex.lab.service.CardService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -45,7 +47,7 @@ public class CardServiceImpl implements CardService {
     }
 
     @Override
-    public List<Card> findAllCards() {
-        return cardRepository.findAll();
+    public Page<Card> findAllCards(Pageable pageable) {
+        return cardRepository.findAll(pageable);
     }
 }

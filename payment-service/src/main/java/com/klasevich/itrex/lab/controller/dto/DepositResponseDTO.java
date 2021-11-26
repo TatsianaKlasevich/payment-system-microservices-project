@@ -1,14 +1,14 @@
 package com.klasevich.itrex.lab.controller.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.math.BigDecimal;
 
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
+@Setter
+@Getter
+@Builder
 public class DepositResponseDTO {
     private BigDecimal amount;
     private String mail;

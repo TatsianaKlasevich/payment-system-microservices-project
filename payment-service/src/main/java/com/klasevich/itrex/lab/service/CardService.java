@@ -1,6 +1,8 @@
 package com.klasevich.itrex.lab.service;
 
 import com.klasevich.itrex.lab.persistance.entity.Card;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -18,5 +20,5 @@ public interface CardService {
 
     Card updateCard(Card card);
 
-    List<Card> findAllCards();
+    Page<Card> findAllCards(Pageable pageable);
 }

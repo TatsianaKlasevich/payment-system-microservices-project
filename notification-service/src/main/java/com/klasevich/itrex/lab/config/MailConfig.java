@@ -1,6 +1,6 @@
 package com.klasevich.itrex.lab.config;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
@@ -10,12 +10,12 @@ import org.springframework.mail.javamail.JavaMailSenderImpl;
 
 import java.util.Properties;
 
+@RequiredArgsConstructor
 @Configuration
 @PropertySource("classpath:mail-props.properties")
 public class MailConfig {
 
-    @Autowired
-    private Environment environment;
+    private final Environment environment;
 
     @Bean
     public JavaMailSender javaMailSender() {

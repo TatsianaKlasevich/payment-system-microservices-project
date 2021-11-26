@@ -1,9 +1,8 @@
 package com.klasevich.itrex.lab.service;
 
-import com.klasevich.itrex.lab.controller.dto.UserResponseDTO;
 import com.klasevich.itrex.lab.persistance.entity.User;
-
-import java.util.List;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 public interface UserService {
 
@@ -15,5 +14,5 @@ public interface UserService {
 
     User updateUser(User user);
 
-    List<UserResponseDTO> findAllUsers();
+    Page<User> findAllUsers(Pageable pageable);
 }

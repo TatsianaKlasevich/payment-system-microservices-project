@@ -7,16 +7,14 @@ import java.math.BigDecimal;
 
 @Data
 public class PaymentRequestDTO {
-    @NotEmpty(message = "User id should not be empty")
     @Positive(message = "User id should be positive number")
     private Long userId;
 
-    @NotEmpty(message = "Card id should not be empty")
     @Positive(message = "Card id should be positive number")
     private Long cardId;
 
+    @NotEmpty(message = "Amount should not be empty")
     @PositiveOrZero(message = "Balance should be positive number or 0")
-    @Pattern(regexp = "\\d,\\d{2}", message = "Balance should look like 0,00")
     private BigDecimal amount;
 
     @NotEmpty(message = "Unp should not be empty")

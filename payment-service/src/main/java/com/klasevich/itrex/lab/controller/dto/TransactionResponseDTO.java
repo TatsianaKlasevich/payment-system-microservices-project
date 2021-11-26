@@ -1,8 +1,7 @@
 package com.klasevich.itrex.lab.controller.dto;
 
-import com.klasevich.itrex.lab.persistance.entity.Payment;
-import com.klasevich.itrex.lab.persistance.entity.PaymentStatus;
-import com.klasevich.itrex.lab.persistance.entity.PaymentType;
+import com.klasevich.itrex.lab.persistance.entity.Transaction;
+import com.klasevich.itrex.lab.persistance.entity.TransactionType;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -24,13 +23,11 @@ public class TransactionResponseDTO {
 
     private BigDecimal amount;
 
-    private PaymentStatus paymentStatus;
-
     private Long unp;
 
     private String purposeOfPayment;
 
-    private PaymentType paymentType;
+    private TransactionType transactionType;
 
     private String bankCode;
 
@@ -38,17 +35,16 @@ public class TransactionResponseDTO {
 
     private Instant updateAt;
 
-    public TransactionResponseDTO(Payment payment) {
-        paymentId = payment.getPaymentId();
-        userId = payment.getUserId();
-        email = payment.getEmail();
-        amount = payment.getAmount();
-        paymentStatus = payment.getPaymentStatus();
-        unp = payment.getUnp();
-        purposeOfPayment = payment.getPurposeOfPayment();
-        paymentType = payment.getPaymentType();
-        bankCode = payment.getBankCode();
-        creatAt = payment.getCreatAt();
-        updateAt = payment.getUpdateAt();
+    public TransactionResponseDTO(Transaction transaction) {
+        paymentId = transaction.getPaymentId();
+        userId = transaction.getUserId();
+        email = transaction.getEmail();
+        amount = transaction.getAmount();
+        unp = transaction.getUnp();
+        purposeOfPayment = transaction.getPurposeOfPayment();
+        transactionType = transaction.getTransactionType();
+        bankCode = transaction.getBankCode();
+        creatAt = transaction.getCreatAt();
+        updateAt = transaction.getUpdateAt();
     }
 }

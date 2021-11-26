@@ -8,9 +8,11 @@ import com.klasevich.itrex.lab.service.CardService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -33,7 +35,7 @@ public class CardController {
     @PostMapping("cards/")
     @ApiOperation("Create card")
     @PreAuthorize("hasAuthority('create_card')")
-    public Long createCard(@RequestBody CardRequestDTO cardRequestDTO) {
+    public Long createCard(@RequestBody @Valid CardRequestDTO cardRequestDTO) {
         Card card = cardRequestDTOToCardMapper.convert(cardRequestDTO);
         return cardService.createCard(card);
     }
@@ -42,7 +44,7 @@ public class CardController {
     @ApiOperation("Update card")
     @PreAuthorize("hasAuthority('update_card')")
     public CardResponseDTO updateCard(@PathVariable Long cardId,
-                                      @RequestBody CardRequestDTO cardRequestDTO) {
+                                      @RequestBody @Valid CardRequestDTO cardRequestDTO) {
         Card card = cardRequestDTOToCardMapper.convert(cardRequestDTO);
         card.setUserId(cardId);
         return new CardResponseDTO(cardService.updateCard(card));
@@ -64,11 +66,11 @@ public class CardController {
                 .collect(Collectors.toList());
     }
 
-    @GetMapping("cards/")
-    @ApiOperation("Get all cards")
+    @GetMapping("cards/page")
+    @ApiOperation("Get all cards by some page and sort")
     @PreAuthorize("hasRole('BANK_EMPLOYEE')")
-    public List<CardResponseDTO> findAllCards() {
-        return cardService.findAllCards().stream()
+    public List<CardResponseDTO> findAllCards(Pageable pageable) {
+        return cardService.findAllCards(pageable).stream()
                 .map(CardResponseDTO::new)
                 .collect(Collectors.toList());
     }

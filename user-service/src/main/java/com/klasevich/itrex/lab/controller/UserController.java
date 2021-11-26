@@ -8,11 +8,13 @@ import com.klasevich.itrex.lab.service.UserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RequestMapping("v1")
 @RequiredArgsConstructor
@@ -31,10 +33,12 @@ public class UserController {
     }
 
     @GetMapping()
-    @ApiOperation("Get all users")
+    @ApiOperation("Get all users by some page and sort")
     @PreAuthorize("hasRole('BANK_EMPLOYEE')")
-    public List<UserResponseDTO> findAllUsers() {
-        return userService.findAllUsers();
+    public List<UserResponseDTO> findAllUsers(Pageable pageable) {
+        return userService.findAllUsers(pageable).stream()
+                .map(UserResponseDTO::new)
+                .collect(Collectors.toList());
     }
 
     @PostMapping()

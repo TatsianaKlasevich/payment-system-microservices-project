@@ -17,7 +17,6 @@ import java.time.LocalDate;
 public class CardRequestDTO {
 
     @PositiveOrZero(message = "Balance should be positive number or 0")
-    @Pattern(regexp = "\\d,\\d{2}", message = "Balance should look like 0,00")
     private BigDecimal balance;
 
     @AssertTrue

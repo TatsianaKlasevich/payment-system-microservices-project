@@ -1,16 +1,13 @@
 package com.klasevich.itrex.lab.controller.dto;
 
-import com.klasevich.itrex.lab.persistance.entity.Payment;
-import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.math.BigDecimal;
 
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
+@Setter
+@Getter
 @Builder
 public class PaymentResponseDTO {
     private BigDecimal amount;
@@ -22,13 +19,5 @@ public class PaymentResponseDTO {
     private String purposeOfPayment;
 
     private String bankCode;
-
-    public PaymentResponseDTO(Payment payment) {
-        amount = payment.getAmount();
-        mail = payment.getEmail();
-        unp = payment.getUnp();
-        purposeOfPayment = payment.getPurposeOfPayment();
-        bankCode = payment.getBankCode();
-    }
 }
 
