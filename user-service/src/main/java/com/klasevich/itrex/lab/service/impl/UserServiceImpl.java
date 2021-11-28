@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @RequiredArgsConstructor
 @Service
@@ -22,16 +23,19 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional
     public Long createUser(User user) {
         return userRepository.save(user).getUserId();
     }
 
     @Override
+    @Transactional
     public User updateUser(User user) {
         return userRepository.save(user);
     }
 
     @Override
+    @Transactional
     public User deleteUser(Long userId) {
         User deletedUser = getUserById(userId);
         userRepository.deleteById(userId);
@@ -40,7 +44,6 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public Page<User> findAllUsers(Pageable pageable) {
-        userRepository.findAll(pageable);
         return userRepository.findAll(pageable);
     }
 }

@@ -16,7 +16,7 @@ public class Transaction extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    private Long paymentId;
+    private Long transactionId;
 
     @Column(name = "user_id")
     private Long userId;
@@ -37,7 +37,7 @@ public class Transaction extends BaseEntity {
     private String purposeOfPayment;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "payment_type")
+    @Column(name = "transaction_type")
     private TransactionType transactionType;
 
     @Column(name = "bank_code")

@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -24,17 +25,20 @@ public class CardServiceImpl implements CardService {
     }
 
     @Override
+    @Transactional
     public Long createCard(Card card) {
         return cardRepository.save(card).getUserId();
     }
 
     @Override
+    @Transactional
     public Card updateCard(Card card) {
 
         return cardRepository.save(card);
     }
 
     @Override
+    @Transactional
     public Card deleteCard(Long cardId) {
         Card deletedCard = getCardById(cardId);
         cardRepository.deleteById(cardId);

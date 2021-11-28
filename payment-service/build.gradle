@@ -66,15 +66,15 @@ dependencies {
 
     testImplementation "org.springframework.boot:spring-boot-starter-test"
     testImplementation 'com.h2database:h2'
-    testImplementation "org.mockito:mockito-core"
-    testImplementation "org.assertj:assertj-core"
-    testImplementation "org.testng:testng:6.9.10"
-    testImplementation 'org.jmockit:jmockit:1.49'
-    testImplementation "junit:junit:4.13"
-    testImplementation "org.junit.jupiter:junit-jupiter"
-    testImplementation 'org.junit.jupiter:junit-jupiter-api'
-    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine'
-    testRuntimeOnly "org.junit.vintage:junit-vintage-engine"
+//    testImplementation "org.mockito:mockito-core"
+//    testImplementation "org.assertj:assertj-core"
+//    testImplementation "org.testng:testng:6.9.10"
+//    testImplementation 'org.jmockit:jmockit:1.49'
+//    testImplementation "junit:junit:4.13"
+//    testImplementation "org.junit.jupiter:junit-jupiter"
+//    testImplementation 'org.junit.jupiter:junit-jupiter-api'
+//    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine'
+//    testRuntimeOnly "org.junit.vintage:junit-vintage-engine"
 }
 
 test {

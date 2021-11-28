@@ -15,7 +15,7 @@ import java.time.Instant;
 @Getter
 @Setter
 public class TransactionResponseDTO {
-    private Long paymentId;
+    private Long transactionId;
 
     private Long userId;
 
@@ -36,7 +36,7 @@ public class TransactionResponseDTO {
     private Instant updateAt;
 
     public TransactionResponseDTO(Transaction transaction) {
-        paymentId = transaction.getPaymentId();
+        transactionId = transaction.getTransactionId();
         userId = transaction.getUserId();
         email = transaction.getEmail();
         amount = transaction.getAmount();

@@ -34,8 +34,8 @@ public class TransactionController {
     @GetMapping("/{cardId}")
     @ApiOperation("Get all payment transactions by some card id")
     @PreAuthorize("hasAnyAuthority('read_card', 'create_card', 'read_user')")
-    public List<TransactionResponseDTO> getAllPaymentsByCardId(@PathVariable Long cardId) {
-        return transactionService.getPaymentsByCardId(cardId).stream()
+    public List<TransactionResponseDTO> getAllTransactionsByCardId(@PathVariable Long cardId) {
+        return transactionService.getTransactionsByCardId(cardId).stream()
                 .map(TransactionResponseDTO::new)
                 .collect(Collectors.toList());
     }
@@ -43,8 +43,8 @@ public class TransactionController {
     @GetMapping("/page")
     @ApiOperation("Show all payments by some page and sort")
     @PreAuthorize("hasAnyAuthority('read_card', 'create_card', 'read_user')")
-    public List<TransactionResponseDTO> getAllPayments(Pageable pageable) {
-        return transactionService.getPayments(pageable).stream()
+    public List<TransactionResponseDTO> getAllTransactions(Pageable pageable) {
+        return transactionService.getAllTransactions(pageable).stream()
                 .map(TransactionResponseDTO::new)
                 .collect(Collectors.toList());
     }

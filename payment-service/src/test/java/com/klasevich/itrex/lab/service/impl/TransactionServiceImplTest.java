@@ -7,9 +7,10 @@ import com.klasevich.itrex.lab.feign.UserServiceClient;
 import com.klasevich.itrex.lab.persistance.entity.Card;
 import com.klasevich.itrex.lab.persistance.entity.CardStatus;
 import com.klasevich.itrex.lab.persistance.entity.Transaction;
-import com.klasevich.itrex.lab.persistance.repository.PaymentRepository;
+import com.klasevich.itrex.lab.persistance.entity.TransactionType;
+import com.klasevich.itrex.lab.persistance.repository.TransactionRepository;
 import com.klasevich.itrex.lab.service.CardService;
-import org.junit.jupiter.api.Assertions;
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentMatchers;
@@ -22,16 +23,14 @@ import org.springframework.test.context.ActiveProfiles;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.util.List;
 
-import static org.junit.Assert.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @ActiveProfiles("test")
 @ExtendWith(MockitoExtension.class)
 class TransactionServiceImplTest {
     @Mock
-    private PaymentRepository paymentRepository;
+    private TransactionRepository transactionRepository;
 
     @Mock
     private UserServiceClient userServiceClient;
@@ -43,64 +42,69 @@ class TransactionServiceImplTest {
     private RabbitTemplate rabbitTemplate;
 
     @InjectMocks
-    private TransactionServiceImpl paymentService;
+    private TransactionServiceImpl transactionService;
 
 
     @Test
-    void checkDepositService_withCardId_emailShouldBeTheSame() {
+    void createDeposit_withCardId_emailShouldBeTheSame() {
         //given
         Card card = createCard();
         UserResponseDTO userResponseDTO = createUserResponseDTO();
-        Mockito.when(cardService.getCardById(ArgumentMatchers.anyLong())).thenReturn(card);
         Mockito.when(userServiceClient.getUserById(ArgumentMatchers.anyLong())).thenReturn(userResponseDTO);
-        Transaction transaction = Transaction.builder().userId(null).amount(BigDecimal.valueOf(1000)).build(); //todo
+        Transaction transaction = Transaction.builder()
+                .userId(null)
+                .card(card)
+                .amount(BigDecimal.valueOf(1000))
+                .transactionType(TransactionType.DEPOSIT)
+                .build();
 
         //when
-        DepositResponseDTO deposit = paymentService.createDeposit(transaction);
-        String expected = deposit.getMail();
+        DepositResponseDTO deposit = transactionService.createDeposit(transaction);
 
         //then
-        assertEquals(expected, "tanya@gmail.com");
+        Assertions.assertThat(deposit.getMail()).isEqualTo("tanya@gmail.com");
     }
 
     @Test
     void checkPaymentServiceException() {
         //given
         String message = "User or card doesn't exist";
-        Transaction transaction = Transaction.builder().userId(null).card(null).amount(BigDecimal.valueOf(1000)).build();
+        Card card = createCard();
+        card.setCardId(null);
+        Transaction transaction = Transaction.builder().userId(null).card(card).amount(BigDecimal.valueOf(1000)).build();
 
         // when
         TransactionServiceException exception = assertThrows(TransactionServiceException.class,
                 () -> {
-                    paymentService.createDeposit(transaction);
+                    transactionService.createDeposit(transaction);
                 });
 
         // then
-        Assertions.assertEquals(message, exception.getMessage());
+        Assertions.assertThat(message).isEqualTo(exception.getMessage());
     }
 
     private UserResponseDTO createUserResponseDTO() {
-        UserResponseDTO userResponseDTO = new UserResponseDTO();
-        userResponseDTO.setUserId(1L);
-        userResponseDTO.setCards(List.of(1L, 2L, 3L));
-        userResponseDTO.setEmail("tanya@gmail.com");
-        userResponseDTO.setName("Tanya");
-        userResponseDTO.setSecondName("Vladimirovna");
-        userResponseDTO.setSurname("Klasevich");
-        userResponseDTO.setDateOfBirth(LocalDate.of(1980, 10, 22));
-        userResponseDTO.setIdentityPassportNumber("13NKL03498EK4678");
-        userResponseDTO.setPhoneNumber("+375448904949");
-        return userResponseDTO;
+        return UserResponseDTO.builder()
+                .userId(1L)
+                .email("tanya@gmail.com")
+                .name("Tanya")
+                .secondName("Vladimirovna")
+                .surname("Klasevich")
+                .dateOfBirth(LocalDate.of(1980, 10, 22))
+                .identityPassportNumber("13NKL03498EK4678")
+                .phoneNumber("+375448904949")
+                .build();
     }
 
     private Card createCard() {
-        Card card = new Card();
-        card.setUserId(1L);
-        card.setBalance(BigDecimal.valueOf(1000));
-        card.setCardNumber("1934674323464675");
-        card.setCardStatus(CardStatus.ENABLED);
-        card.setExpirationDate(LocalDate.of(2025, 10, 01));
-        card.setIsDefault(true);
-        return card;
+        return Card.builder()
+                .cardId(1L)
+                .userId(1L)
+                .balance(BigDecimal.valueOf(1000))
+                .cardNumber("1934674323464675")
+                .cardStatus(CardStatus.ENABLED)
+                .expirationDate(LocalDate.of(2025, 10, 01))
+                .isDefault(true)
+                .build();
     }
 }

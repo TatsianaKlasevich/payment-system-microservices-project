@@ -11,7 +11,7 @@ import com.klasevich.itrex.lab.feign.UserServiceClient;
 import com.klasevich.itrex.lab.persistance.entity.Card;
 import com.klasevich.itrex.lab.persistance.entity.Transaction;
 import com.klasevich.itrex.lab.persistance.entity.TransactionType;
-import com.klasevich.itrex.lab.persistance.repository.PaymentRepository;
+import com.klasevich.itrex.lab.persistance.repository.TransactionRepository;
 import com.klasevich.itrex.lab.service.CardService;
 import com.klasevich.itrex.lab.service.TransactionService;
 import lombok.RequiredArgsConstructor;
@@ -20,6 +20,7 @@ import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -35,22 +36,23 @@ public class TransactionServiceImpl implements TransactionService {
     private static final String TOPIC_EXCHANGE_TRANSFER = "js.transfer.notify.exchange";
     private static final String ROUTING_KEY_TRANSFER = "js.key.transfer";
 
-    private final PaymentRepository paymentRepository;
+    private final TransactionRepository transactionRepository;
     private final UserServiceClient userServiceClient;
     private final CardService cardService;
     private final RabbitTemplate rabbitTemplate;
 
     @Override
-    public List<Transaction> getPaymentsByCardId(Long cardId) {
-        return paymentRepository.findPaymentsByCardId(cardId);
+    public List<Transaction> getTransactionsByCardId(Long cardId) {
+        return transactionRepository.findTransactionsByCardId(cardId);
     }
 
     @Override
-    public Page<Transaction> getPayments(Pageable pageable) {
-        return paymentRepository.findAll(pageable);
+    public Page<Transaction> getAllTransactions(Pageable pageable) {
+        return transactionRepository.findAll(pageable);
     }
 
     @Override
+    @Transactional
     public DepositResponseDTO createDeposit(Transaction transaction) {
         if (transaction.getUserId() == null && transaction.getCard().getCardId() == null) {
             throw new TransactionServiceException("User or card doesn't exist");
@@ -63,7 +65,7 @@ public class TransactionServiceImpl implements TransactionService {
             UserResponseDTO userResponseDTO = userServiceClient.getUserById(card.getUserId());
             transaction.setEmail(userResponseDTO.getEmail());
             transaction.setAmount(newBalance);
-            paymentRepository.save(transaction);
+            transactionRepository.save(transaction);
 
             return createDepositResponse(newBalance, userResponseDTO);
         }
@@ -74,13 +76,14 @@ public class TransactionServiceImpl implements TransactionService {
         UserResponseDTO userResponseDTO = userServiceClient.getUserById(defaultCard.getUserId());
         transaction.setEmail(userResponseDTO.getEmail());
         transaction.setAmount(newBalance);
-        paymentRepository.save(transaction);
+        transactionRepository.save(transaction);
 
         return createDepositResponse(newBalance, userResponseDTO);
     }
 
 
     @Override
+    @Transactional
     public PaymentResponseDTO createPayment(Transaction transaction) {
 
         if (transaction.getUserId() == null && transaction.getCard().getCardId() == null) {
@@ -98,7 +101,7 @@ public class TransactionServiceImpl implements TransactionService {
             UserResponseDTO userResponseDTO = userServiceClient.getUserById(card.getUserId());
             transaction.setEmail(userResponseDTO.getEmail());
             transaction.setAmount(newBalance);
-            paymentRepository.save(transaction);
+            transactionRepository.save(transaction);
 
             return createPaymentResponse(newBalance, userResponseDTO, transaction);
         }
@@ -109,12 +112,13 @@ public class TransactionServiceImpl implements TransactionService {
         UserResponseDTO userResponseDTO = userServiceClient.getUserById(defaultCard.getUserId());
         transaction.setEmail(userResponseDTO.getEmail());
         transaction.setAmount(newBalance);
-        paymentRepository.save(transaction);
+        transactionRepository.save(transaction);
 
         return createPaymentResponse(newBalance, userResponseDTO, transaction);
     }
 
     @Override
+    @Transactional
     public TransferResponseDTO createTransfer(Transaction transaction) {
         if (transaction.getUserId() == null && transaction.getCard().getCardId() == null) {
             throw new TransactionServiceException("User or card doesn't exist");
@@ -135,7 +139,7 @@ public class TransactionServiceImpl implements TransactionService {
             UserResponseDTO userResponseDTO = userServiceClient.getUserById(cardSender.getUserId());
             transaction.setEmail(userResponseDTO.getEmail());
             transaction.setAmount(newBalance);
-            paymentRepository.save(transaction);
+            transactionRepository.save(transaction);
 
             return createTransferResponse(newBalance, userResponseDTO, transaction);
         }
@@ -150,7 +154,7 @@ public class TransactionServiceImpl implements TransactionService {
         UserResponseDTO userResponseDTO = userServiceClient.getUserById(defaultCard.getUserId());
         transaction.setEmail(userResponseDTO.getEmail());
         transaction.setAmount(newBalance);
-        paymentRepository.save(transaction);
+        transactionRepository.save(transaction);
 
         return createTransferResponse(newBalance, userResponseDTO, transaction);
     }

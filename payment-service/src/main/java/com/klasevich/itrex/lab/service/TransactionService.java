@@ -13,9 +13,9 @@ public interface TransactionService {
 
     DepositResponseDTO createDeposit(Transaction transaction);
 
-    List<Transaction> getPaymentsByCardId(Long cardId);
+    List<Transaction> getTransactionsByCardId(Long cardId);
 
-    Page<Transaction> getPayments(Pageable pageable);
+    Page<Transaction> getAllTransactions(Pageable pageable);
 
     PaymentResponseDTO createPayment(Transaction transaction);
 

@@ -20,10 +20,9 @@ CREATE TABLE IF NOT EXISTS transactions
 (
     id                 BIGINT AUTO_INCREMENT NOT NULL,
     user_id            BIGINT,
-    amount             DECIMAL,
+    amount             DECIMAL NOT NULL,
     email              VARCHAR(40),
-    payment_status     VARCHAR(25),
-    payment_type       VARCHAR(25)           NOT NULL,
+    transaction_type       VARCHAR(25)           NOT NULL,
     unp                BIGINT,
     purpose_of_payment VARCHAR(125),
     bank_code          VARCHAR(28),
