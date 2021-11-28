@@ -1,7 +1,8 @@
 plugins {
     id 'java'
-    id 'application'
     id 'org.flywaydb.flyway' version '7.4.0'
+    id 'org.springframework.boot' version '2.3.2.RELEASE'
+    id 'io.spring.dependency-management' version '1.0.8.RELEASE'
 }
 
 group 'com.klasevich'
@@ -11,46 +12,73 @@ repositories {
     mavenCentral()
 }
 
-ext {
-    javaMainClass = "com.klasevich.itrex.lab.Runner"
-    mapstructVersion = '1.4.1.Final'
-    mapstructSpringExtensionsVersion = '0.1.0'
+jar {
+    manifest {
+        attributes(
+                'Main-Class': 'com.klasevich.itrex.lab.UserApplication'
+        )
+    }
 }
 
-application {
-    mainClassName = javaMainClass
+ext {
+    set('springCloudVersion', "Hoxton.SR1")
+    mapstructVersion = '1.4.1.Final'
+    mapstructSpringExtensionsVersion = '0.1.0'
+    availableProfiles = ["dev", "stable"]
+    activeProfile = "dev"
+}
+
+dependencyManagement {
+    imports {
+        mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
+    }
 }
 
 dependencies {
-    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.1'
-    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.8.1'
+    implementation 'org.flywaydb:flyway-core'
+    implementation 'com.h2database:h2'
+    testImplementation 'com.h2database:h2'
 
-    implementation group: 'org.flywaydb', name: 'flyway-core', version: '8.0.1'
-    implementation group: 'com.h2database', name: 'h2', version: '1.4.200'
-    implementation 'org.apache.tomcat:tomcat-dbcp:9.0.52'
+    compileOnly 'org.projectlombok:lombok'
+    annotationProcessor 'org.projectlombok:lombok'
+    testCompileOnly 'org.projectlombok:lombok'
+    testAnnotationProcessor 'org.projectlombok:lombok'
 
-    compileOnly group: 'org.projectlombok', name: 'lombok', version: '1.18.12'
-    annotationProcessor group: 'org.projectlombok', name: 'lombok', version: '1.18.12'
-    testCompileOnly group: 'org.projectlombok', name: 'lombok', version: '1.18.12'
-    testAnnotationProcessor group: 'org.projectlombok', name: 'lombok', version: '1.18.12'
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework.boot:spring-boot-starter-actuator'
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testImplementation 'org.springframework.boot:spring-boot-starter-aop'
+    implementation 'javax.validation:validation-api'
+//    implementation 'org.springframework.boot:spring-boot-devtools'
 
-    implementation 'org.hibernate:hibernate-core:5.6.0.Final'
 
-    implementation 'org.apache.logging.log4j:log4j-core:2.14.1'
-    implementation 'org.apache.logging.log4j:log4j-api:2.14.1'
-
-    implementation 'org.springframework:spring-orm:5.3.12'
-    implementation 'org.springframework:spring-webmvc:5.3.12'
-    testImplementation 'org.springframework:spring-test:5.3.12'
-
+    implementation 'org.springframework.cloud:spring-cloud-starter-config'
+    implementation 'org.springframework.cloud:spring-cloud-starter-security'
+    implementation 'org.springframework.cloud:spring-cloud-starter-oauth2'
+    implementation 'org.springframework.cloud:spring-cloud-starter-openfeign'
+    implementation 'org.springframework.cloud:spring-cloud-starter-netflix-eureka-client'
+    implementation 'org.springframework.cloud:spring-cloud-starter-sleuth'   //todo logging?
+    implementation 'org.springframework.cloud:spring-cloud-starter-netflix-hystrix'
 
     implementation "org.mapstruct:mapstruct:${mapstructVersion}"
     annotationProcessor "org.mapstruct:mapstruct-processor:${mapstructVersion}"
     implementation "org.mapstruct.extensions.spring:mapstruct-spring-annotations:${mapstructSpringExtensionsVersion}"
     annotationProcessor "org.mapstruct.extensions.spring:mapstruct-spring-extensions:${mapstructSpringExtensionsVersion}"
-    implementation 'javax.annotation:javax.annotation-api:1.3.2'
+
+    implementation 'io.springfox:springfox-boot-starter:3.0.0'
 }
 
 test {
     useJUnitPlatform()
+}
+
+build {
+    if (project.hasProperty("profile") && availableProfiles.contains(project.profile)) {
+        activeProfile = project.profile
+    } else {
+        logger.warn("Profile not set or unknown. Use default profile: " + activeProfile)
+    }
+
+    buildDir = "build/${activeProfile}"
 }

@@ -1,17 +1,7 @@
 package com.klasevich.itrex.lab.persistance.repository;
 
 import com.klasevich.itrex.lab.persistance.entity.User;
+import org.springframework.data.jpa.repository.JpaRepository;
 
-import java.util.List;
-
-public interface UserRepository {
-    List<User> findAll();
-
-    void save(User user);
-
-    void saveAll(List<User> users);
-
-    void deleteById(Long id);
-
-    User findById(Long id);
+public interface UserRepository extends JpaRepository<User, Long> {
 }

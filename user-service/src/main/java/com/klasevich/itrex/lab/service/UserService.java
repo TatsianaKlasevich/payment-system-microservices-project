@@ -1,22 +1,18 @@
 package com.klasevich.itrex.lab.service;
 
-import com.klasevich.itrex.lab.persistance.dto.UserRequestDTO;
-import com.klasevich.itrex.lab.persistance.dto.UserResponseDTO;
 import com.klasevich.itrex.lab.persistance.entity.User;
-
-import java.util.List;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 public interface UserService {
 
     User getUserById(Long userId);
 
-    Long createUser(UserRequestDTO user);
+    Long createUser(User user);
 
-    void deleteUser(Long userId);
+    User deleteUser(Long userId);
 
-    void updateUser(Long userId, UserRequestDTO userRequestDTO);
+    User updateUser(User user);
 
-    List<UserResponseDTO> findAllUsers();
-
-    void saveAll(List<User> users);
+    Page<User> findAllUsers(Pageable pageable);
 }

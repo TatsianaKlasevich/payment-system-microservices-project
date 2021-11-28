@@ -1,7 +1,8 @@
 plugins {
     id 'java'
-    id 'application'
     id 'org.flywaydb.flyway' version '7.4.0'
+    id 'org.springframework.boot' version '2.3.2.RELEASE'
+    id 'io.spring.dependency-management' version '1.0.8.RELEASE'
 }
 
 group 'com.klasevich'
@@ -11,16 +12,69 @@ repositories {
     mavenCentral()
 }
 
+jar {
+    manifest {
+        attributes(
+                'Main-Class': 'com.klasevich.itrex.lab.PaymentApplication'
+        )
+    }
+}
+
 ext {
-    javaMainClass = "com.klasevich.itrex.lab.Runner"
+    set('springCloudVersion', "Hoxton.SR1")
+    mapstructVersion = '1.4.1.Final'
+    mapstructSpringExtensionsVersion = '0.1.0'
+}
+
+dependencyManagement {
+    imports {
+        mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
+    }
 }
 
 dependencies {
-    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.7.0'
-    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.7.0'
+    implementation 'org.flywaydb:flyway-core'
+    implementation 'com.h2database:h2'
 
-    implementation group: 'org.flywaydb', name: 'flyway-core', version: '8.0.1'
-    implementation group: 'com.h2database', name: 'h2', version: '1.4.200'
+    compileOnly 'org.projectlombok:lombok'
+    annotationProcessor 'org.projectlombok:lombok'
+    testCompileOnly 'org.projectlombok:lombok'
+    testAnnotationProcessor 'org.projectlombok:lombok'
+
+    implementation "org.springframework.boot:spring-boot-starter-web"
+    implementation "org.springframework.boot:spring-boot-starter-amqp"
+    implementation "org.springframework.boot:spring-boot-starter-actuator"
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    implementation 'javax.validation:validation-api'
+//    implementation 'org.springframework.boot:spring-boot-devtools'
+
+    implementation 'org.springframework.cloud:spring-cloud-starter-config'
+    implementation 'org.springframework.cloud:spring-cloud-starter-openfeign'
+    implementation 'org.springframework.cloud:spring-cloud-starter-security'
+    implementation 'org.springframework.cloud:spring-cloud-starter-oauth2'
+    implementation 'org.springframework.cloud:spring-cloud-starter-netflix-eureka-client'
+    implementation 'org.springframework.cloud:spring-cloud-starter-sleuth'
+    implementation 'org.springframework.cloud:spring-cloud-starter-netflix-hystrix'
+
+    implementation "org.mapstruct:mapstruct:${mapstructVersion}"
+    annotationProcessor "org.mapstruct:mapstruct-processor:${mapstructVersion}"
+    implementation "org.mapstruct.extensions.spring:mapstruct-spring-annotations:${mapstructSpringExtensionsVersion}"
+    annotationProcessor "org.mapstruct.extensions.spring:mapstruct-spring-extensions:${mapstructSpringExtensionsVersion}"
+
+    implementation 'io.springfox:springfox-boot-starter:3.0.0'
+
+
+    testImplementation "org.springframework.boot:spring-boot-starter-test"
+    testImplementation 'com.h2database:h2'
+//    testImplementation "org.mockito:mockito-core"
+//    testImplementation "org.assertj:assertj-core"
+//    testImplementation "org.testng:testng:6.9.10"
+//    testImplementation 'org.jmockit:jmockit:1.49'
+//    testImplementation "junit:junit:4.13"
+//    testImplementation "org.junit.jupiter:junit-jupiter"
+//    testImplementation 'org.junit.jupiter:junit-jupiter-api'
+//    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine'
+//    testRuntimeOnly "org.junit.vintage:junit-vintage-engine"
 }
 
 test {

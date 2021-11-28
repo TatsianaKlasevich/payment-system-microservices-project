@@ -1,143 +1,118 @@
 package com.klasevich.itrex.lab.service.impl;
 
-import com.klasevich.itrex.lab.persistance.dto.UserRequestDTO;
-import com.klasevich.itrex.lab.persistance.dto.UserResponseDTO;
+import com.klasevich.itrex.lab.exception.UserNotFoundException;
 import com.klasevich.itrex.lab.persistance.entity.User;
 import com.klasevich.itrex.lab.service.UserService;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.test.context.ActiveProfiles;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
-
-@ExtendWith(SpringExtension.class)
-@ContextConfiguration(classes = TestConfiguration.class)
+@SpringBootTest
+@ActiveProfiles("test")
 class UserServiceImplTest {
 
-    private final UserService userService;
+    @Autowired
+    private UserService userService;
 
-    UserServiceImplTest(UserService userService) {
-        this.userService = userService;
+    @Test
+    void createUser_getUserById_emailShouldBeTheSame() { //todo
+        // given
+        User user = createNewUser();
+        Long id = userService.createUser(user);
+        String expected = user.getEmail();
+
+        // when
+        User resultUser = userService.getUserById(id);
+        String actual = resultUser.getEmail();
+
+        // then
+        assertEquals(actual, expected);
+        userService.deleteUser(id);
     }
 
     @Test
-    void findAllValidDataShouldReturnTheNumberOfUsers() {
+    void userNotFoundException_whenUserGetByIdNotExist() {
         //given
+        Long id = userService.createUser(createNewUser());
+        userService.deleteUser(id);
+        String message = "Unable to find user with id: " + id;
+
+        // when
+        UserNotFoundException exception = assertThrows(UserNotFoundException.class,
+                () -> {
+                    userService.getUserById(id);
+                });
+
+        // then
+        assertThat(message).isEqualTo(exception.getMessage());
+    }
+
+    @Test
+    void findSomePageOfUsers_shouldReturnValidNumberOfUsers() {
+        //given
+        Long id1 = userService.createUser(createNewUser());
+        Long id2 = userService.createUser(createSecondUser());
+        Pageable pageable = PageRequest.of(1, 2);
         int expected = 2;
 
         // when
-        List<UserResponseDTO> result = userService.findAllUsers();
+        List<User> result = userService.findAllUsers(pageable).getContent();
         int actual = result.size();
 
         //then
         assertEquals(actual, expected);
+        userService.deleteUser(id1);
+        userService.deleteUser(id2);
     }
 
     @Test
-    void findByIdUserShouldBeTheSame() {
+    void updateUserAndCheck_changesShouldBeMade() {
         //given
-        User expected = User.builder()
-                .id(2L)
-                .email("segrei@gmail.com")
-                .password("e12345")
-                .name("Tanya")
-                .secondName("Konstantinovich")
-                .surname("Petrov")
-                .dateOfBirth(LocalDate.of(1989, 9, 11))
-                .identityPassportNumber("1214NK784545L")
-                .phoneNumber("+375443650684")
-                .build();
-        Long id = 2L;
-
-        // when
-        User actual = userService.getUserById(id);
-
-        //then
-        assertEquals(actual, expected);
-    }
-
-    @Test
-    void deleteUserAndCheckNumberOfUserShouldBeTheSame() {
-        //given
-        Long id = 1l;
-        Long expected = userService.findAllUsers().size() - 1l;
-
-        // when
-        userService.deleteUser(id);
-        List<UserResponseDTO> users = userService.findAllUsers();
-        int actual = users.size();
-
-        //then
-        assertEquals(actual, expected);
-    }
-
-    @Test
-    void addAllUsersNumberShouldBeRight() {
-        //given
-        List<User> users = new ArrayList<>();
-        User user1 = User.builder()
-                .email("andrey@gmail.com")
-                .password("12345s")
-                .name("Andrey")
-                .secondName("Semenovich")
-                .surname("Kryuk")
-                .dateOfBirth(LocalDate.of(1966, 03, 20))
-                .identityPassportNumber("121233NK324545L")
-                .phoneNumber("+375447088994")
-                .build();
-        users.add(user1);
-
-        User user2 = User.builder()
-                .email("kirill@gmail.com")
-                .password("12345s")
-                .name("Kirill")
-                .secondName("Vasiljevich")
-                .surname("Bondarev")
-                .dateOfBirth(LocalDate.of(1979, 03, 20))
-                .identityPassportNumber("121433NK32424545L")
-                .phoneNumber("+375447088994")
-                .build();
-        users.add(user2);
-
-        int expected = 4;
-
-        // when
-        userService.saveAll(users);
-        List<UserResponseDTO> newUsers = userService.findAllUsers();
-        int actual = newUsers.size();
-
-        //then
-        assertEquals(actual, expected);
-    }
-
-    @Test
-    void updateUserAndCheckChangesShouldBeMade() {
-        //given
-        UserRequestDTO user = UserRequestDTO.builder()
-                .email("andrey@gmail.com")
-                .password("12345s")
-                .name("Andrey")
-                .secondName("Semenovich")
-                .surname("Kryuk")
-                .dateOfBirth(LocalDate.of(1966, 03, 20))
-                .identityPassportNumber("121233NK324545L")
-                .phoneNumber("+375447088994")
-                .build();
-        Long userId = userService.createUser(user);
+        User user = createNewUser();
+        Long id = userService.createUser(user);
         user.setSurname("Gribalev");
         String expected = "Gribalev";
 
         // when
-        userService.updateUser(userId, user);
+        userService.updateUser(user);
         String actual = user.getSurname();
 
         //then
-        assertEquals(actual, expected);
+        assertThat(expected).isEqualTo(actual);
+        userService.deleteUser(id);
+    }
+
+    private User createNewUser() {
+        return User.builder()
+                .email("sergis@gmail.com")
+                .name("Serg")
+                .secondName("Konstantinovich")
+                .surname("Petrov")
+                .dateOfBirth(LocalDate.of(1989, 9, 11))
+                .identityPassportNumber("123214NK78454L")
+                .phoneNumber("+375443650684")
+                .build();
+    }
+
+    private User createSecondUser() {
+        return User.builder()
+                .email("ser@gmail.com")
+                .name("Serg")
+                .secondName("Konstantinovich")
+                .surname("Petrov")
+                .dateOfBirth(LocalDate.of(1989, 9, 11))
+                .identityPassportNumber("12K914NK78454L")
+                .phoneNumber("+375443650684")
+                .build();
     }
 }
