@@ -21,6 +21,8 @@ jar {
 
 ext {
     set('springCloudVersion', "Hoxton.SR1")
+    availableProfiles = ["dev", "stable"]
+    activeProfile = "dev"
 }
 
 dependencyManagement {
@@ -33,9 +35,16 @@ dependencyManagement {
 dependencies {
     implementation 'org.springframework.cloud:spring-cloud-config-server'
     implementation 'org.springframework.boot:spring-boot-starter-security'
+}
 
-    testImplementation 'org.junit.jupiter:junit-jupiter-api'
-    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine'
+build {
+    if (project.hasProperty("profile") && availableProfiles.contains(project.profile)) {
+        activeProfile = project.profile
+    } else {
+        logger.warn("Profile not set or unknown. Use default profile: " + activeProfile)
+    }
+
+    buildDir = "build/${activeProfile}"
 }
 
 test {

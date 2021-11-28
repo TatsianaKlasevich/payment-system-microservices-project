@@ -24,6 +24,8 @@ ext {
     set('springCloudVersion', "Hoxton.SR1")
     mapstructVersion = '1.4.1.Final'
     mapstructSpringExtensionsVersion = '0.1.0'
+    availableProfiles = ["dev", "stable"]
+    activeProfile = "dev"
 }
 
 dependencyManagement {
@@ -46,7 +48,6 @@ dependencies {
     implementation "org.springframework.boot:spring-boot-starter-actuator"
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     implementation 'javax.validation:validation-api'
-//    implementation 'org.springframework.boot:spring-boot-devtools'
 
     implementation 'org.springframework.cloud:spring-cloud-starter-config'
     implementation 'org.springframework.cloud:spring-cloud-starter-openfeign'
@@ -63,18 +64,18 @@ dependencies {
 
     implementation 'io.springfox:springfox-boot-starter:3.0.0'
 
-
     testImplementation "org.springframework.boot:spring-boot-starter-test"
     testImplementation 'com.h2database:h2'
-//    testImplementation "org.mockito:mockito-core"
-//    testImplementation "org.assertj:assertj-core"
-//    testImplementation "org.testng:testng:6.9.10"
-//    testImplementation 'org.jmockit:jmockit:1.49'
-//    testImplementation "junit:junit:4.13"
-//    testImplementation "org.junit.jupiter:junit-jupiter"
-//    testImplementation 'org.junit.jupiter:junit-jupiter-api'
-//    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine'
-//    testRuntimeOnly "org.junit.vintage:junit-vintage-engine"
+}
+
+build {
+    if (project.hasProperty("profile") && availableProfiles.contains(project.profile)) {
+        activeProfile = project.profile
+    } else {
+        logger.warn("Profile not set or unknown. Use default profile: " + activeProfile)
+    }
+
+    buildDir = "build/${activeProfile}"
 }
 
 test {
