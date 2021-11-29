@@ -18,14 +18,20 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentMatchers;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.test.context.ActiveProfiles;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.when;
 
@@ -53,10 +59,10 @@ class TransactionServiceImplTest {
         //given
         Card card = createCard();
         UserResponseDTO userResponseDTO = createUserResponseDTO();
-        when(userServiceClient.getUserById(ArgumentMatchers.anyLong())).thenReturn(userResponseDTO);
         Transaction transaction = createDepositTransaction(card);
 
         //when
+        when(userServiceClient.getUserById(ArgumentMatchers.anyLong())).thenReturn(userResponseDTO);
         DepositResponseDTO deposit = transactionService.createDeposit(transaction);
 
         //then
@@ -68,10 +74,10 @@ class TransactionServiceImplTest {
         //given
         Card card = createCard();
         UserResponseDTO userResponseDTO = createUserResponseDTO();
-        when(userServiceClient.getUserById(ArgumentMatchers.anyLong())).thenReturn(userResponseDTO);
         Transaction transaction = createPaymentTransaction(card);
 
         //when
+        when(userServiceClient.getUserById(ArgumentMatchers.anyLong())).thenReturn(userResponseDTO);
         PaymentResponseDTO payment = transactionService.createPayment(transaction);
 
         //then
@@ -84,8 +90,6 @@ class TransactionServiceImplTest {
         Card card = createCard();
         Card recipientCard = createCardRecipient();
         UserResponseDTO userResponseDTO = createUserResponseDTO();
-        when(userServiceClient.getUserById(ArgumentMatchers.anyLong())).thenReturn(userResponseDTO);
-        when(cardService.getCardById(ArgumentMatchers.anyLong())).thenReturn(recipientCard);
         Transaction transaction = Transaction.builder()
                 .userId(null)
                 .card(card)
@@ -95,6 +99,8 @@ class TransactionServiceImplTest {
                 .build();
 
         //when
+        when(userServiceClient.getUserById(ArgumentMatchers.anyLong())).thenReturn(userResponseDTO);
+        when(cardService.getCardById(ArgumentMatchers.anyLong())).thenReturn(recipientCard);
         TransferResponseDTO transfer = transactionService.createTransfer(transaction);
 
         //then
@@ -135,6 +141,41 @@ class TransactionServiceImplTest {
 
         // then
         Assertions.assertThat(message).isEqualTo(exception.getMessage());
+    }
+
+    @Test
+    void getTransactionsByCardId_transactionsSizeShouldBeTheSame() {
+        // given
+        Card card = createCard();
+        List<Transaction> transactions = new ArrayList<>();
+        transactions.add(createDepositTransaction(card));
+        transactions.add(createPaymentTransaction(card));
+        Long cardId = 1L;
+
+        // when
+        when(transactionRepository.findTransactionsByCardId(ArgumentMatchers.anyLong())).thenReturn(transactions);
+        List<Transaction> resultList = transactionService.getTransactionsByCardId(cardId);
+
+        // then
+        assertThat(resultList.size()).isEqualTo(transactions.size());
+    }
+
+    @Test
+    void findTransactionsByPage_shouldReturnValidNumberOfTransactions() {
+        //given
+        Card card = createCard();
+        List<Transaction> transactions = new ArrayList<>();
+        transactions.add(createDepositTransaction(card));
+        transactions.add(createPaymentTransaction(card));
+        Page<Transaction> page = new PageImpl<>((transactions));
+        Pageable pageable = PageRequest.of(1, 2);
+
+        // when
+        when(transactionRepository.findAll(pageable)).thenReturn(page);
+        List<Transaction> resultList = transactionService.getAllTransactions(pageable).getContent();
+
+        //then
+        assertThat(resultList.size()).isEqualTo(transactions.size());
     }
 
     private UserResponseDTO createUserResponseDTO() {

@@ -3,16 +3,12 @@ package com.klasevich.itrex.lab.service.impl;
 import com.klasevich.itrex.lab.exception.UserNotFoundException;
 import com.klasevich.itrex.lab.persistance.entity.User;
 import com.klasevich.itrex.lab.persistance.repository.UserRepository;
-import com.klasevich.itrex.lab.service.UserService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentMatchers;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
@@ -25,9 +21,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -43,11 +37,11 @@ class UserServiceImplTest {
     void getUserById_emailShouldBeTheSame() {
         // given
         User user = createNewUser();
-        Long userId= 1L;
+        Long userId = 1L;
         user.setUserId(userId);
-        when(userRepository.findById(userId)).thenReturn(Optional.of(user));
 
         // when
+        when(userRepository.findById(userId)).thenReturn(Optional.of(user));
         User resultUser = userService.getUserById(userId);
 
         // then
@@ -59,9 +53,9 @@ class UserServiceImplTest {
         //given
         Long id = 1L;
         String message = "Unable to find user with id: " + id;
-        when(userRepository.findById(ArgumentMatchers.anyLong())).thenReturn(Optional.empty());
 
         // when
+        when(userRepository.findById(ArgumentMatchers.anyLong())).thenReturn(Optional.empty());
         UserNotFoundException exception = assertThrows(UserNotFoundException.class,
                 () -> {
                     userService.getUserById(id);
@@ -74,14 +68,14 @@ class UserServiceImplTest {
     @Test
     void findSomePageOfUsers_shouldReturnValidNumberOfUsers() {
         //given
-        List<User>users = new ArrayList<>();
+        List<User> users = new ArrayList<>();
         users.add(createNewUser());
         users.add(createSecondUser());
         Page<User> page = new PageImpl<>((users));
         Pageable pageable = PageRequest.of(1, 2);
-        when(userRepository.findAll(pageable)).thenReturn(page);
 
         // when
+        when(userRepository.findAll(pageable)).thenReturn(page);
         List<User> result = userService.findAllUsers(pageable).getContent();
 
         //then
@@ -93,9 +87,22 @@ class UserServiceImplTest {
         //given
         User user = createNewUser();
         user.setSurname("Gribalev");
-        when(userRepository.save(user)).thenReturn(user);
 
         // when
+        when(userRepository.save(user)).thenReturn(user);
+        User updatedUser = userService.updateUser(user);
+
+        //then
+        assertThat(updatedUser.getSurname()).isEqualTo(user.getSurname());
+    }
+
+    @Test
+    void createUserAndCheck_UserShouldBeAdded() {
+        //given
+        User user = createNewUser();
+
+        // when
+        when(userRepository.save(user)).thenReturn(user);
         User updatedUser = userService.updateUser(user);
 
         //then

@@ -15,7 +15,6 @@ import com.klasevich.itrex.lab.persistance.repository.TransactionRepository;
 import com.klasevich.itrex.lab.service.CardService;
 import com.klasevich.itrex.lab.service.TransactionService;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
