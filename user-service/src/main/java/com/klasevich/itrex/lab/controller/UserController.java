@@ -61,7 +61,7 @@ public class UserController {
 
     @DeleteMapping("{userId}")
     @ApiOperation("Delete user")
-    @PreAuthorize("hasAuthority('delete_user')")
+    @PreAuthorize("hasAuthority('delete')")
     public UserResponseDTO deleteUser(@PathVariable Long userId) {
         return new UserResponseDTO(userService.deleteUser(userId));
     }

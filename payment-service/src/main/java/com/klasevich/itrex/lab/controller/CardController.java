@@ -68,7 +68,7 @@ public class CardController {
 
     @GetMapping("cards/page")
     @ApiOperation("Get all cards by some page and sort")
-    @PreAuthorize("hasRole('BANK_EMPLOYEE')")
+    @PreAuthorize("hasAuthority('read_all')")
     public List<CardResponseDTO> findAllCards(Pageable pageable) {
         return cardService.findAllCards(pageable).stream()
                 .map(CardResponseDTO::new)

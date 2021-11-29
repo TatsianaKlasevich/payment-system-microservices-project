@@ -93,7 +93,7 @@ public class TransactionServiceImpl implements TransactionService {
         if (transaction.getCard().getCardId() != null) {
             Card card = transaction.getCard();
 
-            if (card.getBalance().compareTo(BigDecimal.ZERO) <= 0 || transaction.getAmount().compareTo(card.getBalance()) > 0) {
+            if (card.getBalance().compareTo(BigDecimal.ZERO) < 0 || transaction.getAmount().compareTo(card.getBalance()) > 0) {
                 throw new TransactionServiceException("Not enough money for payment");
             }
             BigDecimal newBalance = changeCardAmount(card, transaction);

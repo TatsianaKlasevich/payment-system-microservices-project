@@ -41,7 +41,7 @@ public class Transaction extends BaseEntity {
     private TransactionType transactionType;
 
     @Column(name = "bank_code")
-    private String bankCode;//todo
+    private String bankCode;
 
     @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
     @JoinColumn(name = "cardId")

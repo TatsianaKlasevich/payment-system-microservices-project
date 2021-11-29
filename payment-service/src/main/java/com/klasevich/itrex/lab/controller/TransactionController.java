@@ -33,7 +33,7 @@ public class TransactionController {
 
     @GetMapping("/{cardId}")
     @ApiOperation("Get all payment transactions by some card id")
-    @PreAuthorize("hasAnyAuthority('read_card', 'create_card', 'read_user')")
+    @PreAuthorize("hasAuthority('read_card')")
     public List<TransactionResponseDTO> getAllTransactionsByCardId(@PathVariable Long cardId) {
         return transactionService.getTransactionsByCardId(cardId).stream()
                 .map(TransactionResponseDTO::new)
@@ -42,7 +42,7 @@ public class TransactionController {
 
     @GetMapping("/page")
     @ApiOperation("Show all payments by some page and sort")
-    @PreAuthorize("hasAnyAuthority('read_card', 'create_card', 'read_user')")
+    @PreAuthorize("hasAuthority('read_all')")
     public List<TransactionResponseDTO> getAllTransactions(Pageable pageable) {
         return transactionService.getAllTransactions(pageable).stream()
                 .map(TransactionResponseDTO::new)
@@ -51,7 +51,7 @@ public class TransactionController {
 
     @PostMapping("/deposit")
     @ApiOperation("Make deposit")
-    @PreAuthorize("hasAnyAuthority('read_card', 'create_card', 'read_user')")
+    @PreAuthorize("hasAuthority('make_transaction')")
     public DepositResponseDTO createDeposit(@RequestBody @Valid DepositRequestDTO depositRequestDTO) {
         Transaction transaction = depositRequestDTOToTransactionMapper.convert(depositRequestDTO);
         Card card = cardService.getCardById(depositRequestDTO.getCardId());
@@ -62,7 +62,7 @@ public class TransactionController {
 
     @PostMapping("/payment")
     @ApiOperation("Make payment")
-    @PreAuthorize("hasAnyAuthority('read_card', 'create_card', 'read_user')")
+    @PreAuthorize("hasAuthority('make_transaction')")
     public PaymentResponseDTO createPayment(@RequestBody @Valid PaymentRequestDTO paymentRequestDTO) {
         Transaction transaction = paymentRequestDTOToTransactionMapper.convert(paymentRequestDTO);
         Card card = cardService.getCardById(paymentRequestDTO.getCardId());
@@ -73,7 +73,7 @@ public class TransactionController {
 
     @PostMapping("/transfer")
     @ApiOperation("Make transfer")
-    @PreAuthorize("hasAnyAuthority('read_card', 'create_card', 'read_user')")
+    @PreAuthorize("hasAuthority('make_transaction')")
     public TransferResponseDTO createTransfer(@RequestBody @Valid TransferRequestDTO transferRequestDTO) {
         Transaction transaction = transferRequestDTOToTransactionMapper.convert(transferRequestDTO);
         Card card = cardService.getCardById(transferRequestDTO.getCardId());

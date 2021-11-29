@@ -65,6 +65,7 @@ dependencies {
     implementation 'io.springfox:springfox-boot-starter:3.0.0'
 
     testImplementation "org.springframework.boot:spring-boot-starter-test"
+    testImplementation "org.springframework.cloud:spring-cloud-starter-contract-stub-runner"
     testImplementation 'com.h2database:h2'
 }
 

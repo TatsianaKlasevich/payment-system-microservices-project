@@ -1,6 +1,8 @@
 package com.klasevich.itrex.lab.service.impl;
 
 import com.klasevich.itrex.lab.controller.dto.DepositResponseDTO;
+import com.klasevich.itrex.lab.controller.dto.PaymentResponseDTO;
+import com.klasevich.itrex.lab.controller.dto.TransferResponseDTO;
 import com.klasevich.itrex.lab.exception.TransactionServiceException;
 import com.klasevich.itrex.lab.feign.UserResponseDTO;
 import com.klasevich.itrex.lab.feign.UserServiceClient;
@@ -46,17 +48,12 @@ class TransactionServiceImplTest {
 
 
     @Test
-    void createDeposit_withCardId_emailShouldBeTheSame() {
+    void createDeposit_emailShouldBeTheSame() {
         //given
         Card card = createCard();
         UserResponseDTO userResponseDTO = createUserResponseDTO();
         Mockito.when(userServiceClient.getUserById(ArgumentMatchers.anyLong())).thenReturn(userResponseDTO);
-        Transaction transaction = Transaction.builder()
-                .userId(null)
-                .card(card)
-                .amount(BigDecimal.valueOf(1000))
-                .transactionType(TransactionType.DEPOSIT)
-                .build();
+        Transaction transaction = createDepositTransaction(card);
 
         //when
         DepositResponseDTO deposit = transactionService.createDeposit(transaction);
@@ -66,17 +63,73 @@ class TransactionServiceImplTest {
     }
 
     @Test
-    void checkPaymentServiceException() {
+    void createPayment_emailShouldBeTheSame() {
+        //given
+        Card card = createCard();
+        UserResponseDTO userResponseDTO = createUserResponseDTO();
+        Mockito.when(userServiceClient.getUserById(ArgumentMatchers.anyLong())).thenReturn(userResponseDTO);
+        Transaction transaction = createPaymentTransaction(card);
+
+        //when
+        PaymentResponseDTO payment = transactionService.createPayment(transaction);
+
+        //then
+        Assertions.assertThat(payment.getMail()).isEqualTo("tanya@gmail.com");
+    }
+
+    @Test
+    void createTransfer_emailShouldBeTheSame() {
+        //given
+        Card card = createCard();
+        Card recipientCard = createCardRecipient();
+        UserResponseDTO userResponseDTO = createUserResponseDTO();
+        Mockito.when(userServiceClient.getUserById(ArgumentMatchers.anyLong())).thenReturn(userResponseDTO);
+        Mockito.when(cardService.getCardById(ArgumentMatchers.anyLong())).thenReturn(recipientCard);
+        Transaction transaction = Transaction.builder()
+                .userId(null)
+                .card(card)
+                .amount(BigDecimal.valueOf(50))
+                .transactionType(TransactionType.TRANSFER)
+                .recipientCardId(2L)
+                .build();
+
+        //when
+        TransferResponseDTO transfer = transactionService.createTransfer(transaction);
+
+        //then
+        Assertions.assertThat(transfer.getMail()).isEqualTo("tanya@gmail.com");
+    }
+
+    @Test
+    void checkPaymentServiceException_whenUserOrCardNotExist() {
         //given
         String message = "User or card doesn't exist";
         Card card = createCard();
         card.setCardId(null);
-        Transaction transaction = Transaction.builder().userId(null).card(card).amount(BigDecimal.valueOf(1000)).build();
+        Transaction transaction = createDepositTransaction(card);
 
         // when
         TransactionServiceException exception = assertThrows(TransactionServiceException.class,
                 () -> {
                     transactionService.createDeposit(transaction);
+                });
+
+        // then
+        Assertions.assertThat(message).isEqualTo(exception.getMessage());
+    }
+
+    @Test
+    void checkPaymentServiceException_whenNotEnoughMoneyForPayment() {
+        //given
+        String message = "Not enough money for payment";
+        Card card = createCard();
+        Transaction transaction = createPaymentTransaction(card);
+        transaction.setAmount(BigDecimal.valueOf(1200));
+
+        // when
+        TransactionServiceException exception = assertThrows(TransactionServiceException.class,
+                () -> {
+                    transactionService.createPayment(transaction);
                 });
 
         // then
@@ -105,6 +158,39 @@ class TransactionServiceImplTest {
                 .cardStatus(CardStatus.ENABLED)
                 .expirationDate(LocalDate.of(2025, 10, 01))
                 .isDefault(true)
+                .build();
+    }
+
+    private Card createCardRecipient() {
+        return Card.builder()
+                .cardId(2L)
+                .userId(1L)
+                .balance(BigDecimal.valueOf(500))
+                .cardNumber("1934674111164675")
+                .cardStatus(CardStatus.ENABLED)
+                .expirationDate(LocalDate.of(2023, 10, 01))
+                .isDefault(true)
+                .build();
+    }
+
+    private Transaction createDepositTransaction(Card card) {
+        return Transaction.builder()
+                .userId(null)
+                .card(card)
+                .amount(BigDecimal.valueOf(1000))
+                .transactionType(TransactionType.DEPOSIT)
+                .build();
+    }
+
+    private Transaction createPaymentTransaction(Card card) {
+        return Transaction.builder()
+                .userId(null)
+                .card(card)
+                .amount(BigDecimal.valueOf(100))
+                .transactionType(TransactionType.PAYMENT)
+                .unp(135465644L)
+                .purposeOfPayment("for chess")
+                .bankCode("3L4KJSKJH4556665LKSJDF909809")
                 .build();
     }
 }

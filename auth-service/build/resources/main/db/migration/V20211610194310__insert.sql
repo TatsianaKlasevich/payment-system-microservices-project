@@ -11,26 +11,29 @@ VALUES ('create_user'),
        ('delete'),
        ('read_card'),
        ('create_card'),
-       ('update_card');
+       ('update_card'),
+       ('make_transaction'),
+       ('read_all');
 
 INSERT INTO roles (NAME)
 VALUES ('BANK_EMPLOYEE'),
        ('CLIENT');
 
 INSERT INTO PERMISSIONS_ROLES (PERMISSION_ID, ROLE_ID)
-VALUES (1, 1), /* create bank_employee */
+VALUES (1, 1), /* create user -  bank_employee */
        (2, 1), /* read user - bank_employee */
        (3, 1), /* update user - bank_employee */
        (4, 1), /* delete - bank_employee */
        (5, 1), /* read card - bank_employee */
-       (6, 1), /* create - bank_employee */
        (7, 1), /* update user - bank_employee */
+       (9, 1), /* read all - bank_employee */
        (1, 2), /* create user - client */
        (2, 2), /* read user - client */
        (3, 2), /* update user - client */
        (5, 2), /* read card - client */
        (6, 2), /* create card - client */
-       (7, 2); /* update card - client */
+       (7, 2), /* update card - client */
+       (8, 2); /* make transaction - client */
 
 insert into users (username, password, email, enabled, account_non_expired, credentials_non_expired,
                    account_non_locked)
