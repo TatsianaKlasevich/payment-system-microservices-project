@@ -2,49 +2,64 @@ package com.klasevich.itrex.lab.service.impl;
 
 import com.klasevich.itrex.lab.exception.UserNotFoundException;
 import com.klasevich.itrex.lab.persistance.entity.User;
+import com.klasevich.itrex.lab.persistance.repository.UserRepository;
 import com.klasevich.itrex.lab.service.UserService;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.ArgumentMatchers;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.test.context.ActiveProfiles;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 @ActiveProfiles("test")
 class UserServiceImplTest {
+    @Mock
+    private UserRepository userRepository;
 
-    @Autowired
-    private UserService userService;
+    @InjectMocks
+    private UserServiceImpl userService;
 
     @Test
-    void createUser_getUserById_emailShouldBeTheSame() { //todo
+    void getUserById_emailShouldBeTheSame() {
         // given
         User user = createNewUser();
-        Long id = userService.createUser(user);
-        String expected = user.getEmail();
+        Long userId= 1L;
+        user.setUserId(userId);
+        when(userRepository.findById(userId)).thenReturn(Optional.of(user));
 
         // when
-        User resultUser = userService.getUserById(id);
-        String actual = resultUser.getEmail();
+        User resultUser = userService.getUserById(userId);
 
         // then
-        assertEquals(actual, expected);
-        userService.deleteUser(id);
+        assertThat(resultUser.getEmail()).isEqualTo(user.getEmail());
     }
 
     @Test
     void userNotFoundException_whenUserGetByIdNotExist() {
         //given
-        Long id = userService.createUser(createNewUser());
-        userService.deleteUser(id);
+        Long id = 1L;
         String message = "Unable to find user with id: " + id;
+        when(userRepository.findById(ArgumentMatchers.anyLong())).thenReturn(Optional.empty());
 
         // when
         UserNotFoundException exception = assertThrows(UserNotFoundException.class,
@@ -59,36 +74,32 @@ class UserServiceImplTest {
     @Test
     void findSomePageOfUsers_shouldReturnValidNumberOfUsers() {
         //given
-        Long id1 = userService.createUser(createNewUser());
-        Long id2 = userService.createUser(createSecondUser());
+        List<User>users = new ArrayList<>();
+        users.add(createNewUser());
+        users.add(createSecondUser());
+        Page<User> page = new PageImpl<>((users));
         Pageable pageable = PageRequest.of(1, 2);
-        int expected = 2;
+        when(userRepository.findAll(pageable)).thenReturn(page);
 
         // when
         List<User> result = userService.findAllUsers(pageable).getContent();
-        int actual = result.size();
 
         //then
-        assertEquals(actual, expected);
-        userService.deleteUser(id1);
-        userService.deleteUser(id2);
+        assertThat(result.size()).isEqualTo(users.size());
     }
 
     @Test
     void updateUserAndCheck_changesShouldBeMade() {
         //given
         User user = createNewUser();
-        Long id = userService.createUser(user);
         user.setSurname("Gribalev");
-        String expected = "Gribalev";
+        when(userRepository.save(user)).thenReturn(user);
 
         // when
-        userService.updateUser(user);
-        String actual = user.getSurname();
+        User updatedUser = userService.updateUser(user);
 
         //then
-        assertThat(expected).isEqualTo(actual);
-        userService.deleteUser(id);
+        assertThat(updatedUser.getSurname()).isEqualTo(user.getSurname());
     }
 
     private User createNewUser() {

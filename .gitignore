@@ -18,6 +18,14 @@
 /auth-service/build/
 /auth-service/build/libs/
 /auth-service/build/resources/
-/build/
-/build/
-/build/libs/
+/payment-service/build/dev/reports/tests/test/index.html
+/payment-service/build/dev/reports/tests/test/packages/com.klasevich.itrex.lab.feign.html
+/payment-service/build/dev/reports/tests/test/css/base-style.css
+/payment-service/build/dev/reports/tests/test/classes/com.klasevich.itrex.lab.feign.UserServiceClientTest.html
+/payment-service/build/dev/test-results/test/binary/output.bin
+/payment-service/build/dev/test-results/test/binary/output.bin.idx
+/payment-service/build/dev/tmp/compileTestJava/previous-compilation-data.bin
+/payment-service/build/dev/reports/tests/test/js/report.js
+/payment-service/build/dev/test-results/test/binary/results.bin
+/payment-service/build/dev/reports/tests/test/css/style.css
+/payment-service/build/dev/test-results/test/TEST-com.klasevich.itrex.lab.feign.UserServiceClientTest.xml

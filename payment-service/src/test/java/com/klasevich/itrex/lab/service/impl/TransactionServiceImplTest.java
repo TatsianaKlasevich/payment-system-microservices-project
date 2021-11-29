@@ -27,6 +27,7 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.Mockito.when;
 
 @ActiveProfiles("test")
 @ExtendWith(MockitoExtension.class)
@@ -52,7 +53,7 @@ class TransactionServiceImplTest {
         //given
         Card card = createCard();
         UserResponseDTO userResponseDTO = createUserResponseDTO();
-        Mockito.when(userServiceClient.getUserById(ArgumentMatchers.anyLong())).thenReturn(userResponseDTO);
+        when(userServiceClient.getUserById(ArgumentMatchers.anyLong())).thenReturn(userResponseDTO);
         Transaction transaction = createDepositTransaction(card);
 
         //when
@@ -67,7 +68,7 @@ class TransactionServiceImplTest {
         //given
         Card card = createCard();
         UserResponseDTO userResponseDTO = createUserResponseDTO();
-        Mockito.when(userServiceClient.getUserById(ArgumentMatchers.anyLong())).thenReturn(userResponseDTO);
+        when(userServiceClient.getUserById(ArgumentMatchers.anyLong())).thenReturn(userResponseDTO);
         Transaction transaction = createPaymentTransaction(card);
 
         //when
@@ -83,8 +84,8 @@ class TransactionServiceImplTest {
         Card card = createCard();
         Card recipientCard = createCardRecipient();
         UserResponseDTO userResponseDTO = createUserResponseDTO();
-        Mockito.when(userServiceClient.getUserById(ArgumentMatchers.anyLong())).thenReturn(userResponseDTO);
-        Mockito.when(cardService.getCardById(ArgumentMatchers.anyLong())).thenReturn(recipientCard);
+        when(userServiceClient.getUserById(ArgumentMatchers.anyLong())).thenReturn(userResponseDTO);
+        when(cardService.getCardById(ArgumentMatchers.anyLong())).thenReturn(recipientCard);
         Transaction transaction = Transaction.builder()
                 .userId(null)
                 .card(card)

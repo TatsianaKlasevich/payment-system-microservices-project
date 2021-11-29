@@ -25,7 +25,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.math.BigDecimal;
 import java.util.List;
 
-@Slf4j
 @RequiredArgsConstructor
 @Service
 public class TransactionServiceImpl implements TransactionService {
