@@ -1,19 +1,17 @@
 package com.klasevich.itrex.lab.controller.dto;
 
 import com.klasevich.itrex.lab.persistance.entity.CardStatus;
-import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.validation.constraints.*;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
-@NoArgsConstructor
-@AllArgsConstructor
 @Getter
 @Setter
+@Builder
 public class CardRequestDTO {
 
     @PositiveOrZero(message = "Balance should be positive number or 0")

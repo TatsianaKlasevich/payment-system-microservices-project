@@ -2,7 +2,6 @@ package com.klasevich.itrex.lab.service.impl;
 
 import com.klasevich.itrex.lab.exception.CardNotFoundException;
 import com.klasevich.itrex.lab.persistance.entity.Card;
-import com.klasevich.itrex.lab.persistance.entity.CardStatus;
 import com.klasevich.itrex.lab.persistance.repository.CardRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -17,11 +16,12 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.test.context.ActiveProfiles;
 
 import java.math.BigDecimal;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import static com.klasevich.itrex.lab.util.TestData.createNewCard;
+import static com.klasevich.itrex.lab.util.TestData.createSecondCard;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.when;
@@ -125,29 +125,5 @@ class CardServiceImplTest {
 
         // then
         assertThat(resultList.size()).isEqualTo(cards.size());
-    }
-
-    private Card createNewCard() {
-        return Card.builder()
-                .cardId(1L)
-                .userId(1L)
-                .balance(BigDecimal.valueOf(1000))
-                .cardNumber("1934674323464675")
-                .cardStatus(CardStatus.ENABLED)
-                .expirationDate(LocalDate.of(2025, 10, 01))
-                .isDefault(true)
-                .build();
-    }
-
-    private Card createSecondCard() {
-        return Card.builder()
-                .cardId(2L)
-                .userId(1L)
-                .balance(BigDecimal.valueOf(500))
-                .cardNumber("1934674111164675")
-                .cardStatus(CardStatus.ENABLED)
-                .expirationDate(LocalDate.of(2023, 10, 01))
-                .isDefault(true)
-                .build();
     }
 }

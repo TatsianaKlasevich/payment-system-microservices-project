@@ -16,8 +16,8 @@ VALUES ('create_user'),
        ('read_all');
 
 INSERT INTO roles (NAME)
-VALUES ('BANK_EMPLOYEE'),
-       ('CLIENT');
+VALUES ('role_BANK_EMPLOYEE'),
+       ('role_CLIENT');
 
 INSERT INTO PERMISSIONS_ROLES (PERMISSION_ID, ROLE_ID)
 VALUES (1, 1), /* create user -  bank_employee */

@@ -13,7 +13,6 @@ import org.springframework.security.oauth2.config.annotation.web.configuration.E
 
 import java.sql.SQLException;
 
-
 @SpringBootApplication
 @EnableDiscoveryClient
 @EnableJpaAuditing
