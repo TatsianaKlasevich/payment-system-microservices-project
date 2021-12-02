@@ -51,4 +51,4 @@ the transaction has been successful the customer would receive the email.
 
 ### Scheme
 
-<img src="D:\программирование\ITRex Course\project_plan.png"/> 
+![](D:\программирование\ITRex Course\project_plan.png) 
