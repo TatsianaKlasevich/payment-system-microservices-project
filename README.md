@@ -51,4 +51,3 @@ the transaction has been successful the customer would receive the email.
 
 ### Scheme
 ![Image alt](img/project_scheme.png)
-![Image alt](https://github.com/TatsianaKlasevich/payment-system-microservices-project/blob/master/img/project_scheme.png)
