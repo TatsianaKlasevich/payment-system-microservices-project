@@ -7,6 +7,7 @@ import org.springframework.core.convert.converter.Converter;
 
 @Mapper(componentModel = "spring")
 public interface CardRequestDTOToCardMapper extends Converter<CardRequestDTO, Card> {
+
     @Override
     Card convert(CardRequestDTO source);
 }

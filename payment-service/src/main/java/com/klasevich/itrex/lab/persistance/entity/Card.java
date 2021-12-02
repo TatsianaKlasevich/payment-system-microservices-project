@@ -22,8 +22,8 @@ import java.util.Set;
 
 @EqualsAndHashCode(callSuper = false)
 @Data
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
 @Builder
 @Entity
 @Table(name = "cards")

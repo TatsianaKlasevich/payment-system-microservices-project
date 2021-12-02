@@ -2,6 +2,7 @@ package com.klasevich.itrex.lab.persistance.entity;
 
 import lombok.Data;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -23,14 +24,13 @@ public class Role implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(name = "name")
     private String name;
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "permissions_roles", joinColumns = {
-            @JoinColumn(name = "role_id",
-                    referencedColumnName = "id")},
+            @JoinColumn(name = "role_id")},
             inverseJoinColumns = {
-                    @JoinColumn(name = "permission_id",
-                            referencedColumnName = "id")})
+                    @JoinColumn(name = "permission_id")})
     private List<Permission> permissions;
 }

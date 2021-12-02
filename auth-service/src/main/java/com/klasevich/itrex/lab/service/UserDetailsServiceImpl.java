@@ -15,6 +15,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 @Service("userDetailsService")
 public class UserDetailsServiceImpl implements UserDetailsService {
+    private static final String USERNAME_EXCEPTION_MESSAGE = "Username or password wrong";
 
     private final UserDetailRepository userDetailRepository;
 
@@ -22,7 +23,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     public UserDetails loadUserByUsername(String name) throws UsernameNotFoundException {
 
         Optional<User> optionalUser = userDetailRepository.findByUsername(name);
-        optionalUser.orElseThrow(() -> new UsernameNotFoundException("Username or password wrong"));
+        optionalUser.orElseThrow(() -> new UsernameNotFoundException(USERNAME_EXCEPTION_MESSAGE));
 
         UserDetails userDetails = new AuthUserDetail(optionalUser.get());
         new AccountStatusUserDetailsChecker().check(userDetails);

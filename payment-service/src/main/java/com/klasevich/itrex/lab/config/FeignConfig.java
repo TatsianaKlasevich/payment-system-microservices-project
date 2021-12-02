@@ -9,9 +9,6 @@ import org.springframework.security.oauth2.client.DefaultOAuth2ClientContext;
 import org.springframework.security.oauth2.client.resource.OAuth2ProtectedResourceDetails;
 import org.springframework.security.oauth2.client.token.grant.password.ResourceOwnerPasswordResourceDetails;
 
-import java.util.Arrays;
-
-
 public class FeignConfig {
 
     @Value("${security.oauth2.client.access-token-uri}")
@@ -20,8 +17,14 @@ public class FeignConfig {
     private String clientId;
     @Value("${security.oauth2.client.client-secret}")
     private String clientSecret;
-    @Value("${security.oauth2.client.scope}")
-    private String scope;
+    @Value("${security.username}")
+    private String username;
+    @Value("${security.password}")
+    private String password;
+    @Value("${security.grant.type}")
+    private String grantType;
+    @Value("${security.token.name}")
+    private String tokenName;
 
     @Bean
     RequestInterceptor oauth2FeignRequestInterceptor() {
@@ -35,14 +38,13 @@ public class FeignConfig {
 
     private OAuth2ProtectedResourceDetails resource() {
         ResourceOwnerPasswordResourceDetails resourceDetails = new ResourceOwnerPasswordResourceDetails();
-        resourceDetails.setUsername("gleb");
-        resourceDetails.setPassword("kpass");
+        resourceDetails.setUsername(username);
+        resourceDetails.setPassword(password);
         resourceDetails.setAccessTokenUri(accessTokenUri);
         resourceDetails.setClientId(clientId);
         resourceDetails.setClientSecret(clientSecret);
-        resourceDetails.setGrantType("password");
-        resourceDetails.setScope(Arrays.asList(scope));
-        resourceDetails.setTokenName("bearer");
+        resourceDetails.setGrantType(grantType);
+        resourceDetails.setTokenName(tokenName);
         return resourceDetails;
     }
 }

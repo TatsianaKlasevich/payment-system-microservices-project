@@ -16,7 +16,7 @@ public interface CardService {
 
     List<Card> getCardsByUserId(Long userId);
 
-    Long createCard(Card card);
+    Card createCard(Card card);
 
     Card updateCard(Card card);
 

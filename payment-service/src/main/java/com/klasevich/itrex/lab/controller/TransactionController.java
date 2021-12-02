@@ -9,6 +9,7 @@ import com.klasevich.itrex.lab.controller.dto.TransferRequestDTO;
 import com.klasevich.itrex.lab.controller.dto.TransferResponseDTO;
 import com.klasevich.itrex.lab.mapper.DepositRequestDTOToTransactionMapper;
 import com.klasevich.itrex.lab.mapper.PaymentRequestDTOToTransactionMapper;
+import com.klasevich.itrex.lab.mapper.TransactionToTransactionResponseDTOMapper;
 import com.klasevich.itrex.lab.mapper.TransferRequestDTOToTransactionMapper;
 import com.klasevich.itrex.lab.persistance.entity.Card;
 import com.klasevich.itrex.lab.persistance.entity.Transaction;
@@ -41,13 +42,14 @@ public class TransactionController {
     private final DepositRequestDTOToTransactionMapper depositRequestDTOToTransactionMapper;
     private final PaymentRequestDTOToTransactionMapper paymentRequestDTOToTransactionMapper;
     private final TransferRequestDTOToTransactionMapper transferRequestDTOToTransactionMapper;
+    private final TransactionToTransactionResponseDTOMapper transactionToTransactionResponseDTOMapper;
 
     @GetMapping("/{cardId}")
     @ApiOperation("Get all payment transactions by some card id")
     @PreAuthorize("hasAuthority('read_card')")
     public List<TransactionResponseDTO> getAllTransactionsByCardId(@PathVariable Long cardId) {
         return transactionService.getTransactionsByCardId(cardId).stream()
-                .map(TransactionResponseDTO::new)
+                .map(transactionToTransactionResponseDTOMapper::convert)
                 .collect(Collectors.toList());
     }
 
@@ -56,7 +58,7 @@ public class TransactionController {
     @PreAuthorize("hasAuthority('read_all')")
     public List<TransactionResponseDTO> getAllTransactions(Pageable pageable) {
         return transactionService.getAllTransactions(pageable).stream()
-                .map(TransactionResponseDTO::new)
+                .map(transactionToTransactionResponseDTOMapper::convert)
                 .collect(Collectors.toList());
     }
 

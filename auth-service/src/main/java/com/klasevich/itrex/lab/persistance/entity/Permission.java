@@ -2,6 +2,7 @@ package com.klasevich.itrex.lab.persistance.entity;
 
 import lombok.Data;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -13,9 +14,11 @@ import java.io.Serializable;
 @Table(name = "permissions")
 @Data
 public class Permission implements Serializable {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(name = "name")
     private String name;
 }

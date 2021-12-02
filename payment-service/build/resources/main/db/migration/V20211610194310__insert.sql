@@ -13,3 +13,14 @@ VALUES (400, 'klasevich.t@gmail.com', 'DEPOSIT', 1),
        (700, 'klasevich.t@gmail.com', 'DEPOSIT', 4),
        (600, 'klasevich.t@gmail.com', 'DEPOSIT', 1);
 
+INSERT INTO transactions (amount, email, transaction_type, card_id, unp, purpose_of_payment, bank_code)
+VALUES (100, 'klasevich.t@gmail.com', 'PAYMENT', 1, 129403103, 'for fitness', 'JKLH0ELD0S0GCSJEN0NGLSNGISNL'),
+       (50, 'klasevich.t@gmail.com', 'PAYMENT', 3, 123503103, 'for work', 'JKLH0ELD0S0G35678NGLSNG8ISNL'),
+       (300, 'klasevich.t@gmail.com', 'PAYMENT', 2, 129446323, 'for maintenance', 'JKLH3456S0GCSJEN0DNGLS5NTGIS');
+
+INSERT INTO transactions (amount, email, transaction_type, card_id, recipient_card_id)
+VALUES (100, 'klasevich.t@gmail.com', 'TRANSFER', 1, 2),
+       (50, 'klasevich.t@gmail.com', 'TRANSFER', 3, 1),
+       (300, 'klasevich.t@gmail.com', 'TRANSFER', 2, 3);
+
+

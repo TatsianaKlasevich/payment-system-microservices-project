@@ -22,16 +22,21 @@ import java.util.List;
 @Entity
 @Table(name = "users")
 public class User implements Serializable {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(name = "username")
     private String username;
 
+    @Column(name = "password")
     private String password;
 
+    @Column(name = "email")
     private String email;
 
+    @Column(name = "enabled")
     private boolean enabled;
 
     @Column(name = "account_non_expired")
@@ -46,11 +51,9 @@ public class User implements Serializable {
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "roles_users",
-            joinColumns = {@JoinColumn(name = "user_id",
-                    referencedColumnName = "id")},
+            joinColumns = {@JoinColumn(name = "user_id")},
             inverseJoinColumns = {
-                    @JoinColumn(name = "role_id",
-                            referencedColumnName = "id")})
+                    @JoinColumn(name = "role_id")})
     private List<Role> roles;
 
     public User(User user) {

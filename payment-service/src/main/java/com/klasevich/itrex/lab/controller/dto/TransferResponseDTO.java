@@ -10,7 +10,8 @@ import java.math.BigDecimal;
 @Builder
 @Getter
 public class TransferResponseDTO {
-    private BigDecimal amount;
+
+    private BigDecimal balance;
 
     private String mail;
 

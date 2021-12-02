@@ -13,19 +13,19 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 @Service
 public class UserServiceImpl implements UserService {
-
+    private static final String USER_EXCEPTION_MESSAGE = "Unable to find user with id: %d";
     private final UserRepository userRepository;
 
     @Override
     public User getUserById(Long userId) {
-        return userRepository.findById(userId).orElseThrow(() -> new UserNotFoundException("Unable to find user " +
-                "with id: " + userId));
+        return userRepository.findById(userId)
+                .orElseThrow(() -> new UserNotFoundException(String.format(USER_EXCEPTION_MESSAGE, userId)));
     }
 
     @Override
     @Transactional
-    public Long createUser(User user) {
-        return userRepository.save(user).getUserId();
+    public User createUser(User user) {
+        return userRepository.save(user);
     }
 
     @Override

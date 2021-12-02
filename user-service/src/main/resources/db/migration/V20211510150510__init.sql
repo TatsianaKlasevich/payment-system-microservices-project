@@ -2,7 +2,6 @@ DROP SCHEMA IF EXISTS users_database CASCADE;
 CREATE SCHEMA IF NOT EXISTS users_database;
 
 DROP TABLE IF EXISTS users cascade;
-
 CREATE TABLE IF NOT EXISTS users
 (
     id                       BIGINT AUTO_INCREMENT NOT NULL,

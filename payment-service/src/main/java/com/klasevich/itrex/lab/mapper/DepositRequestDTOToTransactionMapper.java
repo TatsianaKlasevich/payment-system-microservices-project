@@ -7,6 +7,7 @@ import org.springframework.core.convert.converter.Converter;
 
 @Mapper(componentModel = "spring")
 public interface DepositRequestDTOToTransactionMapper extends Converter<DepositRequestDTO, Transaction> {
+
     @Override
     Transaction convert(DepositRequestDTO depositRequestDTO);
 }

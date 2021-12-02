@@ -18,4 +18,5 @@
 /auth-service/build/
 /auth-service/build/libs/
 /auth-service/build/resources/
-
+/lib/
+/notification-service/src/main/generated/

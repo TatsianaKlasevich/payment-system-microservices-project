@@ -16,8 +16,8 @@ import java.time.LocalDate;
 
 @EqualsAndHashCode(callSuper = false)
 @Data
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
 @Builder
 @Entity
 @Table(name = "users")

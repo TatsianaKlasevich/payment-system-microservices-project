@@ -12,13 +12,12 @@ import java.sql.SQLException;
 
 @SpringBootApplication
 @EnableDiscoveryClient
-@EnableFeignClients //todo
+@EnableFeignClients
 @EnableAuthorizationServer
 public class AuthApplication {
     public static void main(String[] args) {
         SpringApplication.run(AuthApplication.class, args);
     }
-
 
     @Bean(initMethod = "start", destroyMethod = "stop")
     public Server h2Server() throws SQLException {

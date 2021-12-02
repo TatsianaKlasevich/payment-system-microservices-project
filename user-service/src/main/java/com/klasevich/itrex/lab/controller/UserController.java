@@ -3,6 +3,7 @@ package com.klasevich.itrex.lab.controller;
 import com.klasevich.itrex.lab.controller.dto.UserRequestDTO;
 import com.klasevich.itrex.lab.controller.dto.UserResponseDTO;
 import com.klasevich.itrex.lab.mapper.UserRequestDTOToUserMapper;
+import com.klasevich.itrex.lab.mapper.UserToUserResponseDTOMapper;
 import com.klasevich.itrex.lab.persistance.entity.User;
 import com.klasevich.itrex.lab.service.UserService;
 import io.swagger.annotations.Api;
@@ -31,12 +32,13 @@ public class UserController {
 
     private final UserService userService;
     private final UserRequestDTOToUserMapper userRequestDTOToUserMapper;
+    private final UserToUserResponseDTOMapper userToUserResponseDTOMapper;
 
     @GetMapping("{userId}")
     @ApiOperation("Get user by id")
     @PreAuthorize("hasAuthority('read_user')")
     public UserResponseDTO getUser(@PathVariable Long userId) {
-        return new UserResponseDTO(userService.getUserById(userId));
+        return userToUserResponseDTOMapper.convert(userService.getUserById(userId));
     }
 
     @GetMapping()
@@ -44,16 +46,16 @@ public class UserController {
     @PreAuthorize("hasRole('BANK_EMPLOYEE')")
     public List<UserResponseDTO> findAllUsers(Pageable pageable) {
         return userService.findAllUsers(pageable).stream()
-                .map(UserResponseDTO::new)
+                .map(userToUserResponseDTOMapper::convert)
                 .collect(Collectors.toList());
     }
 
     @PostMapping()
     @ApiOperation("Create user")
     @PreAuthorize("hasAuthority('create_user')")
-    public Long createUser(@RequestBody @Valid UserRequestDTO userRequestDTO) {
+    public UserResponseDTO createUser(@RequestBody @Valid UserRequestDTO userRequestDTO) {
         User user = userRequestDTOToUserMapper.convert(userRequestDTO);
-        return userService.createUser(user);
+        return userToUserResponseDTOMapper.convert(userService.createUser(user));
     }
 
     @PutMapping("{userId}")
@@ -63,13 +65,13 @@ public class UserController {
                                       @RequestBody @Valid UserRequestDTO userRequestDTO) {
         User user = userRequestDTOToUserMapper.convert(userRequestDTO);
         user.setUserId(userId);
-        return new UserResponseDTO(userService.updateUser(user));
+        return userToUserResponseDTOMapper.convert(userService.updateUser(user));
     }
 
     @DeleteMapping("{userId}")
     @ApiOperation("Delete user")
     @PreAuthorize("hasAuthority('delete')")
     public UserResponseDTO deleteUser(@PathVariable Long userId) {
-        return new UserResponseDTO(userService.deleteUser(userId));
+        return userToUserResponseDTOMapper.convert(userService.deleteUser(userId));
     }
 }

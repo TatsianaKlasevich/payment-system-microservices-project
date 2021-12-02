@@ -48,19 +48,6 @@ public class SwaggerConfig {
                 .build();
     }
 
-//    @Bean
-//    public UiConfiguration uiConfiguration() {
-//        return UiConfigurationBuilder.builder()
-//                .supportedSubmitMethods(UiConfiguration.Constants.DEFAULT_SUBMIT_METHODS)
-//                .defaultModelRendering(ModelRendering.EXAMPLE)
-//                .operationsSorter(OperationsSorter.ALPHA)
-//                .docExpansion(DocExpansion.LIST)
-//                .displayRequestDuration(true)
-//                .showExtensions(true)
-//                .deepLinking(true)
-//                .build();
-//    }
-
     private SecurityScheme securityScheme() {
         return new OAuthBuilder()
                 .grantTypes(Collections.singletonList(

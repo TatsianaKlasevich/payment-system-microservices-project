@@ -12,6 +12,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
+import static com.klasevich.itrex.lab.util.ServiceData.CARD_EXCEPTION_MESSAGE;
+
 @RequiredArgsConstructor
 @Service
 public class CardServiceImpl implements CardService {
@@ -20,20 +22,19 @@ public class CardServiceImpl implements CardService {
 
     @Override
     public Card getCardById(Long cardId) {
-        return cardRepository.findById(cardId).orElseThrow(() -> new CardNotFoundException("Unable to find " +
-                "card with cardId: " + cardId));
+        return cardRepository.findById(cardId)
+                .orElseThrow(() -> new CardNotFoundException(String.format(CARD_EXCEPTION_MESSAGE, cardId)));
     }
 
     @Override
     @Transactional
-    public Long createCard(Card card) {
-        return cardRepository.save(card).getUserId();
+    public Card createCard(Card card) {
+        return cardRepository.save(card);
     }
 
     @Override
     @Transactional
     public Card updateCard(Card card) {
-
         return cardRepository.save(card);
     }
 

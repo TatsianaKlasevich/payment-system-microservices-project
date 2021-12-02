@@ -21,8 +21,8 @@ import java.math.BigDecimal;
 
 @EqualsAndHashCode(callSuper = false)
 @Data
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
 @Builder
 @Entity
 @Table(name = "transactions")
@@ -58,6 +58,6 @@ public class Transaction extends BaseEntity {
     private String bankCode;
 
     @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
-    @JoinColumn(name = "cardId")
+    @JoinColumn(name = "card_id")
     private Card card;
 }

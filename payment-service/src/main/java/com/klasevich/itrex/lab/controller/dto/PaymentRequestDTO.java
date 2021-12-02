@@ -11,6 +11,7 @@ import java.math.BigDecimal;
 
 @Data
 public class PaymentRequestDTO {
+
     @Positive(message = "User id should be positive number")
     private Long userId;
 

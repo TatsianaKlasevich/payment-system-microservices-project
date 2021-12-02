@@ -4,8 +4,8 @@ import com.klasevich.itrex.lab.controller.dto.DepositResponseDTO;
 import com.klasevich.itrex.lab.controller.dto.PaymentResponseDTO;
 import com.klasevich.itrex.lab.controller.dto.TransferResponseDTO;
 import com.klasevich.itrex.lab.exception.TransactionServiceException;
-import com.klasevich.itrex.lab.feign.UserResponseDTO;
 import com.klasevich.itrex.lab.feign.UserServiceClient;
+import com.klasevich.itrex.lab.feign.dto.UserResponseDTO;
 import com.klasevich.itrex.lab.persistance.entity.Card;
 import com.klasevich.itrex.lab.persistance.entity.CardStatus;
 import com.klasevich.itrex.lab.persistance.entity.Transaction;
@@ -153,7 +153,7 @@ class TransactionServiceImplTest {
         Long cardId = 1L;
 
         // when
-        when(transactionRepository.findTransactionsByCardId(ArgumentMatchers.anyLong())).thenReturn(transactions);
+        when(transactionRepository.findTransactionsByCard_CardId(ArgumentMatchers.anyLong())).thenReturn(transactions);
         List<Transaction> resultList = transactionService.getTransactionsByCardId(cardId);
 
         // then

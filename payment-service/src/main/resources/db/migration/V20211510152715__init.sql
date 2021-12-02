@@ -1,5 +1,5 @@
-DROP SCHEMA IF EXISTS payment_database CASCADE;
-CREATE SCHEMA IF NOT EXISTS payment_database;
+DROP SCHEMA IF EXISTS payments_database CASCADE;
+CREATE SCHEMA IF NOT EXISTS payments_database;
 
 CREATE TABLE IF NOT EXISTS cards
 (
