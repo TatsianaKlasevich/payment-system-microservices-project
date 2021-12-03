@@ -13,8 +13,13 @@ import springfox.documentation.service.SecurityScheme;
 import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spi.service.contexts.SecurityContext;
 import springfox.documentation.spring.web.plugins.Docket;
+import springfox.documentation.swagger.web.DocExpansion;
+import springfox.documentation.swagger.web.ModelRendering;
+import springfox.documentation.swagger.web.OperationsSorter;
 import springfox.documentation.swagger.web.SecurityConfiguration;
 import springfox.documentation.swagger.web.SecurityConfigurationBuilder;
+import springfox.documentation.swagger.web.UiConfiguration;
+import springfox.documentation.swagger.web.UiConfigurationBuilder;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 import java.util.Collections;
@@ -56,6 +61,19 @@ public class SwaggerConfig {
                 .build();
     }
 
+    @Bean
+    public UiConfiguration uiConfiguration() {
+        return UiConfigurationBuilder.builder()
+                .supportedSubmitMethods(UiConfiguration.Constants.DEFAULT_SUBMIT_METHODS)
+                .defaultModelRendering(ModelRendering.EXAMPLE)
+                .operationsSorter(OperationsSorter.ALPHA)
+                .docExpansion(DocExpansion.LIST)
+                .displayRequestDuration(true)
+                .showExtensions(true)
+                .deepLinking(true)
+                .build();
+    }
+
     private SecurityContext securityContext() {
         return SecurityContext.builder()
                 .forPaths(PathSelectors.any())
@@ -66,6 +84,8 @@ public class SwaggerConfig {
                 .build();
     }
 }
+
+
 
 
 

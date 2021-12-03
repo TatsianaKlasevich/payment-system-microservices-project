@@ -1,15 +1,15 @@
 package com.klasevich.itrex.lab.service.impl;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.klasevich.itrex.lab.controller.dto.DepositResponseDTO;
 import com.klasevich.itrex.lab.controller.dto.PaymentResponseDTO;
 import com.klasevich.itrex.lab.controller.dto.TransferResponseDTO;
 import com.klasevich.itrex.lab.exception.TransactionServiceException;
 import com.klasevich.itrex.lab.feign.UserServiceClient;
 import com.klasevich.itrex.lab.feign.dto.UserResponseDTO;
+import com.klasevich.itrex.lab.mapper.TransactionToTransactionResponseDTOMapper;
 import com.klasevich.itrex.lab.persistance.entity.Card;
-import com.klasevich.itrex.lab.persistance.entity.CardStatus;
 import com.klasevich.itrex.lab.persistance.entity.Transaction;
-import com.klasevich.itrex.lab.persistance.entity.TransactionType;
 import com.klasevich.itrex.lab.persistance.repository.TransactionRepository;
 import com.klasevich.itrex.lab.service.CardService;
 import org.assertj.core.api.Assertions;
@@ -27,10 +27,15 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.test.context.ActiveProfiles;
 
 import java.math.BigDecimal;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.klasevich.itrex.lab.util.TestData.createDepositTransaction;
+import static com.klasevich.itrex.lab.util.TestData.createNewCard;
+import static com.klasevich.itrex.lab.util.TestData.createPaymentTransaction;
+import static com.klasevich.itrex.lab.util.TestData.createSecondCard;
+import static com.klasevich.itrex.lab.util.TestData.createTransferTransaction;
+import static com.klasevich.itrex.lab.util.TestData.createUserResponseDTO;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.when;
@@ -50,6 +55,12 @@ class TransactionServiceImplTest {
     @Mock
     private RabbitTemplate rabbitTemplate;
 
+    @Mock
+    private TransactionToTransactionResponseDTOMapper transactionToTransactionResponseDTOMapper;
+
+    @Mock
+    private ObjectMapper objectMapper;
+
     @InjectMocks
     private TransactionServiceImpl transactionService;
 
@@ -57,7 +68,7 @@ class TransactionServiceImplTest {
     @Test
     void createDeposit_emailShouldBeTheSame() {
         //given
-        Card card = createCard();
+        Card card = createNewCard();
         UserResponseDTO userResponseDTO = createUserResponseDTO();
         Transaction transaction = createDepositTransaction(card);
 
@@ -66,13 +77,13 @@ class TransactionServiceImplTest {
         DepositResponseDTO deposit = transactionService.createDeposit(transaction);
 
         //then
-        Assertions.assertThat(deposit.getMail()).isEqualTo("tanya@gmail.com");
+        Assertions.assertThat(deposit.getMail()).isEqualTo(transaction.getEmail());
     }
 
     @Test
     void createPayment_emailShouldBeTheSame() {
         //given
-        Card card = createCard();
+        Card card = createNewCard();
         UserResponseDTO userResponseDTO = createUserResponseDTO();
         Transaction transaction = createPaymentTransaction(card);
 
@@ -81,22 +92,16 @@ class TransactionServiceImplTest {
         PaymentResponseDTO payment = transactionService.createPayment(transaction);
 
         //then
-        Assertions.assertThat(payment.getMail()).isEqualTo("tanya@gmail.com");
+        Assertions.assertThat(payment.getMail()).isEqualTo(transaction.getEmail());
     }
 
     @Test
     void createTransfer_emailShouldBeTheSame() {
         //given
-        Card card = createCard();
-        Card recipientCard = createCardRecipient();
+        Card card = createNewCard();
+        Card recipientCard = createSecondCard();
         UserResponseDTO userResponseDTO = createUserResponseDTO();
-        Transaction transaction = Transaction.builder()
-                .userId(null)
-                .card(card)
-                .amount(BigDecimal.valueOf(50))
-                .transactionType(TransactionType.TRANSFER)
-                .recipientCardId(2L)
-                .build();
+        Transaction transaction = createTransferTransaction(card);
 
         //when
         when(userServiceClient.getUserById(ArgumentMatchers.anyLong())).thenReturn(userResponseDTO);
@@ -104,14 +109,14 @@ class TransactionServiceImplTest {
         TransferResponseDTO transfer = transactionService.createTransfer(transaction);
 
         //then
-        Assertions.assertThat(transfer.getMail()).isEqualTo("tanya@gmail.com");
+        Assertions.assertThat(transfer.getMail()).isEqualTo(transaction.getEmail());
     }
 
     @Test
     void checkPaymentServiceException_whenUserOrCardNotExist() {
         //given
         String message = "User or card doesn't exist";
-        Card card = createCard();
+        Card card = createNewCard();
         card.setCardId(null);
         Transaction transaction = createDepositTransaction(card);
 
@@ -129,7 +134,7 @@ class TransactionServiceImplTest {
     void checkPaymentServiceException_whenNotEnoughMoneyForPayment() {
         //given
         String message = "Not enough money for payment";
-        Card card = createCard();
+        Card card = createNewCard();
         Transaction transaction = createPaymentTransaction(card);
         transaction.setAmount(BigDecimal.valueOf(1200));
 
@@ -146,7 +151,7 @@ class TransactionServiceImplTest {
     @Test
     void getTransactionsByCardId_transactionsSizeShouldBeTheSame() {
         // given
-        Card card = createCard();
+        Card card = createNewCard();
         List<Transaction> transactions = new ArrayList<>();
         transactions.add(createDepositTransaction(card));
         transactions.add(createPaymentTransaction(card));
@@ -163,12 +168,12 @@ class TransactionServiceImplTest {
     @Test
     void findTransactionsByPage_shouldReturnValidNumberOfTransactions() {
         //given
-        Card card = createCard();
+        Card card = createNewCard();
         List<Transaction> transactions = new ArrayList<>();
         transactions.add(createDepositTransaction(card));
         transactions.add(createPaymentTransaction(card));
         Page<Transaction> page = new PageImpl<>((transactions));
-        Pageable pageable = PageRequest.of(1, 2);
+        Pageable pageable = PageRequest.of(1, transactions.size());
 
         // when
         when(transactionRepository.findAll(pageable)).thenReturn(page);
@@ -176,63 +181,5 @@ class TransactionServiceImplTest {
 
         //then
         assertThat(resultList.size()).isEqualTo(transactions.size());
-    }
-
-    private UserResponseDTO createUserResponseDTO() {
-        return UserResponseDTO.builder()
-                .userId(1L)
-                .email("tanya@gmail.com")
-                .name("Tanya")
-                .secondName("Vladimirovna")
-                .surname("Klasevich")
-                .dateOfBirth(LocalDate.of(1980, 10, 22))
-                .identityPassportNumber("13NKL03498EK4678")
-                .phoneNumber("+375448904949")
-                .build();
-    }
-
-    private Card createCard() {
-        return Card.builder()
-                .cardId(1L)
-                .userId(1L)
-                .balance(BigDecimal.valueOf(1000))
-                .cardNumber("1934674323464675")
-                .cardStatus(CardStatus.ENABLED)
-                .expirationDate(LocalDate.of(2025, 10, 01))
-                .isDefault(true)
-                .build();
-    }
-
-    private Card createCardRecipient() {
-        return Card.builder()
-                .cardId(2L)
-                .userId(1L)
-                .balance(BigDecimal.valueOf(500))
-                .cardNumber("1934674111164675")
-                .cardStatus(CardStatus.ENABLED)
-                .expirationDate(LocalDate.of(2023, 10, 01))
-                .isDefault(true)
-                .build();
-    }
-
-    private Transaction createDepositTransaction(Card card) {
-        return Transaction.builder()
-                .userId(null)
-                .card(card)
-                .amount(BigDecimal.valueOf(1000))
-                .transactionType(TransactionType.DEPOSIT)
-                .build();
-    }
-
-    private Transaction createPaymentTransaction(Card card) {
-        return Transaction.builder()
-                .userId(null)
-                .card(card)
-                .amount(BigDecimal.valueOf(100))
-                .transactionType(TransactionType.PAYMENT)
-                .unp(135465644L)
-                .purposeOfPayment("for chess")
-                .bankCode("3L4KJSKJH4556665LKSJDF909809")
-                .build();
     }
 }

@@ -74,7 +74,7 @@ class CardServiceImplTest {
         cards.add(createNewCard());
         cards.add(createSecondCard());
         Page<Card> page = new PageImpl<>((cards));
-        Pageable pageable = PageRequest.of(1, 2);
+        Pageable pageable = PageRequest.of(1, cards.size());
 
         // when
         when(cardRepository.findAll(pageable)).thenReturn(page);

@@ -12,7 +12,7 @@ carry out money transfers. Card accounts can be default or not and have any stat
 the transaction has been successful the customer would receive the email.
 ***
 
-### Technologies
+### Stack
 
 - JDK 11
 - Spring Boot
@@ -49,5 +49,20 @@ the transaction has been successful the customer would receive the email.
 
 ***
 
+### Project bootstrap order
+
+1) RabbitMQ run command:
+   docker run -p 15672:15672 -p 5672:5672 rabbitmq:3-management
+2) config-service -> ConfigApplication (run)
+3) registry-service -> RegistryApplication (run)
+4) gateway-service -> GatewayApplication (run)
+5) auth-service -> AuthApplication (run)
+6) user-service -> UserApplication (run)
+7) payment-service -> PaymentApplication (run)
+8) notification-service -> NotificationApplication (run)
+
+***
+
 ### Scheme
+
 ![Image alt](img/project_scheme.png)

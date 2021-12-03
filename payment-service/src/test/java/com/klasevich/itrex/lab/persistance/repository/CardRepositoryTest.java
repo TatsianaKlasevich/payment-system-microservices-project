@@ -106,14 +106,14 @@ class CardRepositoryTest {
 
     private Card createNewCard() {
         return Card.builder()
-                .balance(BigDecimal.valueOf(200))
-                .isDefault(true)
-                .cardNumber("2380993469345345")
+                .cardId(1L)
+                .userId(1L)
+                .balance(BigDecimal.valueOf(1000))
+                .cardNumber("1934674323464675")
                 .cardStatus(CardStatus.ENABLED)
                 .expirationDate(LocalDate.of(2025, 10, 01))
-                .userId(1L)
+                .isDefault(true)
                 .build();
-
     }
 }
 

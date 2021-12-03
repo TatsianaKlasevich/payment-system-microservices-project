@@ -1,0 +1,667 @@
+openapi: 3.0.1
+info:
+  contact: { }
+  description: Api Documentation
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0
+  termsOfService: urn:tos
+  title: Api Documentation
+  version: "1.0"
+servers:
+  - url: //localhost:8082/
+tags:
+  - description: Card Controller
+    name: card-controller
+  - description: Transaction Controller
+    name: transaction-controller
+paths:
+  /payments/v1/cards/:
+    post:
+      operationId: createCardUsingPOST
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CardRequestDTO'
+        description: cardRequestDTO
+        required: true
+      responses:
+        "200":
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/CardResponseDTO'
+          description: OK
+        "201":
+          content: { }
+          description: Created
+        "401":
+          content: { }
+          description: Unauthorized
+        "403":
+          content: { }
+          description: Forbidden
+        "404":
+          content: { }
+          description: Not Found
+      summary: Create card
+      tags:
+        - card-controller
+      x-codegen-request-body-name: cardRequestDTO
+      x-contentType: application/json
+      x-accepts: '*/*'
+  /payments/v1/cards/page:
+    get:
+      operationId: findAllCardsUsingGET
+      parameters:
+        - in: query
+          name: offset
+          schema:
+            format: int64
+            type: integer
+        - in: query
+          name: paged
+          schema:
+            type: boolean
+        - in: query
+          name: pageNumber
+          schema:
+            format: int32
+            type: integer
+        - in: query
+          name: pageSize
+          schema:
+            format: int32
+            type: integer
+        - in: query
+          name: sort.sorted
+          schema:
+            type: boolean
+        - in: query
+          name: sort.unsorted
+          schema:
+            type: boolean
+        - in: query
+          name: unpaged
+          schema:
+            type: boolean
+      responses:
+        "200":
+          content:
+            '*/*':
+              schema:
+                items:
+                  $ref: '#/components/schemas/CardResponseDTO'
+                type: array
+          description: OK
+        "401":
+          content: { }
+          description: Unauthorized
+        "403":
+          content: { }
+          description: Forbidden
+        "404":
+          content: { }
+          description: Not Found
+      summary: Get all cards by some page and sort
+      tags:
+        - card-controller
+      x-accepts: '*/*'
+  /payments/v1/cards/user/{userId}:
+    get:
+      operationId: getCardsByUserIdUsingGET
+      parameters:
+        - description: userId
+          in: path
+          name: userId
+          required: true
+          schema:
+            format: int64
+            type: integer
+      responses:
+        "200":
+          content:
+            '*/*':
+              schema:
+                items:
+                  $ref: '#/components/schemas/CardResponseDTO'
+                type: array
+          description: OK
+        "401":
+          content: { }
+          description: Unauthorized
+        "403":
+          content: { }
+          description: Forbidden
+        "404":
+          content: { }
+          description: Not Found
+      summary: Get all cards of some user
+      tags:
+        - card-controller
+      x-accepts: '*/*'
+  /payments/v1/cards/{cardId}:
+    delete:
+      operationId: deleteCardUsingDELETE
+      parameters:
+        - description: cardId
+          in: path
+          name: cardId
+          required: true
+          schema:
+            format: int64
+            type: integer
+      responses:
+        "200":
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/CardResponseDTO'
+          description: OK
+        "204":
+          content: { }
+          description: No Content
+        "401":
+          content: { }
+          description: Unauthorized
+        "403":
+          content: { }
+          description: Forbidden
+      summary: Delete card
+      tags:
+        - card-controller
+      x-accepts: '*/*'
+    get:
+      operationId: getCardUsingGET
+      parameters:
+        - description: cardId
+          in: path
+          name: cardId
+          required: true
+          schema:
+            format: int64
+            type: integer
+      responses:
+        "200":
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/CardResponseDTO'
+          description: OK
+        "401":
+          content: { }
+          description: Unauthorized
+        "403":
+          content: { }
+          description: Forbidden
+        "404":
+          content: { }
+          description: Not Found
+      summary: Get card by id
+      tags:
+        - card-controller
+      x-accepts: '*/*'
+    put:
+      operationId: updateCardUsingPUT
+      parameters:
+        - description: cardId
+          in: path
+          name: cardId
+          required: true
+          schema:
+            format: int64
+            type: integer
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CardRequestDTO'
+        description: cardRequestDTO
+        required: true
+      responses:
+        "200":
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/CardResponseDTO'
+          description: OK
+        "201":
+          content: { }
+          description: Created
+        "401":
+          content: { }
+          description: Unauthorized
+        "403":
+          content: { }
+          description: Forbidden
+        "404":
+          content: { }
+          description: Not Found
+      summary: Update card
+      tags:
+        - card-controller
+      x-codegen-request-body-name: cardRequestDTO
+      x-contentType: application/json
+      x-accepts: '*/*'
+  /payments/v1/deposit:
+    post:
+      operationId: createDepositUsingPOST
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DepositRequestDTO'
+        description: depositRequestDTO
+        required: true
+      responses:
+        "200":
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/DepositResponseDTO'
+          description: OK
+        "201":
+          content: { }
+          description: Created
+        "401":
+          content: { }
+          description: Unauthorized
+        "403":
+          content: { }
+          description: Forbidden
+        "404":
+          content: { }
+          description: Not Found
+      summary: Make deposit
+      tags:
+        - transaction-controller
+      x-codegen-request-body-name: depositRequestDTO
+      x-contentType: application/json
+      x-accepts: '*/*'
+  /payments/v1/page:
+    get:
+      operationId: getAllTransactionsUsingGET
+      parameters:
+        - in: query
+          name: offset
+          schema:
+            format: int64
+            type: integer
+        - in: query
+          name: paged
+          schema:
+            type: boolean
+        - in: query
+          name: pageNumber
+          schema:
+            format: int32
+            type: integer
+        - in: query
+          name: pageSize
+          schema:
+            format: int32
+            type: integer
+        - in: query
+          name: sort.sorted
+          schema:
+            type: boolean
+        - in: query
+          name: sort.unsorted
+          schema:
+            type: boolean
+        - in: query
+          name: unpaged
+          schema:
+            type: boolean
+      responses:
+        "200":
+          content:
+            '*/*':
+              schema:
+                items:
+                  $ref: '#/components/schemas/TransactionResponseDTO'
+                type: array
+          description: OK
+        "401":
+          content: { }
+          description: Unauthorized
+        "403":
+          content: { }
+          description: Forbidden
+        "404":
+          content: { }
+          description: Not Found
+      summary: Show all payments by some page and sort
+      tags:
+        - transaction-controller
+      x-accepts: '*/*'
+  /payments/v1/payment:
+    post:
+      operationId: createPaymentUsingPOST
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PaymentRequestDTO'
+        description: paymentRequestDTO
+        required: true
+      responses:
+        "200":
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/PaymentResponseDTO'
+          description: OK
+        "201":
+          content: { }
+          description: Created
+        "401":
+          content: { }
+          description: Unauthorized
+        "403":
+          content: { }
+          description: Forbidden
+        "404":
+          content: { }
+          description: Not Found
+      summary: Make payment
+      tags:
+        - transaction-controller
+      x-codegen-request-body-name: paymentRequestDTO
+      x-contentType: application/json
+      x-accepts: '*/*'
+  /payments/v1/transfer:
+    post:
+      operationId: createTransferUsingPOST
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TransferRequestDTO'
+        description: transferRequestDTO
+        required: true
+      responses:
+        "200":
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/TransferResponseDTO'
+          description: OK
+        "201":
+          content: { }
+          description: Created
+        "401":
+          content: { }
+          description: Unauthorized
+        "403":
+          content: { }
+          description: Forbidden
+        "404":
+          content: { }
+          description: Not Found
+      summary: Make transfer
+      tags:
+        - transaction-controller
+      x-codegen-request-body-name: transferRequestDTO
+      x-contentType: application/json
+      x-accepts: '*/*'
+  /payments/v1/{cardId}:
+    get:
+      operationId: getAllTransactionsByCardIdUsingGET
+      parameters:
+        - description: cardId
+          in: path
+          name: cardId
+          required: true
+          schema:
+            format: int64
+            type: integer
+      responses:
+        "200":
+          content:
+            '*/*':
+              schema:
+                items:
+                  $ref: '#/components/schemas/TransactionResponseDTO'
+                type: array
+          description: OK
+        "401":
+          content: { }
+          description: Unauthorized
+        "403":
+          content: { }
+          description: Forbidden
+        "404":
+          content: { }
+          description: Not Found
+      summary: Get all payment transactions by some card id
+      tags:
+        - transaction-controller
+      x-accepts: '*/*'
+components:
+  schemas:
+    CardRequestDTO:
+      example:
+        isDefault: true
+        balance: 0.8008281904610115
+        userId: 6
+        cardNumber: cardNumber
+        cardStatus: ENABLED
+        expirationDate: 2000-01-23
+      properties:
+        balance:
+          type: number
+        cardNumber:
+          pattern: \d{16}
+          type: string
+        cardStatus:
+          enum:
+            - ENABLED
+            - IS_BLOCKED
+            - IS_CLOSED
+          maxLength: 15
+          minLength: 3
+          type: string
+        expirationDate:
+          format: date
+          type: string
+        isDefault:
+          type: boolean
+        userId:
+          format: int64
+          type: integer
+      title: CardRequestDTO
+      type: object
+    CardResponseDTO:
+      example:
+        isDefault: true
+        balance: 0.8008281904610115
+        cardId: 6
+        userId: 1
+        cardNumber: cardNumber
+        cardStatus: ENABLED
+        expirationDate: 2000-01-23
+      properties:
+        balance:
+          type: number
+        cardId:
+          format: int64
+          type: integer
+        cardNumber:
+          type: string
+        cardStatus:
+          enum:
+            - ENABLED
+            - IS_BLOCKED
+            - IS_CLOSED
+          type: string
+        expirationDate:
+          format: date
+          type: string
+        isDefault:
+          type: boolean
+        userId:
+          format: int64
+          type: integer
+      title: CardResponseDTO
+      type: object
+    DepositRequestDTO:
+      example:
+        amount: 0.8008281904610115
+        cardId: 6
+        userId: 1
+      properties:
+        amount:
+          type: number
+        cardId:
+          format: int64
+          type: integer
+        userId:
+          format: int64
+          type: integer
+      title: DepositRequestDTO
+      type: object
+    DepositResponseDTO:
+      example:
+        balance: 0.8008281904610115
+        mail: mail
+      properties:
+        balance:
+          type: number
+        mail:
+          type: string
+      title: DepositResponseDTO
+      type: object
+    PaymentRequestDTO:
+      example:
+        bankCode: bankCode
+        amount: 0.8008281904610115
+        unp: 1
+        cardId: 6
+        purposeOfPayment: purposeOfPayment
+        userId: 5
+      properties:
+        amount:
+          type: number
+        bankCode:
+          maxLength: 28
+          minLength: 28
+          type: string
+        cardId:
+          format: int64
+          type: integer
+        purposeOfPayment:
+          maxLength: 125
+          minLength: 2
+          type: string
+        unp:
+          format: int64
+          type: integer
+        userId:
+          format: int64
+          type: integer
+      title: PaymentRequestDTO
+      type: object
+    PaymentResponseDTO:
+      example:
+        bankCode: bankCode
+        balance: 0.8008281904610115
+        mail: mail
+        unp: 6
+        purposeOfPayment: purposeOfPayment
+      properties:
+        balance:
+          type: number
+        bankCode:
+          type: string
+        mail:
+          type: string
+        purposeOfPayment:
+          type: string
+        unp:
+          format: int64
+          type: integer
+      title: PaymentResponseDTO
+      type: object
+    TransactionResponseDTO:
+      example:
+        transactionType: DEPOSIT
+        bankCode: bankCode
+        amount: 0.8008281904610115
+        creatAt: 2000-01-23T04:56:07.000+00:00
+        unp: 1
+        purposeOfPayment: purposeOfPayment
+        updateAt: 2000-01-23T04:56:07.000+00:00
+        userId: 5
+        email: email
+        transactionId: 6
+      properties:
+        amount:
+          type: number
+        bankCode:
+          type: string
+        creatAt:
+          format: date-time
+          type: string
+        email:
+          type: string
+        purposeOfPayment:
+          type: string
+        transactionId:
+          format: int64
+          type: integer
+        transactionType:
+          enum:
+            - DEPOSIT
+            - PAYMENT
+            - TRANSFER
+          type: string
+        unp:
+          format: int64
+          type: integer
+        updateAt:
+          format: date-time
+          type: string
+        userId:
+          format: int64
+          type: integer
+      title: TransactionResponseDTO
+      type: object
+    TransferRequestDTO:
+      example:
+        amount: 0.8008281904610115
+        recipientCardId: 1
+        cardId: 6
+        userId: 5
+      properties:
+        amount:
+          type: number
+        cardId:
+          format: int64
+          type: integer
+        recipientCardId:
+          format: int64
+          type: integer
+        userId:
+          format: int64
+          type: integer
+      title: TransferRequestDTO
+      type: object
+    TransferResponseDTO:
+      example:
+        balance: 0.8008281904610115
+        mail: mail
+        recipientCardId: 6
+      properties:
+        balance:
+          type: number
+        mail:
+          type: string
+        recipientCardId:
+          format: int64
+          type: integer
+      title: TransferResponseDTO
+      type: object
+x-original-swagger-version: "2.0"
+
