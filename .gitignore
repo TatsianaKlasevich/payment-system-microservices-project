@@ -19,3 +19,4 @@
 /auth-service/build/resources/
 /lib/
 /notification-service/src/main/generated/
+/gen/
