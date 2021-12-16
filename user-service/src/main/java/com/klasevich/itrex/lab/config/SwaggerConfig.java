@@ -3,13 +3,11 @@ package com.klasevich.itrex.lab.config;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
+import springfox.documentation.builders.ApiInfoBuilder;
 import springfox.documentation.builders.OAuthBuilder;
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
-import springfox.documentation.service.AuthorizationScope;
-import springfox.documentation.service.ResourceOwnerPasswordCredentialsGrant;
-import springfox.documentation.service.SecurityReference;
-import springfox.documentation.service.SecurityScheme;
+import springfox.documentation.service.*;
 import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spi.service.contexts.SecurityContext;
 import springfox.documentation.spring.web.plugins.Docket;
@@ -22,7 +20,10 @@ import springfox.documentation.swagger.web.UiConfiguration;
 import springfox.documentation.swagger.web.UiConfigurationBuilder;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
+import java.util.List;
 
 @Configuration
 @EnableSwagger2
@@ -37,7 +38,7 @@ public class SwaggerConfig {
     public Docket api() {
         return new Docket(DocumentationType.SWAGGER_2)
                 .select()
-                .apis(RequestHandlerSelectors.basePackage("com.klasevich.itrex.lab"))
+                .apis(RequestHandlerSelectors.any())
                 .paths(PathSelectors.any())
                 .build()
                 .securitySchemes(Collections.singletonList(securityScheme()))
@@ -85,6 +86,49 @@ public class SwaggerConfig {
     }
 }
 
+//    @Bean
+//    public Docket productApi() {
+//        return new Docket(DocumentationType.SWAGGER_2)
+//                .select()
+//                .apis(RequestHandlerSelectors.any())
+//                .paths(PathSelectors.any())
+//                .build()
+//                .securitySchemes(Arrays.asList(securitySchema()))
+//                .securityContexts(Collections.singletonList(securityContext()))
+//                .apiInfo(metadata());
+//    }
+//
+//    private ApiInfo metadata() {
+//        return new ApiInfoBuilder()
+//                .title("Services API")
+//                .description("API for working with users")
+//                .version("1.0")
+//                .build();
+//    }
+//
+//    private OAuth securitySchema() {
+//        List<AuthorizationScope> authorizationScopeList = new ArrayList();
+//        List<GrantType> grantTypes = new ArrayList();
+//        GrantType passwordGrant = new ResourceOwnerPasswordCredentialsGrant( AUTH_SERVER_URL);
+//        grantTypes.add(passwordGrant);
+//
+//        return new OAuth("oauth2schema", authorizationScopeList, grantTypes);
+//    }
+//
+//    private SecurityContext securityContext() {
+//        return SecurityContext
+//                .builder()
+//                .securityReferences(defaultAuth())
+//                .forPaths(PathSelectors.ant("/**"))
+//                .build();
+//    }
+//
+//    private List<SecurityReference> defaultAuth() {
+//        final AuthorizationScope[] authorizationScopes = new AuthorizationScope[0];
+//        return Arrays.asList(new SecurityReference("oauth2schema", authorizationScopes));
+//    }
+//}
+//
 
 
 

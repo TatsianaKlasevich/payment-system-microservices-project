@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="com.klasevich.itrex.lab.service.impl.TransactionServiceImplTest" tests="2" skipped="0" failures="0" errors="0" timestamp="2021-11-28T15:25:59" hostname="USER-ПК" time="2.262">
-  <properties/>
-  <testcase name="checkPaymentServiceException()" classname="com.klasevich.itrex.lab.service.impl.TransactionServiceImplTest" time="2.108"/>
-  <testcase name="createDeposit_withCardId_emailShouldBeTheSame()" classname="com.klasevich.itrex.lab.service.impl.TransactionServiceImplTest" time="0.153"/>
-  <system-out><![CDATA[]]></system-out>
-  <system-err><![CDATA[]]></system-err>
-</testsuite>

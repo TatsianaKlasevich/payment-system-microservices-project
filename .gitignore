@@ -3,7 +3,6 @@
 /gradle/
 /gradlew
 /gradlew.bat
-/settings.gradle
 /user-service/build/
 /transaction-service/build/
 /authentification-service/build/

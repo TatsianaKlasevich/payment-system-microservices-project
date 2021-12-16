@@ -52,6 +52,8 @@ dependencies {
     implementation 'org.springframework.cloud:spring-cloud-starter-openfeign'
     implementation 'org.springframework.cloud:spring-cloud-starter-sleuth'
 
+    implementation 'io.springfox:springfox-boot-starter:3.0.0'
+
 }
 
 test {

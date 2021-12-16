@@ -1,0 +1,11 @@
+rootProject.name = 'payment-system-microservices-project'
+include 'config-service'
+include 'registry-service'
+include 'gateway-service'
+include 'auth-service'
+include 'user-service'
+include 'payment-service'
+include 'notification-service'
+
+
+
