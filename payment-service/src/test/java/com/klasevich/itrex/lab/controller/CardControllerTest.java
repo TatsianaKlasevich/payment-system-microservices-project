@@ -1,19 +1,11 @@
 package com.klasevich.itrex.lab.controller;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.klasevich.itrex.lab.controller.dto.CardResponseDTO;
 import com.klasevich.itrex.lab.persistance.entity.Card;
-import com.klasevich.itrex.lab.service.CardService;
-import org.junit.Ignore;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.security.oauth2.common.util.JacksonJsonParser;
-import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
@@ -27,23 +19,8 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@Ignore
-@SpringBootTest
-@AutoConfigureMockMvc
-@ActiveProfiles("test")
-class CardControllerTest {
-    @Autowired
-    private MockMvc mockMvc;
-
-    @Autowired
-    private ObjectMapper objectMapper;
-
-    @MockBean
-    private CardService cardService;
-
-    @Test
-    void getCard() {
-    }
+//@Ignore
+class CardControllerTest extends BaseControllerTest {
 
     //todo check why security doesn't work
     private String obtainAccessToken(String username, String password) throws Exception {
@@ -55,7 +32,7 @@ class CardControllerTest {
         params.add("password", password);
 
         ResultActions result
-                = mockMvc.perform(post("/oauth/token")
+                = mockMvc.perform(post("http://localhost:8282/oauth/token")
                         .params(params)
                         .with(httpBasic("mobile", "pin"))
                         .accept("application/json;charset=UTF-8"))
@@ -69,16 +46,17 @@ class CardControllerTest {
     }
 
     @Test
+    @WithMockUser(username = "tanya", password = "kpass", authorities = "create_card")
     void createCard_whenValidCardData_createAndReturnTheCard() throws Exception {
         //give
-        String accessToken = obtainAccessToken("gleb", "kpass");
+//        String accessToken = obtainAccessToken("gleb", "kpass");
         Card card = createNewCard();
         CardResponseDTO cardResponseDTO = createCardResponseDTO();
 
         //when
         when(cardService.getCardById(anyLong())).thenReturn(card);
         mockMvc.perform(post("/payments/cards/")
-                        .header("Authorization", "Bearer " + accessToken)
+//                        .header("Authorization", "Bearer " + accessToken)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(cardResponseDTO)))
                 .andExpect(status().is2xxSuccessful());

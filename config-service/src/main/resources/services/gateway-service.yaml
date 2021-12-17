@@ -4,11 +4,11 @@ hystrix:
       execution:
         isolation:
           thread:
-            timeoutInMilliseconds: 20000
+            timeoutInMilliseconds: 21000
 
 ribbon:
-  ReadTimeout: 20000
-  ConnectTimeout: 20000
+  ReadTimeout: 5000
+  ConnectTimeout: 5000
 
 zuul:
   ignoredServices: '*'
@@ -32,5 +32,12 @@ zuul:
       serviceId: auth-service
       stripPrefix: false
 
+server:
   port: 8989
 
+#security: //todo
+#  oauth2:
+#    client:
+#      access-token-uri: http://localhost:8282/oauth/token
+#      client-id: mobile
+#      client-secret: pin

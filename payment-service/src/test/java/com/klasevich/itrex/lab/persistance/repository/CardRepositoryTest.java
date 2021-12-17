@@ -1,7 +1,6 @@
 package com.klasevich.itrex.lab.persistance.repository;
 
 import com.klasevich.itrex.lab.persistance.entity.Card;
-import com.klasevich.itrex.lab.persistance.entity.CardStatus;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,9 +9,9 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.math.BigDecimal;
-import java.time.LocalDate;
 import java.util.List;
 
+import static com.klasevich.itrex.lab.util.TestData.createNewCard;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -102,18 +101,6 @@ class CardRepositoryTest {
         //then
         assertEquals(expectedSize, actualSize);
         cardRepository.delete(card);
-    }
-
-    private Card createNewCard() {
-        return Card.builder()
-                .cardId(1L)
-                .userId(1L)
-                .balance(BigDecimal.valueOf(1000))
-                .cardNumber("1934674323464675")
-                .cardStatus(CardStatus.ENABLED)
-                .expirationDate(LocalDate.of(2025, 10, 01))
-                .isDefault(true)
-                .build();
     }
 }
 

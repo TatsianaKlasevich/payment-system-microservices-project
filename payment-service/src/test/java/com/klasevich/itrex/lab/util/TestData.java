@@ -17,7 +17,6 @@ public class TestData {
 
     public static Card createNewCard() {
         return Card.builder()
-                .cardId(1L)
                 .userId(1L)
                 .balance(BigDecimal.valueOf(1000))
                 .cardNumber("1934674323464675")
@@ -28,6 +27,29 @@ public class TestData {
     }
 
     public static Card createSecondCard() {
+        return Card.builder()
+                .userId(1L)
+                .balance(BigDecimal.valueOf(500))
+                .cardNumber("1934674111164675")
+                .cardStatus(CardStatus.ENABLED)
+                .expirationDate(LocalDate.of(2023, 10, 01))
+                .isDefault(true)
+                .build();
+    }
+
+    public static Card createNewCardWithCardId() {
+        return Card.builder()
+                .cardId(1L)
+                .userId(1L)
+                .balance(BigDecimal.valueOf(1000))
+                .cardNumber("1934674323464675")
+                .cardStatus(CardStatus.ENABLED)
+                .expirationDate(LocalDate.of(2025, 10, 01))
+                .isDefault(true)
+                .build();
+    }
+
+    public static Card createSecondCardWithCardId() {
         return Card.builder()
                 .cardId(2L)
                 .userId(1L)

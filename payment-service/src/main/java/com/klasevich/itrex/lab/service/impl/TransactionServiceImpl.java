@@ -25,12 +25,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.math.BigDecimal;
 import java.util.List;
 
-import static com.klasevich.itrex.lab.util.ServiceData.DEFAULT_CARD_EXCEPTION_MESSAGE;
-import static com.klasevich.itrex.lab.util.ServiceData.MONEY_EXCEPTION_MESSAGE;
-import static com.klasevich.itrex.lab.util.ServiceData.RABBIT_MQ_EXCEPTION_MESSAGE;
-import static com.klasevich.itrex.lab.util.ServiceData.ROUTING_KEY_PAYMENT;
-import static com.klasevich.itrex.lab.util.ServiceData.TOPIC_EXCHANGE_PAYMENT;
-import static com.klasevich.itrex.lab.util.ServiceData.TRANSACTION_EXCEPTION_MESSAGE;
+import static com.klasevich.itrex.lab.util.ServiceData.*;
 
 
 @RequiredArgsConstructor

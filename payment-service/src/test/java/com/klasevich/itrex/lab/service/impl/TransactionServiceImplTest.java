@@ -30,12 +30,7 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.klasevich.itrex.lab.util.TestData.createDepositTransaction;
-import static com.klasevich.itrex.lab.util.TestData.createNewCard;
-import static com.klasevich.itrex.lab.util.TestData.createPaymentTransaction;
-import static com.klasevich.itrex.lab.util.TestData.createSecondCard;
-import static com.klasevich.itrex.lab.util.TestData.createTransferTransaction;
-import static com.klasevich.itrex.lab.util.TestData.createUserResponseDTO;
+import static com.klasevich.itrex.lab.util.TestData.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.when;
@@ -68,7 +63,7 @@ class TransactionServiceImplTest {
     @Test
     void createDeposit_emailShouldBeTheSame() {
         //given
-        Card card = createNewCard();
+        Card card = createNewCardWithCardId();
         UserResponseDTO userResponseDTO = createUserResponseDTO();
         Transaction transaction = createDepositTransaction(card);
 
@@ -83,7 +78,7 @@ class TransactionServiceImplTest {
     @Test
     void createPayment_emailShouldBeTheSame() {
         //given
-        Card card = createNewCard();
+        Card card = createNewCardWithCardId();
         UserResponseDTO userResponseDTO = createUserResponseDTO();
         Transaction transaction = createPaymentTransaction(card);
 
@@ -98,8 +93,8 @@ class TransactionServiceImplTest {
     @Test
     void createTransfer_emailShouldBeTheSame() {
         //given
-        Card card = createNewCard();
-        Card recipientCard = createSecondCard();
+        Card card = createNewCardWithCardId();
+        Card recipientCard = createSecondCardWithCardId();
         UserResponseDTO userResponseDTO = createUserResponseDTO();
         Transaction transaction = createTransferTransaction(card);
 
@@ -134,7 +129,7 @@ class TransactionServiceImplTest {
     void checkPaymentServiceException_whenNotEnoughMoneyForPayment() {
         //given
         String message = "Not enough money for payment";
-        Card card = createNewCard();
+        Card card = createNewCardWithCardId();
         Transaction transaction = createPaymentTransaction(card);
         transaction.setAmount(BigDecimal.valueOf(1200));
 
