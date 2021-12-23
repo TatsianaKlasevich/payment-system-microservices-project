@@ -68,7 +68,7 @@ public class CardController {
                 .collect(Collectors.toList());
     }
 
-    @GetMapping("cards/page")
+    @GetMapping("cards/pageable")
     @ApiOperation("Get all cards by some page and sort")
     @PreAuthorize("hasAuthority('read_all')")
     public List<CardResponseDTO> findAllCards(Pageable pageable) {

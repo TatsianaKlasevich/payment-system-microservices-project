@@ -2,20 +2,16 @@ package com.klasevich.itrex.lab.persistance.repository;
 
 import com.klasevich.itrex.lab.persistance.entity.User;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-import java.time.LocalDate;
-
+import static com.klasevich.itrex.lab.util.TestData.createNewUser;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @DataJpaTest
-@ExtendWith(SpringExtension.class)
 @ActiveProfiles("test")
 class UserRepositoryTest {
 
@@ -83,17 +79,5 @@ class UserRepositoryTest {
         //then
         assertEquals(expectedSize, actualSize);
         userRepository.delete(user);
-    }
-
-    private User createNewUser() {
-        return User.builder()
-                .email("sergis@gmail.com")
-                .name("Serg")
-                .secondName("Konstantinovich")
-                .surname("Petrov")
-                .dateOfBirth(LocalDate.of(1989, 9, 11))
-                .identityPassportNumber("123214NK78454L")
-                .phoneNumber("+375443650684")
-                .build();
     }
 }

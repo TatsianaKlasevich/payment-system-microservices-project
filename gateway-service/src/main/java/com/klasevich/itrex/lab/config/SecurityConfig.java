@@ -7,7 +7,7 @@ import org.springframework.security.oauth2.config.annotation.web.configuration.E
 
 @Configuration
 @EnableResourceServer
-public class GatewayConfiguration extends WebSecurityConfigurerAdapter {  //todo
+public class SecurityConfig extends WebSecurityConfigurerAdapter {  //todo
     @Override
     public void configure(final HttpSecurity http) throws Exception {
         http.authorizeRequests()

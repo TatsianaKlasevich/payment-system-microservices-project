@@ -43,6 +43,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public String hello() {
+        return "Hello World";
+    }
+
+    @Override
     public Page<User> findAllUsers(Pageable pageable) {
         return userRepository.findAll(pageable);
     }

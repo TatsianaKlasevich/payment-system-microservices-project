@@ -42,7 +42,7 @@ public class TransactionController {
                 .collect(Collectors.toList());
     }
 
-    @GetMapping("/page")
+    @GetMapping("/pageable")
     @ApiOperation("Show all payments by some page and sort")
     @PreAuthorize("hasAuthority('read_all')")
     public List<TransactionResponseDTO> getAllTransactions(Pageable pageable) {

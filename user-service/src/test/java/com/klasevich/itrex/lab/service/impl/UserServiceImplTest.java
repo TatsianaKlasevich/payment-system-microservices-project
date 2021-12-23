@@ -14,17 +14,17 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import static com.klasevich.itrex.lab.util.TestData.createNewUser;
+import static com.klasevich.itrex.lab.util.TestData.createSecondUser;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-//@ActiveProfiles("test")
 class UserServiceImplTest {
     @Mock
     private UserRepository userRepository;
@@ -106,29 +106,5 @@ class UserServiceImplTest {
 
         //then
         assertThat(updatedUser.getSurname()).isEqualTo(user.getSurname());
-    }
-
-    private User createNewUser() {
-        return User.builder()
-                .email("sergis@gmail.com")
-                .name("Serg")
-                .secondName("Konstantinovich")
-                .surname("Petrov")
-                .dateOfBirth(LocalDate.of(1989, 9, 11))
-                .identityPassportNumber("123214NK78454L")
-                .phoneNumber("+375443650684")
-                .build();
-    }
-
-    private User createSecondUser() {
-        return User.builder()
-                .email("ser@gmail.com")
-                .name("Serg")
-                .secondName("Konstantinovich")
-                .surname("Petrov")
-                .dateOfBirth(LocalDate.of(1989, 9, 11))
-                .identityPassportNumber("12K914NK78454L")
-                .phoneNumber("+375443650684")
-                .build();
     }
 }

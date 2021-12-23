@@ -1,5 +1,6 @@
 package com.klasevich.itrex.lab.controller.dto;
 
+import lombok.Builder;
 import lombok.Data;
 
 import javax.validation.constraints.NotEmpty;
@@ -8,6 +9,7 @@ import javax.validation.constraints.PositiveOrZero;
 import java.math.BigDecimal;
 
 @Data
+@Builder
 public class TransferRequestDTO {
 
     @Positive(message = "User id should be positive number")

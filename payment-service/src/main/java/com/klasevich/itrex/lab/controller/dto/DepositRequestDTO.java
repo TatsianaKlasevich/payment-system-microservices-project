@@ -1,13 +1,17 @@
 package com.klasevich.itrex.lab.controller.dto;
 
-import lombok.Data;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.Setter;
 
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Positive;
 import javax.validation.constraints.PositiveOrZero;
 import java.math.BigDecimal;
 
-@Data
+@Getter
+@Setter
+@Builder
 public class DepositRequestDTO {
 
     @Positive(message = "User id should be positive number")

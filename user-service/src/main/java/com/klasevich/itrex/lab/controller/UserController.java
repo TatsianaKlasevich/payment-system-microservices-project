@@ -34,9 +34,9 @@ public class UserController {
         return userToUserResponseDTOMapper.convert(userService.getUserById(userId));
     }
 
-    @GetMapping()
+    @GetMapping("pageable")
     @ApiOperation("Get all users by some page and sort")
-    @PreAuthorize("hasRole('BANK_EMPLOYEE')")
+    @PreAuthorize("hasAuthority('read_all')")
     public List<UserResponseDTO> findAllUsers(Pageable pageable) {
         return userService.findAllUsers(pageable).stream()
                 .map(userToUserResponseDTOMapper::convert)

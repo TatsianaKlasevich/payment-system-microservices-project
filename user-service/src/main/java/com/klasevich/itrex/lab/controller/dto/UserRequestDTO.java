@@ -1,5 +1,6 @@
 package com.klasevich.itrex.lab.controller.dto;
 
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -9,6 +10,7 @@ import java.util.List;
 
 @Getter
 @Setter
+@Builder
 public class UserRequestDTO {
     @NotEmpty(message = "Email should not be empty")
     @Email(message = "Email should be valid")

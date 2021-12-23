@@ -15,4 +15,6 @@ public interface UserService {
     User updateUser(User user);
 
     Page<User> findAllUsers(Pageable pageable);
+
+    String hello();
 }

@@ -48,6 +48,7 @@ dependencies {
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'org.springframework.boot:spring-boot-starter-aop'
     implementation 'javax.validation:validation-api'
+    testImplementation 'org.springframework.security:spring-security-test'
 
     implementation 'org.springframework.cloud:spring-cloud-starter-config'
     implementation 'org.springframework.cloud:spring-cloud-starter-security'
