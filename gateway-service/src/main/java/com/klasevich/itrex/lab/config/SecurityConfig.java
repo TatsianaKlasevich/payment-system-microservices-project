@@ -10,10 +10,18 @@ import org.springframework.security.oauth2.config.annotation.web.configuration.E
 public class SecurityConfig extends WebSecurityConfigurerAdapter {  //todo
     @Override
     public void configure(final HttpSecurity http) throws Exception {
-        http.authorizeRequests()
-                .antMatchers("/oauth/**")
+        http
+                .csrf().disable()
+                .authorizeRequests()
+                .antMatchers("/oauth/**", "/v1/**")
                 .permitAll()
                 .antMatchers("/**")
                 .authenticated();
+//
+//        http
+//                    .csrf().disable()
+//                    .authorizeRequests()
+//                    .anyRequest()
+//                    .permitAll();
     }
 }

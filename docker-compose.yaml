@@ -1,0 +1,81 @@
+version: '3.5'
+services:
+  config-service:
+    container_name: config-service
+    build: config-service
+    ports:
+      - 8001:8001
+
+  registry-service:
+    container_name: registry-service
+    restart: always
+    build: registry-service
+    ports:
+      - 8761:8761
+    depends_on:
+      - config-service
+
+  auth-service:
+    container_name: auth-service
+    restart: always
+    build: auth-service
+    ports:
+      - 8282:8282
+    depends_on:
+      - config-service
+      - registry-service
+
+  gateway-service:
+    container_name: gateway-service
+    restart: always
+    build: gateway-service
+    ports:
+    - 8989:8989
+    depends_on:
+    - config-service
+    - registry-service
+    - auth-service
+
+  user-service:
+    restart: on-failure
+    container_name: user-service
+    build: user-service
+    ports:
+      - 8081:8081
+    depends_on:
+      - config-service
+      - registry-service
+      - auth-service
+
+
+  payment-service:
+    restart: on-failure
+    container_name: payment-service
+    build: payment-service
+    ports:
+      - 8082:8082
+    depends_on:
+      - config-service
+      - registry-service
+      - auth-service
+
+  notification-service:
+    restart: on-failure
+    container_name: notification-service
+    build: notification-service
+    depends_on:
+      - config-service
+      - registry-service
+
+  rabbitmq: # login guest:guest
+    image: rabbitmq:3-management
+    hostname: rabbitmq
+    labels:
+      NAME: "rabbitmq"
+    ports:
+      - 5672:5672
+      - 15672:15672
+    depends_on:
+      - config-service
+      - registry-service
+      - user-service
